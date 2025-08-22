@@ -1,18 +1,18 @@
-import React from 'react'
+import React,{useState} from 'react'
 import './Css/Register.css'
-import {useNavigate} from 'react-router-dom'
+import InsuranceForm from'./InsuranceForm'
+import {useNavigate,Link} from 'react-router-dom'
 function Register() {
-  const navigate = useNavigate()
-    const handleClick = () => {
-    navigate('/InsuranceDetails'); 
-  };
+  const [Insurance, setInsurance] = useState(false);
+
+
 
   return (
     <div className='register pt-5'>
           <h2 className='text-center mt-3 mb-4' style={{fontFamily:'monospace',fontWeight:'bolder'}}>Welcome To E-Clinic</h2>
           <div className="container w-75  d-flex justify-content-center shadow ">
             <div className="col-md-4 p-4">
-              <h3 className='mt-2 mb-2'>Patient Registraion</h3>
+              <h3 className='mt-2 mb-2 text-center'>Patient Registraion</h3>
               <form action="#" style={{fontFamily:'serif',fontWeight:'bold'}}>
                 <div className="mt-2">
                 <label htmlFor="fullname" className='form-label'>Full name</label>
@@ -51,11 +51,14 @@ function Register() {
                   <textarea class="form-control" name='address' rows="3"required></textarea>
                 </div>
 
-                <button className='btn btn-primary mt-2 mb-2' onClick={handleClick}>Next</button>
+                <p>Do you Have a Insurance ? <Link to='InsuranceDetails/'>Add Details</Link></p>
+                <p>Already Had a Account ? <Link to='Login/'>Login</Link></p>
 
+                <button className='btn btn-primary' type='submit'>Register</button>
               </form>
             </div>
           </div>
+          
     </div>
   )
 }
