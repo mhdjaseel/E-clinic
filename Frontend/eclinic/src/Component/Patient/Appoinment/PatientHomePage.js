@@ -29,10 +29,10 @@ function PatientHomePage() {
     <div className="collapse navbar-collapse" id="navbarNav">
       <ul className="navbar-nav me-auto mb-2 mb-lg-0 mx-auto" style={{fontSize:18}}>
         <li className="nav-item mx-3">
-          <Link className="nav-link active " to="/">Home</Link>
+          <Link className="nav-link active " to="/PatientDashboard">Home</Link>
         </li>
         <li className="nav-item mx-3">
-          <Link className="nav-link active" to="/">Medical History</Link>
+          <Link className="nav-link active" to="/history">History</Link>
         </li>
         <li className="nav-item mx-3">
           <Link className="nav-link active" to="/">Payments</Link>
