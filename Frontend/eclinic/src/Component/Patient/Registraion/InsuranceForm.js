@@ -48,7 +48,7 @@ function InsuranceForm() {
                 </div>
                 <div className='d-flex justify-content-end mb-3'>
                 <p><Link to='/'>Back</Link>
-                <button className='btn btn-primary ms-3 btn-sm' type='submit'>Add details</button> 
+                <button className='btn btn-primary ms-3 btn-sm' type='submit' >Add details</button> 
                 </p>
                 </div>
 

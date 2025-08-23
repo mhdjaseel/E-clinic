@@ -1,5 +1,4 @@
 import React,{useState} from 'react'
-import './Css/Register.css'
 import InsuranceForm from'./InsuranceForm'
 import {useNavigate,Link} from 'react-router-dom'
 function Register() {
