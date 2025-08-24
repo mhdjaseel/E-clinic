@@ -1,15 +1,13 @@
 from django.db import models
-    
 from django.conf import settings
 
-class Patient(models.Model):
+# Create your models here.
+class Doctor(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=15)
+    specialization = models.CharField(max_length=100)
+    Hospital_name = models.CharField(max_length=50)
     gender = models.CharField(max_length=10, choices=[('Male', 'Male'), ('Female', 'Female')])
-    date_of_birth = models.DateField()
-    address = models.TextField()
 
     def __str__(self):
         return self.user.username
-
-
