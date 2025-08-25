@@ -1,0 +1,44 @@
+# serializers.py
+from rest_framework import serializers
+from django.contrib.auth import get_user_model
+
+
+from django.contrib.auth.hashers import make_password
+from .models import Patient
+
+User = get_user_model()
+
+class PatientRegisterSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(write_only=True)
+    email = serializers.EmailField(write_only=True)
+    password = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = Patient
+        fields = [
+            'username', 'email', 'password',  # from User model
+            'phone_number', 'gender', 'date_of_birth', 'address'  # from Patient model
+        ]
+
+    def validate_email(self, value):
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("Email already exists.")
+        
+        return value
+    def create(self, validated_data):
+        # Extract user-related fields
+        username = validated_data.pop('username')
+        email = validated_data.pop('email')
+        password = validated_data.pop('password')
+
+        # Create the user
+        user = User.objects.create(
+            username=username,
+            email=email,
+            password=make_password(password),
+            user_type='patient'
+        )
+
+        # Create the patient linked to the user
+        patient = Patient.objects.create(user=user, **validated_data)
+        return patient
