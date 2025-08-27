@@ -12,7 +12,7 @@ function App() {
        <Router>
           <Routes>
               <Route path='/' element={<Register/>}/>
-              <Route path='Login/' element={<Login/>}/> 
+              <Route path='Patientlogin/' element={<Login/>}/> 
               <Route path='InsuranceDetails/' element={<InsuranceForm/>}/> 
               <Route path='PatientDashboard/' element={<PatientHomePage/>}/>
               <Route path='SlotBooking/' element={<SlotBooking/>}/> 

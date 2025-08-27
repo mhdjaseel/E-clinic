@@ -23,8 +23,8 @@ class PatientRegisterSerializer(serializers.ModelSerializer):
     def validate_email(self, value):
         if User.objects.filter(email=value).exists():
             raise serializers.ValidationError("Email already exists.")
-        
         return value
+    
     def create(self, validated_data):
         # Extract user-related fields
         username = validated_data.pop('username')
@@ -42,3 +42,20 @@ class PatientRegisterSerializer(serializers.ModelSerializer):
         # Create the patient linked to the user
         patient = Patient.objects.create(user=user, **validated_data)
         return patient
+
+class PatientLoginSerializer(serializers.Serializer):
+        username = serializers.CharField()
+        password = serializers.CharField()
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [ 'id','username', 'email']
+
+class PatientSerializer(serializers.ModelSerializer):
+    user = UserSerializer()  # Nested serializer to include user details
+
+    class Meta:
+        model = Patient
+        fields = [ 'user', 'phone_number', 'address', 'date_of_birth', 'gender']
+

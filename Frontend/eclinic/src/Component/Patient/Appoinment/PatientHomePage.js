@@ -1,18 +1,52 @@
-import React from "react";
+import React, { useEffect ,useState} from "react";
 import "./Css/Patienthome.css";
 import { Link ,useNavigate} from "react-router-dom";
 import BookedSlot from "./BookedSlot";
 import HealthTip from "./HealthTip";
+import axios from "axios";
 function PatientHomePage() {
     const navigate = useNavigate()
      const HandleClick =()=>{
         navigate('/SlotBooking')
      }
+const [Info, setInfo] = useState({});
+  useEffect(() => {
+    
+    const FetchData = async ()=>{
+    const token = localStorage.getItem('access')
+      
+    if(!token){
+      alert('Token expired')
+      return
+    }
+
+    try{
+
+      const response = await axios.post('http://127.0.0.1:8000/PatientDetailsView/',{},{
+        headers:{
+            Authorization:`Bearer ${token}`
+        }
+      })
+      setInfo(response.data)
+      console.log(Info)
+    }
+    catch(error){
+      alert(error)
+    }
+    }
+
+    
+  FetchData();
+  }, []);
+
+
   return (
     <div>
      <nav className="navbar navbar-expand-lg navbar-light bg-light" style={{ fontFamily: "Arial" }}>
   <div className="container-fluid">
-    <a className="navbar-brand" href="#">Username</a>
+ {Info.user && (
+  <a className="navbar-brand" href="#">{Info.user.username}</a>
+)}
 
     <button
       className="navbar-toggler"

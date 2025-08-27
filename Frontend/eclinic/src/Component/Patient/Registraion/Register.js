@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import InsuranceForm from "./InsuranceForm";
 import { useNavigate, Link } from "react-router-dom";
 import axios from 'axios'
+import { ToastContainer, toast } from 'react-toastify';
 function Register() {
   const [Form, setForm] = useState({ gender: "Male" });
   const [Errors, setErrors] = useState({  });
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  const navigate=useNavigate()
 
   const HandleInput = (e) => {
     const { name, value } = e.target;
@@ -53,11 +55,12 @@ if (name === "email") {
       headers:{
         "Content-Type":'application/json'
       }})
-      alert('sucessfully registered')
+    toast.success('sucessfully registered')
+      navigate('/Patientlogin' )
     }
     catch(error){
-      alert(error)
-      console.log(error.response.data); // optional: show errors in UI)
+      toast.error(error.response.data.email)
+        console.log(error.response.data); // optional: show errors in UI)
     }
   };
   return (
@@ -178,10 +181,10 @@ if (name === "email") {
 
             <p>
               Do you Have a Insurance ?{" "}
-              <Link to="InsuranceDetails/">Add Details</Link>
+              <Link to="/InsuranceDetails">Add Details</Link>
             </p>
             <p>
-              Already Had a Account ? <Link to="Login/">Login</Link>
+              Already Had a Account ? <Link to="/PatientLogin">Login</Link>
             </p>
 
             <button className="btn btn-primary" type="submit">
@@ -190,6 +193,12 @@ if (name === "email") {
           </form>
         </div>
       </div>
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        theme="light"
+      />
+
     </div>
   );
 }
