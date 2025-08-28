@@ -1,4 +1,6 @@
 import './App.css';
+import 'react-toastify/dist/ReactToastify.css';
+
 import {BrowserRouter as Router ,Routes, Route} from 'react-router-dom'
 import Register from './Component/Patient/Registraion/Register';
 import Login from './Component/Patient/Registraion/Login';

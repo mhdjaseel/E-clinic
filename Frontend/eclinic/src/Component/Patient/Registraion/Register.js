@@ -1,66 +1,65 @@
 import React, { useState } from "react";
 import InsuranceForm from "./InsuranceForm";
 import { useNavigate, Link } from "react-router-dom";
-import axios from 'axios'
-import { ToastContainer, toast } from 'react-toastify';
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 function Register() {
   const [Form, setForm] = useState({ gender: "Male" });
-  const [Errors, setErrors] = useState({  });
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  const navigate=useNavigate()
+  const [Errors, setErrors] = useState({});
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const navigate = useNavigate();
 
   const HandleInput = (e) => {
     const { name, value } = e.target;
-   if (name === "username") {
-  if (value.length < 4) {
-    setErrors({ ...Errors, [name]: "Username must be at least 4 characters" });
-  } else {
-    setErrors({ ...Errors, [name]: "" });
-  }
-}
+    if (name === "username") {
+      if (value.length < 4) {
+        setErrors({
+          ...Errors,
+          [name]: "Username must be at least 4 characters",
+        });
+      } else {
+        setErrors({ ...Errors, [name]: "" });
+      }
+    }
 
-if (name === "password") {
-  if (
-    value.length < 8 ||
-    !/[A-Z]/.test(value) ||
-    !/[a-z]/.test(value)
-  ) {
-    setErrors({
-      ...Errors,
-      [name]: "Password must be at least 8 characters and contain uppercase and lowercase letters",
-    });
-  } else {
-    setErrors({ ...Errors, [name]: "" });
-  }
-}
+    if (name === "password") {
+      if (value.length < 8 || !/[A-Z]/.test(value) || !/[a-z]/.test(value)) {
+        setErrors({
+          ...Errors,
+          [name]:
+            "Password must be at least 8 characters and contain uppercase and lowercase letters",
+        });
+      } else {
+        setErrors({ ...Errors, [name]: "" });
+      }
+    }
 
-if (name === "email") {
-  if (!emailRegex.test(value)) {
-    setErrors({ ...Errors, [name]: "Invalid email address" });
-  } else {
-    setErrors({ ...Errors, [name]: "" });
-  }
-}
+    if (name === "email") {
+      if (!emailRegex.test(value)) {
+        setErrors({ ...Errors, [name]: "Invalid email address" });
+      } else {
+        setErrors({ ...Errors, [name]: "" });
+      }
+    }
     setForm({
       ...Form,
       [name]: value,
     });
   };
 
-
   const HandleSubmit = async (e) => {
     e.preventDefault();
-    try{
-    await axios.post('http://127.0.0.1:8000/patientRegister/',Form,{
-      headers:{
-        "Content-Type":'application/json'
-      }})
-    toast.success('sucessfully registered')
-      navigate('/Patientlogin' )
-    }
-    catch(error){
-      toast.error(error.response.data.email)
-        console.log(error.response.data); // optional: show errors in UI)
+    try {
+      await axios.post("http://127.0.0.1:8000/patientRegister/", Form, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      toast.success("sucessfully registered");
+      navigate("/Patientlogin");
+    } catch (error) {
+      toast.error(error.response.data.email);
+      console.log(error.response.data); // optional: show errors in UI)
     }
   };
   return (
@@ -119,7 +118,7 @@ if (name === "email") {
                 name="email"
                 required
               />
-                {Errors.email && (
+              {Errors.email && (
                 <small className="text-danger">{Errors.email}</small>
               )}
             </div>
@@ -135,7 +134,7 @@ if (name === "email") {
                 name="password"
                 required
               />
-                {Errors.password && (
+              {Errors.password && (
                 <small className="text-danger">{Errors.password}</small>
               )}
             </div>
@@ -161,7 +160,7 @@ if (name === "email") {
                 className="form-control"
                 name="date_of_birth"
                 onChange={HandleInput}
-                 value={Form.date_of_birth}
+                value={Form.date_of_birth}
                 required
               />
             </div>
@@ -193,12 +192,7 @@ if (name === "email") {
           </form>
         </div>
       </div>
-      <ToastContainer
-        position="top-center"
-        autoClose={2000}
-        theme="light"
-      />
-
+      <ToastContainer position="top-center" autoClose={2000} theme="light" />
     </div>
   );
 }

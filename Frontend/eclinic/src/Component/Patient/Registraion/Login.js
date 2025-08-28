@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React,{useState} from 'react'
 import {Link,useNavigate} from 'react-router-dom'
+import { toast,ToastContainer } from 'react-toastify';
 
 function Login() {
   const [Form, setForm] = useState();
@@ -24,13 +25,13 @@ function Login() {
       const { access, refresh } = response.data;
       localStorage.setItem('access',access)
       localStorage.setItem('refresh',refresh)
-      alert('Login successful!');
+      toast.success('Login successful!');
       navigate('/PatientDashboard' )
 
   }
   
   catch(error){
-    alert(error)
+    toast.error('Invalid Credentials')
   }
 }
   return (
@@ -50,7 +51,7 @@ function Login() {
                 <input type="password" className='form-control' name='password'  onChange={HandleChange} required/>
                 </div>
 
-       
+
 
                 <p>Didn't Have Account ? <Link to='/'>Register</Link></p>
 
@@ -58,6 +59,8 @@ function Login() {
               </form>
             </div>
           </div>
+      <ToastContainer position="top-center" autoClose={2000} theme="light" />
+
     </div>
   )
 }

@@ -4,14 +4,18 @@ import { Link ,useNavigate} from "react-router-dom";
 import BookedSlot from "./BookedSlot";
 import HealthTip from "./HealthTip";
 import axios from "axios";
+import InsuranceForm from "../Registraion/InsuranceForm";
 function PatientHomePage() {
     const navigate = useNavigate()
      const HandleClick =()=>{
         navigate('/SlotBooking')
      }
 const [Info, setInfo] = useState({});
+const [InsuranceData, setInsuranceData] = useState({});
   useEffect(() => {
     
+    // Fetch User Data............
+
     const FetchData = async ()=>{
     const token = localStorage.getItem('access')
       
@@ -22,21 +26,48 @@ const [Info, setInfo] = useState({});
 
     try{
 
-      const response = await axios.post('http://127.0.0.1:8000/PatientDetailsView/',{},{
+      const response = await axios.get('http://127.0.0.1:8000/PatientDetailsView/',{
         headers:{
             Authorization:`Bearer ${token}`
         }
       })
       setInfo(response.data)
-      console.log(Info)
+      console.log(response.data)
     }
     catch(error){
       alert(error)
     }
     }
 
-    
-  FetchData();
+  FetchData()
+  
+    // Fetch Insurance Data............
+
+    const FetchInsuranceData = async ()=>{
+    const token = localStorage.getItem('access')
+      
+    if(!token){
+      alert('Token expired')
+      return
+    }
+
+    try{
+
+      const response = await axios.get('http://127.0.0.1:8000/InsuranceDetails/',{
+        headers:{
+            Authorization:`Bearer ${token}`
+        }
+      })
+      setInsuranceData(response.data)
+      console.log(response.data)
+    }
+    catch(error){
+      alert(error)
+    }
+    }
+
+  FetchInsuranceData()
+  
   }, []);
 
 
@@ -74,6 +105,9 @@ const [Info, setInfo] = useState({});
         <li className="nav-item mx-3">
           <Link className="nav-link active" to="/">Doctor</Link>
         </li>
+        <li className="nav-item mx-3">
+          <Link className="nav-link active" to="/InsuranceDetails">Insurance</Link>
+        </li>
       </ul>
 
       <div className="d-flex ms-auto">
@@ -94,9 +128,21 @@ const [Info, setInfo] = useState({});
         </div>
       </div>
 
+
+
+
       <div className="container  d-flex justify-content-center">
+        {
+          InsuranceData.has_insurance === true ?
+          <button>see details</button>:
+          <button>ADD details</button>
+        }
+      </div>
+
+
+        <div className="container  d-flex justify-content-center">
         <div className="col-md-12 mt-5 w-50">
-          <BookedSlot />
+          <BookedSlot/>
         </div>
       </div>
 

@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 
 
 from django.contrib.auth.hashers import make_password
-from .models import Patient
+from .models import *
 
 User = get_user_model()
 
@@ -59,3 +59,17 @@ class PatientSerializer(serializers.ModelSerializer):
         model = Patient
         fields = [ 'user', 'phone_number', 'address', 'date_of_birth', 'gender']
 
+class PatientInsuranceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=PatientInsurance
+        fields=['Company_name','Policy_number','Policy_holder','Plan_type','Policy_date','Insurance_img']
+
+    def create(self, validated_data):
+
+        return (PatientInsurance.objects.create(owner=self.context['owner'], **validated_data))
+    
+
+class InsuranceDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PatientInsurance
+        fields=['Company_name','Policy_number','Policy_holder','Plan_type','Policy_date','Insurance_img','Verified']
