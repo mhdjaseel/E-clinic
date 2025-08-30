@@ -5,8 +5,9 @@ import { useNavigate } from "react-router-dom";
 
 const PatientProfile = () => {
     const [Info, setInfo] = useState({});
-    
   const [InsuranceData, setInsuranceData] = useState();
+  const navigate = useNavigate()
+
   useEffect(() => {
      // Fetch User Data............
 
@@ -14,7 +15,7 @@ const PatientProfile = () => {
     const token = localStorage.getItem('access')
       
     if(!token){
-      alert('Token expired')
+      navigate('/PatientLogin')
       return
     }
 
@@ -28,8 +29,13 @@ const PatientProfile = () => {
       setInfo(response.data)
     }
     catch(error){
-      alert(error)
+       if (error.response && error.response.status === 401) {
+      alert('Session expired. Please log in again.');
+      localStorage.removeItem('access');
+      localStorage.removeItem('refresh');
+      navigate('/PatientLogin');
     }
+  }
     }
 
   FetchData()
@@ -40,7 +46,7 @@ const PatientProfile = () => {
     const token = localStorage.getItem('access')
       
     if(!token){
-      alert('Token expired')
+      navigate('/PatientLogin')
       return
     }
 
@@ -54,14 +60,18 @@ const PatientProfile = () => {
       setInsuranceData(response.data)
     }
     catch(error){
-      alert(error)
+       if (error.response && error.response.status === 401) {
+      alert('Session expired. Please log in again.');
+      localStorage.removeItem('access');
+      localStorage.removeItem('refresh');
+      navigate('/PatientLogin');
+       }
     }
     }
 
   FetchInsuranceData()
   
   }, []); 
-  const navigate = useNavigate();
 
   const handleClick = () => {
     navigate("/InsuranceForm");

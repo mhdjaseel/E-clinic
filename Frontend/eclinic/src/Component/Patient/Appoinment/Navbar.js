@@ -8,12 +8,13 @@ import InsuranceDetails from "../Insurance/InsuranceDetails";
 import NoInsurance from "../Insurance/NoInsurance";
 import HaveInsurance from "../Insurance/HaveInsurance";
 function Navbar() {
-    const navigate = useNavigate()
-     const HandleClick =()=>{
+const navigate = useNavigate()
+const HandleClick =()=>{
         navigate('/SlotBooking')
      }
 const [Info, setInfo] = useState({});
 const [InsuranceData, setInsuranceData] = useState({});
+
   useEffect(() => {
     
     // Fetch User Data............
@@ -22,7 +23,7 @@ const [InsuranceData, setInsuranceData] = useState({});
     const token = localStorage.getItem('access')
       
     if(!token){
-      alert('Token expired')
+      navigate('/PatientLogin')
       return
     }
 
@@ -36,7 +37,12 @@ const [InsuranceData, setInsuranceData] = useState({});
       setInfo(response.data)
     }
     catch(error){
-      alert(error)
+        if (error.response && error.response.status === 401) {
+      alert('Session expired. Please log in again.');
+      localStorage.removeItem('access');
+      localStorage.removeItem('refresh');
+      navigate('/PatientLogin');
+        }
     }
     }
 
@@ -46,7 +52,11 @@ const [InsuranceData, setInsuranceData] = useState({});
 
   }, []);
 
- 
+ const Logout=()=>{
+  localStorage.removeItem('access')
+  localStorage.removeItem('refresh')
+  navigate('/Patientlogin')
+ }
  
   return (
     <div>
@@ -88,7 +98,7 @@ const [InsuranceData, setInsuranceData] = useState({});
       </ul>
 
       <div className="d-flex ms-auto">
-        <button type="submit" className="btn btn-success">Logout</button>
+        <button type="submit" className="btn btn-success" onClick={Logout}>Logout</button>
       </div>
     </div>
   </div>
