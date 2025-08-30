@@ -1,10 +1,12 @@
 import React from 'react'
 import PatientHomePage from './PatientHomePage'
 import SearchDoctors from './SearchDoctors'
+import Navbar from './Navbar'
 
 function SlotBooking() {
   return (
     <div>
+      <Navbar/>
           <h1 className='text-center mt-5' >Book a Appoinment</h1>
         <div className="container  mt-4 ">  
           <div className="row">

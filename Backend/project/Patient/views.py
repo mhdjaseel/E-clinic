@@ -85,10 +85,7 @@ class InsuranceDetails(APIView):
         Insurance = PatientInsurance.objects.filter(owner=user)
         if Insurance.exists():
             serializer= InsuranceDetailSerializer(Insurance,many=True)
-            return Response ({
-                'has_insurance':True,
-                'insurance_data':serializer.data})
-        return Response({
-            'has_insurance':False,
-            'insurance_data':[]
+            return Response (serializer.data)
+        return Response ({
+            'message':'No Insurance Details'
         })

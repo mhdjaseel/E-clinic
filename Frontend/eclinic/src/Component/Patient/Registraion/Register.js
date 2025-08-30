@@ -177,11 +177,6 @@ function Register() {
                 required
               ></textarea>
             </div>
-
-            <p>
-              Do you Have a Insurance ?{" "}
-              <Link to="/InsuranceDetails">Add Details</Link>
-            </p>
             <p>
               Already Had a Account ? <Link to="/PatientLogin">Login</Link>
             </p>

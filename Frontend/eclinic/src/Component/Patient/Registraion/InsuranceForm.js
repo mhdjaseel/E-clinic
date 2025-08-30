@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 
@@ -7,6 +7,7 @@ function InsuranceForm() {
   const [Form, setForm] = useState({});
   const [File, setFile] = useState(null);
   const [Preview, setPreview] = useState(null);
+  const navigate =useNavigate()
   const HandleChange = (e) => {
     const { name, value } = e.target;
     setForm({
@@ -50,6 +51,7 @@ function InsuranceForm() {
         },
       });
       toast.success("Insurance Details sent To verification");
+      navigate('/PatientDashboard')
     } catch (error) {
       console.error(error.response?.data || error.message);
       toast.error("Failed to add");
@@ -167,7 +169,7 @@ function InsuranceForm() {
             </div>
             <div className="d-flex justify-content-end mb-3">
               <p>
-                <Link to="/">Back</Link>
+                <Link to="/PatientDashboard">Back</Link>
                 <button className="btn btn-primary ms-3 btn-sm" type="submit">
                   Add details
                 </button>

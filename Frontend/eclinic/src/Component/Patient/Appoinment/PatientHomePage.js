@@ -1,143 +1,31 @@
 import React, { useEffect ,useState} from "react";
 import "./Css/Patienthome.css";
-import { Link ,useNavigate} from "react-router-dom";
+import {  useNavigate} from "react-router-dom";
 import BookedSlot from "./BookedSlot";
 import HealthTip from "./HealthTip";
-import axios from "axios";
-import InsuranceForm from "../Registraion/InsuranceForm";
+
+import Navbar from "./Navbar";
 function PatientHomePage() {
     const navigate = useNavigate()
      const HandleClick =()=>{
         navigate('/SlotBooking')
      }
-const [Info, setInfo] = useState({});
-const [InsuranceData, setInsuranceData] = useState({});
-  useEffect(() => {
-    
-    // Fetch User Data............
 
-    const FetchData = async ()=>{
-    const token = localStorage.getItem('access')
-      
-    if(!token){
-      alert('Token expired')
-      return
-    }
-
-    try{
-
-      const response = await axios.get('http://127.0.0.1:8000/PatientDetailsView/',{
-        headers:{
-            Authorization:`Bearer ${token}`
-        }
-      })
-      setInfo(response.data)
-      console.log(response.data)
-    }
-    catch(error){
-      alert(error)
-    }
-    }
-
-  FetchData()
-  
-    // Fetch Insurance Data............
-
-    const FetchInsuranceData = async ()=>{
-    const token = localStorage.getItem('access')
-      
-    if(!token){
-      alert('Token expired')
-      return
-    }
-
-    try{
-
-      const response = await axios.get('http://127.0.0.1:8000/InsuranceDetails/',{
-        headers:{
-            Authorization:`Bearer ${token}`
-        }
-      })
-      setInsuranceData(response.data)
-      console.log(response.data)
-    }
-    catch(error){
-      alert(error)
-    }
-    }
-
-  FetchInsuranceData()
-  
-  }, []);
-
-
+ 
+ 
   return (
     <div>
-     <nav className="navbar navbar-expand-lg navbar-light bg-light" style={{ fontFamily: "Arial" }}>
-  <div className="container-fluid">
- {Info.user && (
-  <a className="navbar-brand" href="#">{Info.user.username}</a>
-)}
+      <Navbar/>
 
-    <button
-      className="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarNav"
-      aria-controls="navbarNav"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span className="navbar-toggler-icon"></span>
-    </button>
-
-    <div className="collapse navbar-collapse" id="navbarNav">
-      <ul className="navbar-nav me-auto mb-2 mb-lg-0 mx-auto" style={{fontSize:18}}>
-        <li className="nav-item mx-3">
-          <Link className="nav-link active " to="/PatientDashboard">Home</Link>
-        </li>
-        <li className="nav-item mx-3">
-          <Link className="nav-link active" to="/history">History</Link>
-        </li>
-        <li className="nav-item mx-3">
-          <Link className="nav-link active" to="/">Payments</Link>
-        </li>
-        <li className="nav-item mx-3">
-          <Link className="nav-link active" to="/">Doctor</Link>
-        </li>
-        <li className="nav-item mx-3">
-          <Link className="nav-link active" to="/InsuranceDetails">Insurance</Link>
-        </li>
-      </ul>
-
-      <div className="d-flex ms-auto">
-        <button type="submit" className="btn btn-success">Logout</button>
-      </div>
-    </div>
-  </div>
-</nav>
-
-  <div className="container">
-        <div className="row  mt-5">
-          <div className="col-md-10 text-center">
-            <h2 className="">Booked Appoinments</h2>
-          </div>
-          <div className="col-md-2 text-end ">
+      <div className="container">
+        <div className="row justify-content-end mt-5">
+          <div className="col-md-2 ">
             <button className="btn btn-primary" onClick={HandleClick}><i className="fa-regular fa-calendar-check"></i> Book a Slot</button>
           </div>
         </div>
       </div>
 
 
-
-
-      <div className="container  d-flex justify-content-center">
-        {
-          InsuranceData.has_insurance === true ?
-          <button>see details</button>:
-          <button>ADD details</button>
-        }
-      </div>
 
 
         <div className="container  d-flex justify-content-center">

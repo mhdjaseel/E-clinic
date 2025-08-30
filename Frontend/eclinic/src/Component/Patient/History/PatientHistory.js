@@ -1,8 +1,10 @@
 import React from 'react'
+import Navbar from '../Appoinment/Navbar'
 
 function PatientHistory() {
   return (
     <div> 
+        <Navbar/>
         <div className="container mt-5">
             <div className="row">
                 <div className="col-md-6">

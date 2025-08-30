@@ -8,6 +8,9 @@ import InsuranceForm from './Component/Patient/Registraion/InsuranceForm';
 import PatientHomePage from './Component/Patient/Appoinment/PatientHomePage';
 import SlotBooking from './Component/Patient/Appoinment/SlotBooking';
 import PatientHistory from './Component/Patient/History/PatientHistory';
+import InsuranceDetails from './Component/Patient/Insurance/InsuranceDetails';
+import NoInsurance from './Component/Patient/Insurance/NoInsurance';
+import PatientProfile from './Component/Patient/Profile/PatientProfile';
 function App() {
   return (
     <div className="App">
@@ -15,10 +18,13 @@ function App() {
           <Routes>
               <Route path='/' element={<Register/>}/>
               <Route path='Patientlogin/' element={<Login/>}/> 
-              <Route path='InsuranceDetails/' element={<InsuranceForm/>}/> 
+              <Route path='InsuranceForm/' element={<InsuranceForm/>}/> 
               <Route path='PatientDashboard/' element={<PatientHomePage/>}/>
               <Route path='SlotBooking/' element={<SlotBooking/>}/> 
               <Route path='history/' element={<PatientHistory/>}/> 
+              <Route path='InsuranceDetails/' element={<InsuranceDetails/>}/> 
+              <Route path='NoInsurance/' element={<NoInsurance/>}/> 
+              <Route path='PatientProfile/' element={<PatientProfile/>}/>
               
           
 
