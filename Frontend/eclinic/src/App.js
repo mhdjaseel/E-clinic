@@ -11,6 +11,8 @@ import PatientHistory from './Component/Patient/History/PatientHistory';
 import InsuranceDetails from './Component/Patient/Insurance/InsuranceDetails';
 import NoInsurance from './Component/Patient/Insurance/NoInsurance';
 import PatientProfile from './Component/Patient/Profile/PatientProfile';
+import DoctorRegister from './Component/Doctor/Registration/DoctorRegister';
+import DoctorLogin from './Component/Doctor/Registration/DoctorLogin';
 function App() {
   return (
     <div className="App">
@@ -25,6 +27,8 @@ function App() {
               <Route path='InsuranceDetails/' element={<InsuranceDetails/>}/> 
               <Route path='NoInsurance/' element={<NoInsurance/>}/> 
               <Route path='PatientProfile/' element={<PatientProfile/>}/>
+              <Route path='DoctorRegister/' element={<DoctorRegister/>}/>
+              <Route path='DoctorLogin/' element={<DoctorLogin/>}/>
               
           
 

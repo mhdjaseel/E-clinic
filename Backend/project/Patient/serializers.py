@@ -16,8 +16,8 @@ class PatientRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Patient
         fields = [
-            'username', 'email', 'password',  # from User model
-            'phone_number', 'gender', 'date_of_birth', 'address'  # from Patient model
+            'username', 'email', 'password',  
+            'phone_number', 'gender', 'date_of_birth', 'address'  
         ]
 
     def validate_email(self, value):
