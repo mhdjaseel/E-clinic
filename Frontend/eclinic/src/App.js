@@ -1,5 +1,6 @@
 import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
 
 import {BrowserRouter as Router ,Routes, Route} from 'react-router-dom'
 import Register from './Component/Patient/Registraion/Register';
@@ -13,6 +14,7 @@ import NoInsurance from './Component/Patient/Insurance/NoInsurance';
 import PatientProfile from './Component/Patient/Profile/PatientProfile';
 import DoctorRegister from './Component/Doctor/Registration/DoctorRegister';
 import DoctorLogin from './Component/Doctor/Registration/DoctorLogin';
+import DoctorProfile from './Component/Doctor/Profile/DoctorProfile';
 function App() {
   return (
     <div className="App">
@@ -29,11 +31,14 @@ function App() {
               <Route path='PatientProfile/' element={<PatientProfile/>}/>
               <Route path='DoctorRegister/' element={<DoctorRegister/>}/>
               <Route path='DoctorLogin/' element={<DoctorLogin/>}/>
+              <Route path='DoctorProfile/' element={<DoctorProfile/>}/>
               
           
 
           </Routes>
        </Router>
+         <ToastContainer position="top-center" autoClose={2000} theme="light" />
+
     </div>
   );
 }

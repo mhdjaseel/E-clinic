@@ -16,4 +16,36 @@ class DoctorRegisterView(APIView):
             serializer.save()
             return Response({'message':'Successfullt Registered '},status=status.HTTP_200_OK)
         return Response(serializer.errors,status=status.HTTP_200_OK)
+    
+class DoctorLoginView(APIView): 
+    permission_classes = [AllowAny]
+    def post(self,request):
+        serializer=DoctorLoginSerializer(data=request.data)
+        if serializer.is_valid():
+            username=serializer.validated_data['username']
+            password=serializer.validated_data['password']    
+
+            user=authenticate(username=username,password=password)
+
+            if user is not None:
+                refresh=RefreshToken.for_user(user)
+
+                return Response({
+                    'message':'Succesfully Login',
+                    'access':str(refresh.access_token),
+                    'refresh':str(refresh)
+                },status=status.HTTP_200_OK)
+            
+            return Response({'message': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
         
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+class DoctorProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self,request):
+        try:
+            doctors=request.user.doctor
+        except AttributeError:
+            return Response({'error': 'Doctor profile not found.'}, status=status.HTTP_404_NOT_FOUND)
+        serializer=DoctorProfileSerializer(doctors)
+        return Response(serializer.data)

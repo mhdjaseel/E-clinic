@@ -40,3 +40,21 @@ class DoctorRegisterSerializer(serializers.ModelSerializer):
 
         doctor = Doctor.objects.create(user=user, **validated_data)
         return doctor
+
+class DoctorLoginSerializer(serializers.Serializer):
+        username=serializers.CharField()
+        password=serializers.CharField()
+
+class DoctorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email']
+
+class DoctorProfileSerializer(serializers.ModelSerializer):
+    user = DoctorSerializer()
+
+    class Meta:
+        model = Doctor
+        fields = ['user', 'phone_number', 'specialization', 'Hospital_name', 'gender']
+
+
