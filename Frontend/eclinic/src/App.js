@@ -15,6 +15,8 @@ import PatientProfile from './Component/Patient/Profile/PatientProfile';
 import DoctorRegister from './Component/Doctor/Registration/DoctorRegister';
 import DoctorLogin from './Component/Doctor/Registration/DoctorLogin';
 import DoctorProfile from './Component/Doctor/Profile/DoctorProfile';
+import DoctorProfilePage from './Component/Doctor/Profile/DoctorProfilePage';
+import PrescrptionForm from './Component/Doctor/DoctorAppoinments/PrescrptionForm';
 function App() {
   return (
     <div className="App">
@@ -32,6 +34,8 @@ function App() {
               <Route path='DoctorRegister/' element={<DoctorRegister/>}/>
               <Route path='DoctorLogin/' element={<DoctorLogin/>}/>
               <Route path='DoctorProfile/' element={<DoctorProfile/>}/>
+              <Route path='DoctorProfilePage/' element={<DoctorProfilePage/>}/>
+              <Route path='PresciptionForm/' element={<PrescrptionForm/>}/>
               
           
 

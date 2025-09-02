@@ -1,5 +1,6 @@
 import React, { useState,useEffect } from 'react'
 import axios from 'axios';
+
 import { useNavigate ,Link} from 'react-router-dom';
 
 function DoctorNavbar() {
@@ -70,19 +71,13 @@ function DoctorNavbar() {
     <div className="collapse navbar-collapse" id="navbarNav">
       <ul className="navbar-nav me-auto mb-2 mb-lg-0 mx-auto" style={{fontSize:18}}>
         <li className="nav-item mx-3">
-          <Link className="nav-link active " to="/PatientDashboard">Home</Link>
+          <Link className="nav-link active " to="/DoctorProfile">Home</Link>
         </li>
         <li className="nav-item mx-3">
-          <Link className="nav-link active" to="/history">History</Link>
+          <Link className="nav-link active" to="#">History</Link>
         </li>
         <li className="nav-item mx-3">
-          <Link className="nav-link active" to="/">Payments</Link>
-        </li>
-        <li className="nav-item mx-3">
-          <Link className="nav-link active" to="/">Doctor</Link>
-        </li>
-        <li className="nav-item mx-3">
-          <Link className="nav-link active" to="/PatientProfile">Profile</Link>
+          <Link className="nav-link active" to="/DoctorProfilePage">Profile</Link>
         </li>
       </ul>
 

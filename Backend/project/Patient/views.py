@@ -31,14 +31,19 @@ class PatientLoginView(APIView):
 
             user=authenticate(username=username,password=password)
             if user is not None :
-                refresh = RefreshToken.for_user(user)
+                if user.user_type =='patient':
+                    print(user.user_type)
 
+                    refresh = RefreshToken.for_user(user)
+
+                    return Response({
+                        'message': 'Successfully logged in',
+                        'access': str(refresh.access_token),
+                        'refresh': str(refresh)
+                    }, status=status.HTTP_200_OK)
                 return Response({
-                    'message': 'Successfully logged in',
-                    'access': str(refresh.access_token),
-                    'refresh': str(refresh)
-                }, status=status.HTTP_200_OK)
-
+                    'message':'Invalid details'
+                }, status=status.HTTP_400_BAD_REQUEST)
             else:
                 return Response({
                     'message':'Invalid details'

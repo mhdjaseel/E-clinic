@@ -28,16 +28,18 @@ class DoctorLoginView(APIView):
             user=authenticate(username=username,password=password)
 
             if user is not None:
-                refresh=RefreshToken.for_user(user)
+                if user.user_type =='doctor':
+                    refresh=RefreshToken.for_user(user)
 
-                return Response({
-                    'message':'Succesfully Login',
-                    'access':str(refresh.access_token),
-                    'refresh':str(refresh)
-                },status=status.HTTP_200_OK)
-            
+                    return Response({
+                        'message':'Succesfully Login',
+                        'access':str(refresh.access_token),
+                        'refresh':str(refresh)
+                    },status=status.HTTP_200_OK)
+                return Response({'message': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
+                
             return Response({'message': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
-        
+            
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 class DoctorProfileView(APIView):
