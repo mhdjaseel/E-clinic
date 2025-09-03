@@ -17,11 +17,15 @@ import DoctorLogin from './Component/Doctor/Registration/DoctorLogin';
 import DoctorProfile from './Component/Doctor/Profile/DoctorProfile';
 import DoctorProfilePage from './Component/Doctor/Profile/DoctorProfilePage';
 import PrescrptionForm from './Component/Doctor/DoctorAppoinments/PrescrptionForm';
+import { DoctorProvider } from './Component/Doctor/Context/DoctorContext';
 function App() {
   return (
     <div className="App">
        <Router>
+                
+
           <Routes>
+
               <Route path='/' element={<Register/>}/>
               <Route path='Patientlogin/' element={<Login/>}/> 
               <Route path='InsuranceForm/' element={<InsuranceForm/>}/> 
@@ -35,11 +39,19 @@ function App() {
               <Route path='DoctorLogin/' element={<DoctorLogin/>}/>
               <Route path='DoctorProfile/' element={<DoctorProfile/>}/>
               <Route path='DoctorProfilePage/' element={<DoctorProfilePage/>}/>
-              <Route path='PresciptionForm/' element={<PrescrptionForm/>}/>
+
+              <Route path='PresciptionForm/' element={    
+                <DoctorProvider>
+
+                <PrescrptionForm/>  
+
+                </DoctorProvider>         
+                }/>
               
-          
 
           </Routes>
+                
+
        </Router>
          <ToastContainer position="top-center" autoClose={2000} theme="light" />
 

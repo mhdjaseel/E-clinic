@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext,useState } from 'react';
 import DoctorNavbar from "../Profile/DoctorNavbar";
+import { DoctorContext } from '../Context/DoctorContext';
 
 function PrescrptionForm() {
   const [Data, setData] = useState({ summary: "", allergy: "" });
@@ -7,6 +8,8 @@ function PrescrptionForm() {
   const [med, setmed] = useState("");
   const [dosage, setdosage] = useState("");
   const [qty, setqty] = useState("");
+
+  const doctor = useContext(DoctorContext);
 
   const HandleChange = (e) => {
     const { name, value } = e.target;
@@ -146,8 +149,9 @@ function PrescrptionForm() {
                       </div>
                       <div className="col-md-6 d-flex justify-content-end ">
                         <div className="doctor_info">
-                          <h5>Doctor : Name</h5>
-                          <h6>Speciality</h6>
+                          <h5>Doctor : {doctor?.user?.username}</h5>
+
+                          <h6>{doctor?.specialization}</h6>
                         </div>
                       </div>
                     </div>

@@ -11,20 +11,13 @@ function SlotBooking() {
         <div className="container  mt-4 ">  
           <div className="row">
             <div className="col-md-6">
-                             <form action="#">
+                  <form action="#">
 
                 <div className="mt-2 ">
                 <label htmlFor="fullname" className='form-label fs-5'>Full name</label>
                 <input type="text" className='form-control ' name='fullname' required/>
                 </div>
 
-                <div className="mt-2 ">
-                <label htmlFor="fullname" className='form-label fs-5'>Hospital name</label>
-                  <select class="form-select" required>
-                    <option value="1">Male</option>
-                    <option value="2">Female</option>
-                  </select>
-                </div>
 
                 <div className="mt-2 ">
                 <label htmlFor="fullname" className='form-label fs-5'>Speciality</label>
