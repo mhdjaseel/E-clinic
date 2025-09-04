@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from Patient.models import *
 
 
 from django.contrib.auth.hashers import make_password
@@ -57,4 +58,29 @@ class DoctorProfileSerializer(serializers.ModelSerializer):
         model = Doctor
         fields = ['user', 'phone_number', 'specialization', 'Hospital_name', 'gender']
 
+class TimeSlotSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = TimeSlot
+            fields = '__all__'
+
+class SetSlotSerializer(serializers.Serializer):
+    date=serializers.DateField()
+    slots=serializers.ListField(child=serializers.CharField())
+
+    def create(self, validated_data):
+         doctor=self.context['doctor']
+         date=validated_data['date']
+         slots=validated_data['slots']
+         for label in slots:
+                try:
+                    timeslot = TimeSlot.objects.get(label=label)
+                    AvailableSlot.objects.get_or_create(
+                        doctor=doctor,
+                        date=date,
+                        slot=timeslot
+                    )
+                except TimeSlot.DoesNotExist:
+                    raise serializers.ValidationError(f"Slot '{label}' not found")
+
+         return {"message": "Slots saved"}
 

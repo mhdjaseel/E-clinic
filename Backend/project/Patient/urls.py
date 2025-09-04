@@ -7,5 +7,6 @@ urlpatterns = [
     path("PatientInsurance/",PatientInsuranceView.as_view(), name="PatientInsurance"),
     path("InsuranceDetails/", InsuranceDetails.as_view(), name="InsuranceDetails"),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('refresh/', TokenRefreshView.as_view(), name='token_refresh')
+    path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    # path("AppointmentView/", AppointmentView.as_view(), name="AppointmentView"),
 ]

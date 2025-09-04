@@ -90,9 +90,6 @@ const [InsuranceData, setInsuranceData] = useState({});
           <Link className="nav-link active" to="/">Payments</Link>
         </li>
         <li className="nav-item mx-3">
-          <Link className="nav-link active" to="/">Doctor</Link>
-        </li>
-        <li className="nav-item mx-3">
           <Link className="nav-link active" to="/PatientProfile">Profile</Link>
         </li>
       </ul>

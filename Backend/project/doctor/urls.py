@@ -3,5 +3,8 @@ from .views import *
 urlpatterns = [
 path("DoctorRegisterView/", DoctorRegisterView.as_view(), name="DoctorRegisterView"),
 path("DoctorLoginView/", DoctorLoginView.as_view(), name="DoctorLoginView"),
-path("DoctorProfileView/", DoctorProfileView.as_view(), name="DoctorProfileView")
+path("DoctorProfileView/", DoctorProfileView.as_view(), name="DoctorProfileView"),
+path("TimeSlotsView/", TimeSlotsView.as_view(), name="TimeSlotsView"),
+path("SetSlots/", SetSlots.as_view(), name="SetSlots")
+
 ]

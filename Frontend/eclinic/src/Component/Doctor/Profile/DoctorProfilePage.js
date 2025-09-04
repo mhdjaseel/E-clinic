@@ -44,10 +44,14 @@ function DoctorProfilePage() {
     
 
   }, []);
+
+  const HandleSlots = ()=>{
+    navigate('/SetSlots')
+  }
   return (
     <div>
     <DoctorNavbar/>
-
+    <button className='btn btn-primary' onClick={HandleSlots}>Set Slots</button>
      <div className="card mx-auto mt-5 shadow" style={{ maxWidth: '700px', borderRadius: '10px' }}>
       <div className="bg-primary text-white text-center p-3" style={{ borderTopLeftRadius: '10px', borderTopRightRadius: '10px' }}>
         <h3>Doctor Profile</h3>

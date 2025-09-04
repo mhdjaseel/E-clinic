@@ -61,6 +61,6 @@ class Appointment(models.Model):
     booked_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='booked')
     def __str__(self):
-        return f"{self.patient.user.username} - {self.slot}"
+        return self.patient.user.username
 
 

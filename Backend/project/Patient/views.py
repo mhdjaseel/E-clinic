@@ -8,6 +8,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView,TokenRefreshView
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.parsers import MultiPartParser, FormParser
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 
@@ -94,3 +95,15 @@ class InsuranceDetails(APIView):
         return Response ({
             'message':'No Insurance Details'
         })
+
+# class AppointmentView(APIView):
+#     def post(self, request):
+#         user = request.user.user_details
+#         doctor_name = request.data.get('doctor')
+
+#         doctor = get_object_or_404(Doctor, user__username=doctor_name)
+
+#         appointment = Appointment.objects.create(patient=user, doctor=doctor)
+#         serializer = AppointmentSerializer(appointment)
+#         return Response(serializer.data, status=status.HTTP_201_CREATED)
+

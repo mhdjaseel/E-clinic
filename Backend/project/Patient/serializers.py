@@ -73,3 +73,8 @@ class InsuranceDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = PatientInsurance
         fields=['Company_name','Policy_number','Policy_holder','Plan_type','Policy_date','Insurance_img','Verified']
+
+class AppointmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Appointment
+        fields = ['patient','doctor','status']
