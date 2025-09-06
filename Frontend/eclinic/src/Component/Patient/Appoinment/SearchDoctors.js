@@ -19,11 +19,7 @@ function SearchDoctors() {
                 </button>
               </form>
             </div>
-            <div className="card w-50 mt-3 ms-4">
-              <div className="card-body">
-                doctor name
-              </div>
-            </div>
+
           </div>
         </div>
       </div>

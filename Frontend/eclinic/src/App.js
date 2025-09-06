@@ -19,6 +19,7 @@ import DoctorProfilePage from './Component/Doctor/Profile/DoctorProfilePage';
 import PrescrptionForm from './Component/Doctor/DoctorAppoinments/PrescrptionForm';
 import { DoctorProvider } from './Component/Doctor/Context/DoctorContext';
 import SetSlots from './Component/Doctor/Profile/SetSlots';
+import DoctorsList from './Component/Patient/Appoinment/DoctorsList';
 function App() {
   return (
     <div className="App">
@@ -41,6 +42,7 @@ function App() {
               <Route path='DoctorProfile/' element={<DoctorProfile/>}/>
               <Route path='DoctorProfilePage/' element={<DoctorProfilePage/>}/>
               <Route path='SetSlots/' element={<SetSlots/>}/>
+              <Route path='DoctorsList/' element={<DoctorsList/>}/>
 
               <Route path='PresciptionForm/' element={    
                 <DoctorProvider>

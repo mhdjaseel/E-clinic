@@ -1,6 +1,9 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 function SetSlots() {
+  const navigate = useNavigate()
   useEffect(() => {
     const token = localStorage.getItem("doctor_access");
 
@@ -43,6 +46,7 @@ function SetSlots() {
           Authorization:`Bearer ${token}`
         }
       })
+      navigate('/DoctorProfilePage')
     console.log(response.data.message);
 
     }

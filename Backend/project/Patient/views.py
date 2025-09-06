@@ -96,14 +96,25 @@ class InsuranceDetails(APIView):
             'message':'No Insurance Details'
         })
 
-# class AppointmentView(APIView):
-#     def post(self, request):
-#         user = request.user.user_details
-#         doctor_name = request.data.get('doctor')
-
-#         doctor = get_object_or_404(Doctor, user__username=doctor_name)
-
-#         appointment = Appointment.objects.create(patient=user, doctor=doctor)
-#         serializer = AppointmentSerializer(appointment)
-#         return Response(serializer.data, status=status.HTTP_201_CREATED)
-
+class AvailableSlotView(APIView):
+    def post(self, request):
+        doctor_id = request.data.get('doctor')
+        date=request.data.get('date')
+        if doctor_id is None:
+            return Response({
+                'message': 'Doctor not available'
+            },status=status.HTTP_400_BAD_REQUEST)
+        slots=AvailableSlot.objects.filter(doctor_id=doctor_id,date=date)
+        if not slots.exists():
+            return Response({
+                'message': 'slots not available please Try Later'
+            },status=status.HTTP_404_NOT_FOUND)
+        serializer = AvailableSlotsSerializer(slots, many = True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class DoctorsListView(APIView):
+    def get(self,request):
+        doctors_list=Doctor.objects.all()
+        print(doctors_list)
+        serializer=DoctorsListSeriualizer(doctors_list,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)

@@ -41,7 +41,7 @@ class AvailableSlot(models.Model):
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     date = models.DateField()
     slot = models.ForeignKey(TimeSlot, on_delete=models.CASCADE)
-
+    is_booked=models.BooleanField(default=False)
     class Meta:
         unique_together = ('doctor', 'date', 'slot')  
 
