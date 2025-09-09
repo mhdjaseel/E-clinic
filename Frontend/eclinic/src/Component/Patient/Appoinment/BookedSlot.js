@@ -34,6 +34,10 @@ function BookedSlot() {
     FetchBookings();
   }, []);
 
+  const HandleDetails =(id)=>{
+    
+    navigate('/AppoinmentDetails' , { state: { appointmentId: id } })
+  }
   return (
     <div className="container mt-2">
       <div className="text-center mb-4">
@@ -65,7 +69,7 @@ function BookedSlot() {
                   <p className="card-text mb-3">
                     <strong>Hospital:</strong> {item.doctor.Hospital_name}
                   </p>
-                  <button className="btn btn-outline-primary w-100">
+                  <button className="btn btn-outline-primary w-100" onClick={()=>{HandleDetails(item.id)}}>
                     View Details
                   </button>
                 </div>

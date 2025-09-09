@@ -146,3 +146,12 @@ class BookedPatientAppoinments(APIView):
         data=Appointment.objects.filter(patient=patient)
         serializer=PatientAppoinmentsSerializer(data,many=True)
         return Response(serializer.data,status.HTTP_200_OK)
+    
+class PatientAppoinmentsDetails(APIView):
+    def get(self,request,pk):
+        appoinment=Appointment.objects.get(id=pk)
+        try:
+            serializer=PatientAppoinmentsSerializer(appoinment)
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        except appoinment.DoesNotExist:
+            return Response({'message':'Not Found '},status=status.HTTP_404_NOT_FOUND)
