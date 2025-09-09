@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from Patient.models import *
-
+from Patient.serializers import *
 
 from django.contrib.auth.hashers import make_password
 from .models import *
@@ -83,4 +83,29 @@ class SetSlotSerializer(serializers.Serializer):
                     raise serializers.ValidationError(f"Slot '{label}' not found")
 
          return {"message": "Slots saved"}
+    
+    
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [ 'id','username', 'email']
 
+class PatientSerializer(serializers.ModelSerializer):
+    user = UserSerializer()  # Nested serializer to include user details
+
+    class Meta:
+        model = Patient
+        fields = [ 'user', 'phone_number', 'address', 'date_of_birth', 'gender']
+
+class AvailableSlotsSerializer(serializers.ModelSerializer):
+    slot=TimeSlotSerializer()
+    class Meta:
+        model = AvailableSlot
+        fields = ['id','doctor','date','slot']
+
+class DoctorAppoinmentsSerializer(serializers.ModelSerializer):
+     patient=PatientSerializer()
+     slot=AvailableSlotsSerializer()
+     class Meta:
+            model = Appointment
+            fields = '__all__'

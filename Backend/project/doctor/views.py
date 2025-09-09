@@ -72,3 +72,11 @@ class SetSlots(APIView):
             },status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
         
+class BookedDoctorAppoinments(APIView):
+    permission_classes=[IsAuthenticated]
+    def get(self,request):
+        doctor=request.user.doctor
+        print('doctor ',doctor)
+        data=Appointment.objects.filter(doctor=doctor)
+        serializer=DoctorAppoinmentsSerializer(data,many=True)
+        return Response(serializer.data,status.HTTP_200_OK)

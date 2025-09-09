@@ -8,7 +8,8 @@ urlpatterns = [
     path("InsuranceDetails/", InsuranceDetails.as_view(), name="InsuranceDetails"),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    # path("AppointmentView/", AppointmentView.as_view(), name="AppointmentView"),
+     path("AppointmentView/", AppointmentView.as_view(), name="AppointmentView"),
     path("AvailableSlotView/", AvailableSlotView.as_view(), name="AvailableSlotView"),
-    path("DoctorsListView/", DoctorsListView.as_view(), name="DoctorsListView")
+    path("DoctorsListView/", DoctorsListView.as_view(), name="DoctorsListView"),
+    path("BookedPatientAppoinments/", BookedPatientAppoinments.as_view(), name="BookedPatientAppoinments")
 ]

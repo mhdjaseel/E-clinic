@@ -2,7 +2,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from doctor.serializers import *
-
+from doctor.serializers import TimeSlotSerializer
 from django.contrib.auth.hashers import make_password
 from .models import *
 
@@ -77,13 +77,17 @@ class InsuranceDetailSerializer(serializers.ModelSerializer):
 class AppointmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Appointment
-        fields = ['patient','doctor','status']
+        fields = ['doctor','slot']
+    def create(self, validated_data):
+        
+        patient=self.context['patient']
+        return Appointment.objects.create(patient=patient,**validated_data)
 
 class AvailableSlotsSerializer(serializers.ModelSerializer):
     slot=TimeSlotSerializer()
     class Meta:
         model = AvailableSlot
-        fields = ['doctor','date','slot']
+        fields = ['id','doctor','date','slot']
 
 
 class DoctorsListSeriualizer(serializers.ModelSerializer):
@@ -91,3 +95,10 @@ class DoctorsListSeriualizer(serializers.ModelSerializer):
     class Meta:
         model = Doctor
         fields = ['id','user', 'phone_number', 'specialization', 'Hospital_name', 'gender']
+
+class PatientAppoinmentsSerializer(serializers.ModelSerializer):
+    slot=AvailableSlotsSerializer()
+    doctor=DoctorsListSeriualizer()
+    class Meta:
+        model = Appointment
+        fields = '__all__'

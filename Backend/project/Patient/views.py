@@ -97,6 +97,8 @@ class InsuranceDetails(APIView):
         })
 
 class AvailableSlotView(APIView):
+    permission_classes=[IsAuthenticated]
+
     def post(self, request):
         doctor_id = request.data.get('doctor')
         date=request.data.get('date')
@@ -104,7 +106,7 @@ class AvailableSlotView(APIView):
             return Response({
                 'message': 'Doctor not available'
             },status=status.HTTP_400_BAD_REQUEST)
-        slots=AvailableSlot.objects.filter(doctor_id=doctor_id,date=date)
+        slots=AvailableSlot.objects.filter(doctor_id=doctor_id,date=date,is_booked=False)
         if not slots.exists():
             return Response({
                 'message': 'slots not available please Try Later'
@@ -113,8 +115,34 @@ class AvailableSlotView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 class DoctorsListView(APIView):
+
     def get(self,request):
         doctors_list=Doctor.objects.all()
         print(doctors_list)
         serializer=DoctorsListSeriualizer(doctors_list,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
+    
+
+class AppointmentView(APIView):
+    permission_classes=[IsAuthenticated]
+    def post(self,request):
+        patient=request.user.user_details
+        AvailableSlot_id=request.data.get('slot')
+        serializer=AppointmentSerializer(data=request.data,context={'patient':patient})
+        if serializer.is_valid():
+            booked=AvailableSlot.objects.get(id=AvailableSlot_id)
+            booked.is_booked=True
+            booked.save()
+            serializer.save()
+            return Response({
+                'message':'Booked successfully'
+            },status.HTTP_201_CREATED)
+        return Response(serializer.errors,status.HTTP_400_BAD_REQUEST)
+    
+class BookedPatientAppoinments(APIView):
+    permission_classes=[IsAuthenticated]
+    def get(self,request):
+        patient=request.user.user_details
+        data=Appointment.objects.filter(patient=patient)
+        serializer=PatientAppoinmentsSerializer(data,many=True)
+        return Response(serializer.data,status.HTTP_200_OK)

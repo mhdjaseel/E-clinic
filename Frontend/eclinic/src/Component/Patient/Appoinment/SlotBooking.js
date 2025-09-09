@@ -9,12 +9,12 @@ function SlotBooking() {
   doctor: '',
   date: ''
 });
-
-
+  const [SelectedSlots, setSelectedSlots] = useState([]);
   const [Slots, setSlots] = useState([]);
   const [Visible, setVisible] = useState(false);
   const location = useLocation()
-  const {doctor} = location.state 
+  const {doctor} = location.state
+
   useEffect(() => {
     if (doctor?.id) {
       setData(prev=>({
@@ -37,13 +37,12 @@ function SlotBooking() {
 
   const HandleClick = async (e) => {
     e.preventDefault();
+  const token = localStorage.getItem('access');
 
-    const token = localStorage.getItem('access');
     if (!token) {
       console.log('No token found');
       return;
     }
-      console.log("Sending data:", Data);  
 
     try {
       const response = await axios.post('http://127.0.0.1:8000/AvailableSlotView/', Data, {
@@ -51,10 +50,9 @@ function SlotBooking() {
           "Content-Type": 'application/json',
           Authorization: `Bearer ${token}`
         }
+        
       });
-      console.log("Response data:", response.data);
-      setSlots(response.data);
-
+      setSlots(response.data)
       setVisible(true);
     } catch (error) {
       const res_error = error.response?.data.message 
@@ -62,7 +60,54 @@ function SlotBooking() {
       setVisible(false)
     }
   };
-console.log(Slots)
+
+    // console.log('slot .....',SelectedSlots[0].slot.id )
+
+  const HandleBooking =   async()=>{
+
+
+    const FormData ={
+      'doctor':doctor.id,
+      'slot':SelectedSlots[0].id
+    }
+                    console.log('response data.....',Slots)
+
+                    console.log('id.....',SelectedSlots[0].id)
+
+      console.log('data .....',FormData)
+
+    if ( SelectedSlots.length > 1) {
+    toast.error('only one slot can book')
+    return
+    }
+    const token = localStorage.getItem('access');
+
+    if (!token) {
+      console.log('No token found');
+      return;
+    }
+    try{
+       const response = await axios.post('http://127.0.0.1:8000/AppointmentView/',FormData , {
+        headers: {
+          "Content-Type": 'application/json',
+          Authorization: `Bearer ${token}`
+        }
+        
+      });
+      setVisible(false)
+      setSelectedSlots('')
+      const res=response.data.message
+      toast.success(res)
+      console.log('success')
+    }
+    catch(error){
+      toast.error('failed try again')
+      console.log(error.response?.data)
+    }
+
+  }
+
+
   return (
     <div>
       <Navbar />
@@ -112,17 +157,31 @@ console.log(Slots)
               <button className='btn btn-primary mt-3' >View Slots</button>
 
               {Visible &&
-              
                 Slots.map((item, index) => (
                   <div className="mt-3" key={index}>
-                    <p>{item.slot.start_time} - {item.slot.end_time} <input type="checkbox" /></p>
+                    <p>{item.slot.start_time} - {item.slot.end_time} <input type="checkbox"
+                    disabled={item.is_booked}
+                 onChange={(e) => {
+                  const value = e.target.value;
+                  if (e.target.checked) {
+                    setSelectedSlots([...SelectedSlots, item]);
+                  } else {
+                    setSelectedSlots(
+                     SelectedSlots.filter((slot) => slot.id !== item.id)
+
+                    );
+                  }
+                }}
+                    /></p>
+
+
                   </div>
                 ))
               }
               
               {
                 Visible && 
-              <button className='btn btn-primary mt-3' >Book</button>
+              <button className='btn btn-primary mt-3' onClick={HandleBooking} >Book</button>
 
               }
 
