@@ -36,7 +36,7 @@ class TimeSlot(models.Model):
     def __str__(self):
         return self.label
 
-# AvailableSlot is a slot for a specific doctor and date
+
 class AvailableSlot(models.Model):
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     date = models.DateField()
@@ -48,7 +48,7 @@ class AvailableSlot(models.Model):
     def __str__(self):
         return f"{self.doctor} - {self.date} - {self.slot}"
 
-# Appointment ties a patient to a slot
+
 class Appointment(models.Model):
     STATUS_CHOICES = [
         ('booked', 'Booked'),
@@ -57,7 +57,7 @@ class Appointment(models.Model):
     ]
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
-    slot = models.ForeignKey(AvailableSlot, on_delete=models.CASCADE, unique=True)
+    slot = models.ForeignKey(AvailableSlot, on_delete=models.CASCADE, unique=True, related_name='appoinmentSlot')
     booked_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='booked')
     def __str__(self):

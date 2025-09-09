@@ -2,6 +2,7 @@ import React,{useState,useEffect} from 'react'
 import Navbar from './Navbar'
 import axios from 'axios';
 import { useNavigate,useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function AppoinmentDetails() {
     const [Data, setData] = useState();
@@ -27,7 +28,6 @@ function AppoinmentDetails() {
           }
         );
         setData(response.data);
-        console.log(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -35,6 +35,31 @@ function AppoinmentDetails() {
 
     FetchBookings();
   }, []);
+
+  const HandleCancel = async ()=>{
+      const token = localStorage.getItem("access");
+    
+      if (!token) {
+        navigate("/PatientLogin");
+        return;
+      }
+    try{
+      const response= await axios.delete(`http://127.0.0.1:8000/CancelAppoinmentView/${appointmentId}`,
+        {
+          headers: {
+              Authorization: `Bearer ${token}`,
+            },
+    })
+      
+      const res=response.data.message
+      toast.success(res)
+      navigate('/PatientDashboard')
+
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
   return (
     <div>
         <Navbar/>
@@ -64,7 +89,7 @@ function AppoinmentDetails() {
         
         <div className="row mt-2">
             <div className="col-md-12">
-            <button className='btn btn-danger ms-2'>Cancel</button>
+            <button className='btn btn-danger ms-2' onClick={HandleCancel}>Cancel</button>
             <button className='btn btn-info ms-4'>Reschedule</button>
             </div>
         </div>

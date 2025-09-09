@@ -148,6 +148,8 @@ class BookedPatientAppoinments(APIView):
         return Response(serializer.data,status.HTTP_200_OK)
     
 class PatientAppoinmentsDetails(APIView):
+    permission_classes=[IsAuthenticated]
+
     def get(self,request,pk):
         appoinment=Appointment.objects.get(id=pk)
         try:
@@ -155,3 +157,15 @@ class PatientAppoinmentsDetails(APIView):
             return Response(serializer.data,status=status.HTTP_200_OK)
         except appoinment.DoesNotExist:
             return Response({'message':'Not Found '},status=status.HTTP_404_NOT_FOUND)
+
+class CancelAppoinmentView(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def delete(self,request,pk):
+        appoinment=Appointment.objects.get(id=pk)
+        slot_id=appoinment.slot.id
+        not_booked=AvailableSlot.objects.get(id=slot_id)
+        not_booked.is_booked=False
+        not_booked.save()
+        appoinment.delete()
+        return Response({'message':'successfully Deleted '},status.HTTP_200_OK)

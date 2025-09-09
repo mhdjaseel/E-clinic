@@ -14,7 +14,7 @@ function SlotBooking() {
   const [Visible, setVisible] = useState(false);
   const location = useLocation()
   const {doctor} = location.state
-
+  const navigate = useNavigate()
   useEffect(() => {
     if (doctor?.id) {
       setData(prev=>({
@@ -54,6 +54,7 @@ function SlotBooking() {
       });
       setSlots(response.data)
       setVisible(true);
+
     } catch (error) {
       const res_error = error.response?.data.message 
       toast.error(res_error);
@@ -98,7 +99,8 @@ function SlotBooking() {
       setSelectedSlots('')
       const res=response.data.message
       toast.success(res)
-      console.log('success')
+      navigate('/PatientDashboard')
+
     }
     catch(error){
       toast.error('failed try again')
