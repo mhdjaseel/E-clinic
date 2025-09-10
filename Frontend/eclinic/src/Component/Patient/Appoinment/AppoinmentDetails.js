@@ -36,6 +36,7 @@ function AppoinmentDetails() {
     FetchBookings();
   }, []);
 
+  // Handle Cancel 
   const HandleCancel = async ()=>{
       const token = localStorage.getItem("access");
     
@@ -60,6 +61,13 @@ function AppoinmentDetails() {
       console.log(error)
     }
   }
+
+  // Handle Re Schedule
+
+  const HandleReschedule = (datas) =>{
+    navigate('/ResheduleAppoinment',{state :{id:datas.id, doctor:datas.doctor}})
+  }
+
   return (
     <div>
         <Navbar/>
@@ -90,7 +98,7 @@ function AppoinmentDetails() {
         <div className="row mt-2">
             <div className="col-md-12">
             <button className='btn btn-danger ms-2' onClick={HandleCancel}>Cancel</button>
-            <button className='btn btn-info ms-4'>Reschedule</button>
+            <button className='btn btn-info ms-4' onClick={()=>{HandleReschedule(Data)}}>Reschedule</button>
             </div>
         </div>
              

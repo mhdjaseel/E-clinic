@@ -1,42 +1,25 @@
-import React, { useState ,useEffect} from 'react';
-import Navbar from './Navbar';
 import axios from 'axios';
+import React ,{useState}from 'react'
+import { useNavigate,useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { useNavigate ,useLocation} from 'react-router-dom';
 
-function SlotBooking() {
-  const [Data, setData] = useState({
-  doctor: '',
-  date: ''
-});
-  const [SelectedSlots, setSelectedSlots] = useState([]);
-  const [Slots, setSlots] = useState([]);
-  const [Visible, setVisible] = useState(false);
-  const location = useLocation()
-  const {doctor} = location.state
-  const navigate = useNavigate()
-  useEffect(() => {
-    if (doctor?.id) {
-      setData(prev=>({
-                  ...prev,
-          doctor:doctor.id
-    }))
-    }
+function ResheduleAppoinment() {
+    const [SelectedSlots, setSelectedSlots] = useState([]);
+    const [Slots, setSlots] = useState();
+    const [Visible, setVisible] = useState(false);
+    const location = useLocation()
+    const {id,doctor} = location.state || {}
+    const navigate = useNavigate()
+    const [Data, setData] = useState({
+      doctor:doctor?.id,
+      date:''
+    });
+  
 
-  }, []);
+    // Handle Click
 
-
-
-  const HandleChange = (e) => {
-    const { name, value } = e.target;
-    setData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const HandleClick = async (e) => {
-  e.preventDefault();
+    const HandleClick = async (e)=>{
+      e.preventDefault();
   const token = localStorage.getItem('access');
 
     if (!token) {
@@ -44,6 +27,7 @@ function SlotBooking() {
       return;
     }
 
+    
     try {
       const response = await axios.post('http://127.0.0.1:8000/AvailableSlotView/', Data, {
         headers: {
@@ -53,7 +37,10 @@ function SlotBooking() {
         
       });
       setSlots(response.data)
-      setVisible(true);
+      console.log(response.data)
+      const res = response?.data.message 
+      toast.success(res)
+      setVisible(true)
 
     } catch (error) {
       const res_error = error.response?.data.message 
@@ -62,18 +49,18 @@ function SlotBooking() {
     }
   };
 
-    // console.log('slot .....',SelectedSlots[0].slot.id )
 
+    
   const HandleBooking =   async()=>{
 
 
     const FormData ={
       'doctor':doctor.id,
-      'slot':SelectedSlots[0].id
+      'selected_slot':SelectedSlots[0].id,
+      'id':id
     }
 
 
-      console.log('data .....',FormData)
 
     if ( SelectedSlots.length > 1) {
     toast.error('only one slot can book')
@@ -86,7 +73,7 @@ function SlotBooking() {
       return;
     }
     try{
-       const response = await axios.post('http://127.0.0.1:8000/AppointmentView/',FormData , {
+       const response = await axios.put('http://127.0.0.1:8000/RescheduleView/',FormData , {
         headers: {
           "Content-Type": 'application/json',
           Authorization: `Bearer ${token}`
@@ -110,43 +97,18 @@ function SlotBooking() {
 
   return (
     <div>
-      <Navbar />
-
-      <h1 className='text-center mt-5'>Book an Appointment</h1>
-      <div className="container mt-4">
-        <div className="row">
-          <div className="col-md-6">
-            <form onSubmit={HandleClick}>
-
-
-                <div className="mt-2">
-                <label className='form-label fs-5'>Doctor</label>
-                <input
-                  type="text"
-                  className='form-control'
-                  readOnly
-                  value={doctor.user?.username}
-
-                />
-              </div>
-
-                  <div className="mt-2">
-                <label className='form-label fs-5'>Hospital</label>
-                <input
-                  type="text"
-                  className='form-control'
-                  readOnly
-                  value={doctor.Hospital_name}
-
-                />
-              </div>
-
-              <div className="mt-2">
+        <div className="mt-2">
                 <label className='form-label fs-5'>Date</label>
                 <input
                   type="date"
                   name="date"
-                  onChange={HandleChange}
+                  onChange={(e)=>{
+                    const {name,value} = e.target
+                    setData({
+                      ...Data,
+                      [name]:value
+                    })
+                  }}
                   className='form-control'
                   required
                 />
@@ -154,9 +116,10 @@ function SlotBooking() {
 
 
               
-              <button className='btn btn-primary mt-3' type='submit'>View Slots</button>
+              <button className='btn btn-primary mt-3' onClick={HandleClick}>View Slots</button>
 
-              {Visible &&
+              {
+                Visible &&
                 Slots.map((item, index) => (
                   <div className="mt-3" key={index}>
                     <p>{item.slot.start_time} - {item.slot.end_time} <input type="checkbox"
@@ -184,14 +147,8 @@ function SlotBooking() {
               <button className='btn btn-primary mt-3' onClick={HandleBooking} >Book</button>
 
               }
-
-            </form>
-          </div>
-          
-        </div>
-      </div>
     </div>
-  );
+  )
 }
 
-export default SlotBooking;
+export default ResheduleAppoinment

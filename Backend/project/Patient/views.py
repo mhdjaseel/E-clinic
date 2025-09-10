@@ -169,3 +169,33 @@ class CancelAppoinmentView(APIView):
         not_booked.save()
         appoinment.delete()
         return Response({'message':'successfully Deleted '},status.HTTP_200_OK)
+    
+class RescheduleView(APIView):
+    def put(self, request):
+        slot_id = request.data.get('selected_slot')
+        appointment_id = request.data.get('id')
+        patient = request.user.user_details  # assuming user is authenticated
+
+        try:
+         
+            appointment = Appointment.objects.get(id=appointment_id)
+
+            old_slot = appointment.slot
+            old_slot.is_booked = False
+            old_slot.save()
+
+            new_slot = AvailableSlot.objects.get(id=slot_id)
+            new_slot.is_booked = True
+            new_slot.save()
+
+            appointment.slot = new_slot
+            appointment.save()
+
+            return Response({'message': 'Successfully changed slot'}, status=status.HTTP_200_OK)
+
+        except Appointment.DoesNotExist:
+            return Response({'error': 'Appointment not found'}, status=status.HTTP_404_NOT_FOUND)
+        except AvailableSlot.DoesNotExist:
+            return Response({'error': 'Slot not found'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)

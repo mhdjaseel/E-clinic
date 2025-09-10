@@ -21,6 +21,7 @@ import { DoctorProvider } from './Component/Doctor/Context/DoctorContext';
 import SetSlots from './Component/Doctor/Profile/SetSlots';
 import DoctorsList from './Component/Patient/Appoinment/DoctorsList';
 import AppoinmentDetails from './Component/Patient/Appoinment/AppoinmentDetails';
+import ResheduleAppoinment from './Component/Patient/Appoinment/ResheduleAppoinment';
 function App() {
   return (
     <div className="App">
@@ -45,6 +46,7 @@ function App() {
               <Route path='SetSlots/' element={<SetSlots/>}/>
               <Route path='DoctorsList/' element={<DoctorsList/>}/>
               <Route path='AppoinmentDetails/' element={<AppoinmentDetails/>}/>
+              <Route path='ResheduleAppoinment/' element={<ResheduleAppoinment/>}/>
 
               <Route path='PresciptionForm/' element={    
                 <DoctorProvider>
