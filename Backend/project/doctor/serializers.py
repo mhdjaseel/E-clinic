@@ -95,7 +95,7 @@ class PatientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Patient
-        fields = [ 'user', 'phone_number', 'address', 'date_of_birth', 'gender']
+        fields = [ 'id','user', 'phone_number', 'address', 'date_of_birth', 'gender']
 
 class AvailableSlotsSerializer(serializers.ModelSerializer):
     slot=TimeSlotSerializer()
@@ -109,3 +109,27 @@ class DoctorAppoinmentsSerializer(serializers.ModelSerializer):
      class Meta:
             model = Appointment
             fields = '__all__'
+
+class MedicineSerializer(serializers.ModelSerializer):
+    class Meta:
+     model= Medicine
+     fields=['name','dosage','quantity']
+
+class PrescriptionSerializer(serializers.ModelSerializer):
+    medicines=MedicineSerializer(many=True)
+    class Meta:
+        model = Prescription
+        fields = ['patient','doctor','summary','allergy','medicines']
+        read_only_fields = ['patient', 'doctor']
+
+    def create(self, validated_data):
+        med_data=validated_data.pop('medicines')
+        doctor=self.context['doctor']
+        patient = self.context['patient']
+        prescription = Prescription.objects.create(
+              doctor=doctor,patient=patient, **validated_data
+         )
+         
+        for med in med_data:
+            Medicine.objects.create(prescription=prescription,**med)
+        return prescription

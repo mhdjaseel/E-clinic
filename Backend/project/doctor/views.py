@@ -81,3 +81,19 @@ class BookedDoctorAppoinments(APIView):
         serializer=DoctorAppoinmentsSerializer(data,many=True)
         return Response(serializer.data,status.HTTP_200_OK)
 
+class CreatePrescription(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def post(self,request):
+        try:
+            doctor = request.user.doctor
+        except AttributeError:
+            return Response({'error': 'Doctor profile not found.'}, status=status.HTTP_403_FORBIDDEN)
+        id=request.data.get('patient')
+        patient=Patient.objects.get(id=id)
+        serializer = PrescriptionSerializer(data=request.data,context={'doctor': doctor, 'patient': patient})
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message':'successfully upload prescription'},status.HTTP_201_CREATED)
+        return Response(serializer.errors,status.HTTP_400_BAD_REQUEST)
+        

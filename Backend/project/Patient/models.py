@@ -1,5 +1,4 @@
 from django.db import models
-from doctor.models import Doctor
 from django.conf import settings
 
 class Patient(models.Model):
@@ -38,7 +37,7 @@ class TimeSlot(models.Model):
 
 
 class AvailableSlot(models.Model):
-    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+    doctor = models.ForeignKey('doctor.Doctor', on_delete=models.CASCADE)
     date = models.DateField()
     slot = models.ForeignKey(TimeSlot, on_delete=models.CASCADE)
     is_booked=models.BooleanField(default=False)
@@ -56,7 +55,7 @@ class Appointment(models.Model):
         ('rescheduled', 'Rescheduled'),
     ]
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
-    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+    doctor = models.ForeignKey('doctor.Doctor', on_delete=models.CASCADE)
     slot = models.ForeignKey(AvailableSlot, on_delete=models.CASCADE, unique=True, related_name='appoinmentSlot')
     booked_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='booked')

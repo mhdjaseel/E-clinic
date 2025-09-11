@@ -1,28 +1,27 @@
 import React, { useContext,useState } from 'react';
 import DoctorNavbar from "../Profile/DoctorNavbar";
 import { DoctorContext } from '../Context/DoctorContext';
-import { useLocation } from 'react-router-dom'
-
+import { useLocation, useNavigate } from 'react-router-dom'
+import axios from 'axios';
+import { toast } from 'react-toastify';
 function PrescrptionForm() {
   const [Data, setData] = useState({ summary: "", allergy: "" });
   const [Medicine, setMedicine] = useState([]);
   const [med, setmed] = useState("");
   const [dosage, setdosage] = useState("");
   const [qty, setqty] = useState("");
-    
+  const navigate =useNavigate()
   const location = useLocation()
   const {data} = location.state || {}
-
   const doctor = useContext(DoctorContext);
-
+console.log('fdsse',data)
   const HandleChange = (e) => {
     const { name, value } = e.target;
     setData({
       ...Data,
       [name]: value,
     });
-    // console.log(Data.summary)
-    // console.log(Data.allergy)
+
   };
 
   const HandleMed = (e) => {
@@ -41,8 +40,8 @@ function PrescrptionForm() {
     e.preventDefault();
     if (med !== "" && dosage !== "" && qty !== "") {
       const newMed = {
-        medicine: med,
-        Dosage: dosage,
+        name: med,
+        dosage: dosage,
         quantity: qty,
       };
 
@@ -56,6 +55,37 @@ function PrescrptionForm() {
       return;
     }
   };
+
+const HandleSubmit = async (e)=>{
+  e.preventDefault()
+  const Formdata = {
+    patient:data?.patient?.id,
+    summary:Data.summary,
+    allergy:Data.allergy,
+    medicines:Medicine
+  }
+try{
+   const token = localStorage.getItem('doctor_access')
+      
+    if(!token){
+      navigate('/DoctorLogin')
+      return
+    }
+    console.log('data.........',Formdata)
+  await axios.post('http://127.0.0.1:8000/doctor/CreatePrescription/',Formdata,{
+    headers:{
+      "Content-Type":'application/json',
+      Authorization:`Bearer ${token}`
+    }
+  })
+  toast.success('upload the Prescription')
+  navigate('/DoctorProfile')
+}
+catch(error){
+  console.log('error......', error.response?.data)
+}
+}
+
   return (
     <div>
       <DoctorNavbar />
@@ -172,8 +202,8 @@ function PrescrptionForm() {
                     {Medicine.map((item, index) => (
                       <div key={index}>
                         <p>
-                          <strong>Medicine:</strong> {item.medicine} |
-                          <strong> Dosage:</strong> {item.Dosage} |
+                          <strong>Medicine:</strong> {item.name} |
+                          <strong> Dosage:</strong> {item.dosage} |
                           <strong> Quantity:</strong> {item.quantity}
                         </p>
                         <hr />
@@ -184,7 +214,7 @@ function PrescrptionForm() {
               </div>
             </div>
             <div className="btn">
-            <button className="btn btn-primary mt-3 ms-4">submit</button>
+            <button className="btn btn-primary mt-3 ms-4" onClick={HandleSubmit}>submit</button>
 
             </div>
           </div>
