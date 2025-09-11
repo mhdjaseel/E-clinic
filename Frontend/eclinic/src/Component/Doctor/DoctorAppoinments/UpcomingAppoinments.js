@@ -34,8 +34,12 @@ function UpcomingAppointments() {
     fetchAppointments();
   }, [navigate]);
 
-  const handlePrescribe = () => {
-    navigate('/PresciptionForm');
+  const HandleDetails = (data)=>{
+    navigate('/PatientDetails',{state:{data}})
+  }
+
+  const handlePrescribe = (data) => {
+    navigate('/PresciptionForm',{state:{data}});
   };
 
   return (
@@ -52,7 +56,7 @@ function UpcomingAppointments() {
               >
                 <div className="card-body">
                   <h5 className="card-title text-dark">
-                     Patient: <strong>{item.patient.user.username}</strong>
+                     Patient: <strong>{item.patient.user.username}</strong>{item.status === 'rescheduled' && <span className="  badge bg-success ms-5">Resheduled</span>}
                   </h5>
                   <p className="card-text mb-2">
                      <strong>Date:</strong> {item.slot.date}
@@ -62,12 +66,12 @@ function UpcomingAppointments() {
                     {item.slot.slot.start_time} - {item.slot.slot.end_time}
                   </p>
                   <div className="d-flex">
-                    <button className="btn btn-outline-primary me-3">
+                    <button className="btn btn-outline-primary me-3" onClick={()=>{HandleDetails(item)}}>
                       View Details
                     </button>
                     <button
                       className="btn btn-primary"
-                      onClick={handlePrescribe}
+                      onClick={()=>{handlePrescribe(item)}}
                     >
                        Add Prescription
                     </button>

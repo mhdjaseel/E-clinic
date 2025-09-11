@@ -189,8 +189,10 @@ class RescheduleView(APIView):
             new_slot.save()
 
             appointment.slot = new_slot
+            print(appointment.status)
+            appointment.status='rescheduled'
             appointment.save()
-
+            print(appointment.status)
             return Response({'message': 'Successfully changed slot'}, status=status.HTTP_200_OK)
 
         except Appointment.DoesNotExist:

@@ -1,6 +1,7 @@
 import React, { useContext,useState } from 'react';
 import DoctorNavbar from "../Profile/DoctorNavbar";
 import { DoctorContext } from '../Context/DoctorContext';
+import { useLocation } from 'react-router-dom'
 
 function PrescrptionForm() {
   const [Data, setData] = useState({ summary: "", allergy: "" });
@@ -8,6 +9,9 @@ function PrescrptionForm() {
   const [med, setmed] = useState("");
   const [dosage, setdosage] = useState("");
   const [qty, setqty] = useState("");
+    
+  const location = useLocation()
+  const {data} = location.state || {}
 
   const doctor = useContext(DoctorContext);
 
@@ -122,6 +126,7 @@ function PrescrptionForm() {
                       }}
                     />
                   </div>
+                  <span className='mt-2'>(You can add multiple medicine )</span>
                   <div className="add_btn">
                     <button
                       className="btn btn-primary mt-3"
@@ -140,12 +145,12 @@ function PrescrptionForm() {
               <div className="col-md-12">
                 <div className="card">
                   <div className="card-header">
-                    <h2 className="text-center mt-3">Hospital Name</h2>
+                    <h2 className="text-center mt-3"> {doctor?.Hospital_name}</h2>
                     <div className="row">
                       <div className="col-md-6">
-                        <h5>Patient : Name</h5>
-                        <h6>gender</h6>
-                        <h6>phone</h6>
+                        <h5>Patient : {data.patient.user?.username}</h5>
+                        <h6>{data.patient.gender}</h6>
+                        <h6>{data.patient.phone_number}</h6>
                       </div>
                       <div className="col-md-6 d-flex justify-content-end ">
                         <div className="doctor_info">

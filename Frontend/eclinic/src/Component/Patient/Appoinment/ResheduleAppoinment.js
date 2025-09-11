@@ -2,6 +2,7 @@ import axios from 'axios';
 import React ,{useState}from 'react'
 import { useNavigate,useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import Navbar from "./Navbar";
 
 function ResheduleAppoinment() {
     const [SelectedSlots, setSelectedSlots] = useState([]);
@@ -97,7 +98,11 @@ function ResheduleAppoinment() {
 
   return (
     <div>
-        <div className="mt-2">
+    <Navbar/>
+        <h2 className='text-center mt-5'>Re-Schedule Appoinment</h2>
+        <div className="container">
+          <div className="col-md-6">
+                    <div className="mt-2">
                 <label className='form-label fs-5'>Date</label>
                 <input
                   type="date"
@@ -147,6 +152,8 @@ function ResheduleAppoinment() {
               <button className='btn btn-primary mt-3' onClick={HandleBooking} >Book</button>
 
               }
+          </div>
+        </div>
     </div>
   )
 }

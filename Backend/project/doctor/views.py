@@ -80,3 +80,4 @@ class BookedDoctorAppoinments(APIView):
         data=Appointment.objects.filter(doctor=doctor)
         serializer=DoctorAppoinmentsSerializer(data,many=True)
         return Response(serializer.data,status.HTTP_200_OK)
+

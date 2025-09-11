@@ -61,7 +61,7 @@ function BookedSlot() {
                 <div className="card-body">
                   <h5 className="card-title mb-2">
                     <i className="bi bi-person-circle me-2"></i>
-                    Dr. {item.doctor.user.username}
+                    Dr. {item.doctor.user.username}  {item.status === 'rescheduled' && <span className="badge bg-success ms-5">Resheduled</span>}
                   </h5>
                   <p className="card-text mb-1">
                     <strong>Specialization:</strong> {item.doctor.specialization}
