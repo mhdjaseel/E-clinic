@@ -213,13 +213,7 @@ class PrescriptionDetailsView(APIView):
     permission_classes=[IsAuthenticated]
 
     def get(self,request,pk):
-        print(pk)
-
         prescription=Prescription.objects.get(id=pk)
-        print(prescription)
-
         data=Medicine.objects.filter(prescription=prescription)
-        print(data)
-
         serializer=MedicineDetailsSerializer(data,many=True)
         return Response(serializer.data,status.HTTP_200_OK)

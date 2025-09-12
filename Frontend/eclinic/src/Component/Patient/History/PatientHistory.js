@@ -34,9 +34,8 @@ function PatientHistory() {
     fetchData();
   }, []);
 
-  const HandlePrescription = (PrescriptionId)=>{
-    console.log(PrescriptionId)
-    navigate('/PrescriptionDetails' ,{state:{PrescriptionId}})
+  const HandlePrescription = (Prescription)=>{
+    navigate('/PrescriptionDetails' ,{state:{Prescription}})
   }
   return (
     <div>
@@ -59,7 +58,7 @@ function PatientHistory() {
                       </p>
                     </div>
                     <div className="div">
-                    <button className="btn btn-primary mt-2 mb-2 ms-2" onClick={()=>{HandlePrescription(item.id)}}>View Prescription</button>
+                    <button className="btn btn-primary mt-2 mb-2 ms-2" onClick={()=>{HandlePrescription(item)}}>View Prescription</button>
 
                     </div>
                   </div>
