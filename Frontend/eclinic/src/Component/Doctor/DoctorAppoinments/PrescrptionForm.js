@@ -62,7 +62,8 @@ const HandleSubmit = async (e)=>{
     patient:data?.patient?.id,
     summary:Data.summary,
     allergy:Data.allergy,
-    medicines:Medicine
+    medicines:Medicine,
+    appoinmentId:data.id
   }
 try{
    const token = localStorage.getItem('doctor_access')

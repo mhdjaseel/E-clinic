@@ -1,6 +1,6 @@
 from django.db import models
 from django.conf import settings
-from Patient.models import Patient
+from Patient.models import Patient,Appointment
 # Create your models here.
 class Doctor(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,related_name='doctor')
@@ -18,6 +18,7 @@ class Doctor(models.Model):
 class Prescription(models.Model):
     doctor = models.ForeignKey(Doctor, related_name='prescriptions', on_delete=models.CASCADE)
     patient = models.ForeignKey(Patient, related_name='prescriptions', on_delete=models.CASCADE)
+    appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE, related_name='prescriptions',null=True)
     summary = models.TextField()
     allergy = models.CharField(max_length=200, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True) 

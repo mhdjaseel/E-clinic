@@ -77,7 +77,8 @@ class BookedDoctorAppoinments(APIView):
     def get(self,request):
         doctor=request.user.doctor
         print('doctor ',doctor)
-        data=Appointment.objects.filter(doctor=doctor)
+        data=Appointment.objects.filter(doctor=doctor).exclude(status='Canceled')
+
         serializer=DoctorAppoinmentsSerializer(data,many=True)
         return Response(serializer.data,status.HTTP_200_OK)
 
@@ -91,7 +92,12 @@ class CreatePrescription(APIView):
             return Response({'error': 'Doctor profile not found.'}, status=status.HTTP_403_FORBIDDEN)
         id=request.data.get('patient')
         patient=Patient.objects.get(id=id)
-        serializer = PrescriptionSerializer(data=request.data,context={'doctor': doctor, 'patient': patient})
+        appoinmentId=request.data.get('appoinmentId')
+        appoinmnet=Appointment.objects.get(id=appoinmentId)  
+        print(appoinmnet)  
+        appoinmnet.status='canceled'
+        appoinmnet.save()
+        serializer = PrescriptionSerializer(data=request.data,context={'doctor': doctor, 'patient': patient,'appoinmnet':appoinmnet})
         if serializer.is_valid():
             serializer.save()
             return Response({'message':'successfully upload prescription'},status.HTTP_201_CREATED)

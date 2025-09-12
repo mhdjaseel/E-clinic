@@ -5,7 +5,7 @@ from doctor.serializers import *
 from doctor.serializers import TimeSlotSerializer
 from django.contrib.auth.hashers import make_password
 from .models import *
-
+from doctor.models import *
 User = get_user_model()
 
 class PatientRegisterSerializer(serializers.ModelSerializer):
@@ -57,7 +57,7 @@ class PatientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Patient
-        fields = [ 'user', 'phone_number', 'address', 'date_of_birth', 'gender']
+        fields = [ 'id','user', 'phone_number', 'address', 'date_of_birth', 'gender']
 
 class PatientInsuranceSerializer(serializers.ModelSerializer):
     class Meta:
@@ -103,3 +103,16 @@ class PatientAppoinmentsSerializer(serializers.ModelSerializer):
         model = Appointment
         fields = '__all__'
 
+class PrescriptionDetailsSerializer(serializers.ModelSerializer):
+    doctor=DoctorsListSeriualizer(read_only=True)
+    patient=PatientSerializer(read_only=True)
+    appointment=PatientAppoinmentsSerializer(read_only=True)
+    class Meta:
+        model = Prescription
+        fields = '__all__'
+
+class MedicineDetailsSerializer(serializers.ModelSerializer):
+    prescription=PrescriptionDetailsSerializer()
+    class Meta:
+        model = Medicine
+        fields = '__all__'

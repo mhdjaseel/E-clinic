@@ -9,7 +9,7 @@ from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.shortcuts import get_object_or_404
-
+from doctor.models import *
 # Create your views here.
 
 class PatientRegisterView(APIView):
@@ -143,7 +143,7 @@ class BookedPatientAppoinments(APIView):
     permission_classes=[IsAuthenticated]
     def get(self,request):
         patient=request.user.user_details
-        data=Appointment.objects.filter(patient=patient)
+        data=Appointment.objects.filter(patient=patient).exclude(status='Canceled')
         serializer=PatientAppoinmentsSerializer(data,many=True)
         return Response(serializer.data,status.HTTP_200_OK)
     
@@ -189,10 +189,8 @@ class RescheduleView(APIView):
             new_slot.save()
 
             appointment.slot = new_slot
-            print(appointment.status)
             appointment.status='rescheduled'
             appointment.save()
-            print(appointment.status)
             return Response({'message': 'Successfully changed slot'}, status=status.HTTP_200_OK)
 
         except Appointment.DoesNotExist:
@@ -201,3 +199,27 @@ class RescheduleView(APIView):
             return Response({'error': 'Slot not found'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
+class MedicalHistoryView(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def get(self,request):
+        patient=request.user.user_details
+        appoinments=Prescription.objects.filter(patient=patient)
+        serializer=PrescriptionDetailsSerializer(appoinments,many=True)
+        return Response(serializer.data,status.HTTP_200_OK)
+
+class PrescriptionDetailsView(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def get(self,request,pk):
+        print(pk)
+
+        prescription=Prescription.objects.get(id=pk)
+        print(prescription)
+
+        data=Medicine.objects.filter(prescription=prescription)
+        print(data)
+
+        serializer=MedicineDetailsSerializer(data,many=True)
+        return Response(serializer.data,status.HTTP_200_OK)

@@ -119,15 +119,16 @@ class PrescriptionSerializer(serializers.ModelSerializer):
     medicines=MedicineSerializer(many=True)
     class Meta:
         model = Prescription
-        fields = ['patient','doctor','summary','allergy','medicines']
+        fields = ['patient','doctor','summary','appointment','allergy','medicines']
         read_only_fields = ['patient', 'doctor']
 
     def create(self, validated_data):
         med_data=validated_data.pop('medicines')
         doctor=self.context['doctor']
         patient = self.context['patient']
+        appointment=self.context['appoinmnet']
         prescription = Prescription.objects.create(
-              doctor=doctor,patient=patient, **validated_data
+              doctor=doctor,patient=patient,appointment=appointment ,**validated_data
          )
          
         for med in med_data:
