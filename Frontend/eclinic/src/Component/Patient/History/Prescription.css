@@ -1,0 +1,63 @@
+/* === Print Styling === */
+@media print {
+  body {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background: white !important;
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    font-family: "Arial", sans-serif;
+  }
+
+  .container,
+  .card,
+  .col-md-10,
+  .mx-auto {
+    all: unset; /* Reset Bootstrap sizing & centering */
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .card {
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .card-header {
+    background-color: transparent !important;
+    border-bottom: 2px solid black !important;
+    text-align: center;
+  }
+
+  .table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+  }
+
+  .table th,
+  .table td {
+    border: 1px solid black !important;
+    padding: 8px !important;
+  }
+
+  .d-print-none {
+    display: none !important;
+  }
+
+  .btn {
+    display: none !important;
+  }
+
+  .text-muted {
+    color: black !important;
+  }
+
+  /* Optional: prevent page breaks inside elements */
+  .card-body,
+  .table {
+    page-break-inside: avoid;
+  }
+}
+

@@ -1,13 +1,16 @@
 import axios from 'axios';
-import React, { useEffect,useState } from 'react'
+import React, { useEffect,useState ,useRef} from 'react'
 import { useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify';
 import Navbar from "../Appoinment/Navbar";
-
+import {useReactToPrint} from 'react-to-print'
+import './Prescription.css'
 function PrescriptionDetails() {
     const location= useLocation()
     const {Prescription} = location.state || {}
     const [Data, setData] = useState([]);
+
+
     useEffect(() => {
         console.log(Prescription)
     const fetchData = async () => {
@@ -37,11 +40,35 @@ function PrescriptionDetails() {
     fetchData();
     }, []);
 
+
+
+    // Handle Print
+    const componentPrint = useRef(null)
+    const HandlePrint = useReactToPrint({
+      contentRef: componentPrint,
+      documentTitle: 'Prescription',
+      onAfterPrint:()=> toast.success('Download complete')
+    })
+
   return (
     <div>
+      <div className="d-print-none">
       <Navbar/>
+      </div>
+  <div className="d-print-none d-flex justify-content-end me-5 mt-4">
+  <button 
+    className="btn btn-success d-flex align-items-center gap-2 shadow-sm px-4 py-2" 
+    onClick={HandlePrint}
+    style={{ fontSize: '1rem', borderRadius: '6px' }}
+  >
+    <i className="fas fa-download"></i>
+    Download Prescription
+  </button>
+</div>
+
+      <div ref={componentPrint}>
        <div className="container my-4">
-  <div className="col-md-10 mx-auto">
+  <div className="col-md-10 mx-auto ">
     <div className="card shadow">
       {/* Hospital Header */}
       <div className="card-header  text-center">
@@ -114,6 +141,9 @@ function PrescriptionDetails() {
     </div>
   </div>
 </div>
+</div>
+
+
 
     </div>
   )
