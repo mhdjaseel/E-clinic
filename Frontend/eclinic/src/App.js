@@ -24,6 +24,7 @@ import AppoinmentDetails from './Component/Patient/Appoinment/AppoinmentDetails'
 import ResheduleAppoinment from './Component/Patient/Appoinment/ResheduleAppoinment';
 import PatientDetails from './Component/Doctor/DoctorAppoinments/PatientDetails';
 import PrescriptionDetails from './Component/Patient/History/PrescriptionDetails';
+import PatientsHistory from './Component/Doctor/History/PatientsHistory';
 function App() {
   return (
     <div className="App">
@@ -51,7 +52,8 @@ function App() {
               <Route path='ResheduleAppoinment/' element={<ResheduleAppoinment/>}/>
               <Route path='PatientDetails/' element={<PatientDetails/>}/>
               <Route path='PrescriptionDetails/' element={<PrescriptionDetails/>}/>
-
+              <Route path='PatientsHistory/' element={<PatientsHistory/>}/>
+              
 
               <Route path='PresciptionForm/' element={    
                 <DoctorProvider>

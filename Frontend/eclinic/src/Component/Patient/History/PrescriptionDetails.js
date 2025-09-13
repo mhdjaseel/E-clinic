@@ -70,15 +70,12 @@ function PrescriptionDetails() {
        <div className="container my-4">
   <div className="col-md-10 mx-auto ">
     <div className="card shadow">
-      {/* Hospital Header */}
       <div className="card-header  text-center">
         <h2 className="mb-0">{Prescription?.doctor?.Hospital_name}</h2>
       </div>
 
-      {/* Doctor and Patient Info Row */}
       <div className="card-body">
         <div className="row mb-4">
-          {/* Doctor Info */}
           <div className="col-md-6">
             <h5 className="fw-bold">Doctor Details</h5>
             <p className="mb-1"><strong>Name:</strong> Dr. {Prescription?.doctor?.user?.username}</p>
@@ -86,7 +83,6 @@ function PrescriptionDetails() {
             <p className="mb-1"><strong>Phone:</strong> {Prescription?.doctor?.phone_number}</p>
           </div>
 
-          {/* Patient Info */}
           <div className="col-md-6">
             <h5 className="fw-bold">Patient Details</h5>
             <p className="mb-1"><strong>Name:</strong> {Prescription?.patient?.user?.username}</p>
@@ -95,7 +91,6 @@ function PrescriptionDetails() {
           </div>
         </div>
 <hr />
-        {/* Medicine Table */}
         <div className="mb-3">
           <div className="details">
             <p><span className="fw-bold">Summary: </span> {Prescription.summary}</p>

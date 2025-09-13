@@ -26,7 +26,6 @@ function DoctorNavbar() {
         }
       })
       setInfo(response.data)
-      console.log(response.data)
     }
     catch(error){
     if (error.response && error.response.status === 401) {
@@ -74,7 +73,7 @@ function DoctorNavbar() {
           <Link className="nav-link active " to="/DoctorProfile">Home</Link>
         </li>
         <li className="nav-item mx-3">
-          <Link className="nav-link active" to="#">History</Link>
+          <Link className="nav-link active" to="/PatientsHistory">History</Link>
         </li>
         <li className="nav-item mx-3">
           <Link className="nav-link active" to="/DoctorProfilePage">Profile</Link>

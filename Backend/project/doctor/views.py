@@ -7,6 +7,7 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from Patient.models import *
+from Patient.serializers import*
 # Create your views here.
 
 class DoctorRegisterView(APIView):
@@ -103,3 +104,22 @@ class CreatePrescription(APIView):
             return Response({'message':'successfully upload prescription'},status.HTTP_201_CREATED)
         return Response(serializer.errors,status.HTTP_400_BAD_REQUEST)
         
+class DoctorsMedicalHistory(APIView):
+    permission_classes=[IsAuthenticated]
+    def get(self,request):
+        doctor=request.user.doctor
+        print('doctors  ',doctor)
+        appoinments=Prescription.objects.filter(doctor=doctor)
+        print(appoinments)
+        serializer=PrescriptionDetailsSerializer(appoinments,many=True)
+        return Response(serializer.data,status.HTTP_200_OK)
+    
+
+class PatientMedicalHistory(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def get(self,request,pk):
+        patient=Patient.objects.get(id=pk)
+        appoinments=Prescription.objects.filter(patient=patient)
+        serializer=PrescriptionDetailsSerializer(appoinments,many=True)
+        return Response(serializer.data,status.HTTP_200_OK)
