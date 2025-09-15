@@ -1,0 +1,119 @@
+body {
+  margin: 0;
+  font-family: serif;
+  background: #fff;
+  color: #333;
+}
+
+.hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 3rem;
+  background: #f9f9f9;
+}
+
+.hero-text {
+  flex: 1;
+  padding-right: 2rem;
+}
+
+.hero-text h1 {
+  font-size: 2.5rem;
+  color: #007BFF; /* Primary color */
+}
+
+.hero-buttons .btn {
+  margin-right: 1rem;
+  margin-top: 1rem;
+}
+
+.hero-image {
+  flex: 1;
+  text-align: center;
+}
+
+.hero-image img {
+  max-width: 100%;
+  height: auto;
+}
+
+.features {
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.features h2 {
+  color: #007BFF;
+  margin-bottom: 2rem;
+}
+
+.features-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.feature-card {
+  width: 300px;
+  padding: 1.5rem;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.feature-card img {
+  width: 64px;
+  margin-bottom: 1rem;
+}
+
+.cta {
+  background: #007BFF;
+  color: white;
+  padding: 3rem;
+  text-align: center;
+}
+
+.cta .btn {
+  margin-top: 1rem;
+  margin-right: 1rem;
+}
+
+.btn {
+  padding: 0.7rem 1.5rem;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.btn.primary {
+  background: #007BFF;
+  color: white;
+}
+
+.btn.secondary {
+  background: white;
+  color: #007BFF;
+  border: 2px solid #007BFF;
+}
+
+.btn:hover {
+  opacity: 0.85;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+  }
+
+  .features-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero-text {
+    padding-right: 0;
+  }
+}

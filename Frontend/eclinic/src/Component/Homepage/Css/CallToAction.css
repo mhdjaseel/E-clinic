@@ -1,0 +1,51 @@
+/* components/CallToAction.css */
+
+.cta {
+  background-color: #007bff;
+  color: white;
+  padding: 3.5rem 2rem;
+  text-align: center;
+}
+
+.cta h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.cta p {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.cta .btn {
+  padding: 0.8rem 1.6rem;
+  border-radius: 6px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.cta .btn.primary {
+  background: white;
+  color: #007bff;
+  border: 2px solid white;
+}
+
+.cta .btn.secondary {
+  background: transparent;
+  border: 2px solid white;
+  color: white;
+}
+
+.cta .btn:hover {
+  opacity: 0.9;
+  background-color: white;
+  color: #007bff;
+}

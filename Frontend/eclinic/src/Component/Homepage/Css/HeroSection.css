@@ -1,0 +1,80 @@
+/* components/HeroSection.css */
+
+.hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4rem 2rem;
+  background-color: #fdfdfd;
+}
+
+.hero-text {
+  flex: 1;
+  padding-right: 2rem;
+}
+
+.hero-text h1 {
+  font-size: 2.8rem;
+  margin-bottom: 1rem;
+  color: #007bff;
+}
+
+.hero-text p {
+  font-size: 1.1rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+.hero-buttons {
+  margin-top: 1.5rem;
+}
+
+.heroButtons {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  margin-right: 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.heroButtons.primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.heroButtons.secondary {
+  background-color: white;
+  color: #007bff;
+  border: 2px solid #007bff;
+}
+
+.heroButtons:hover {
+  opacity: 0.9;
+}
+
+
+.hero-image {
+  flex: 1;
+  text-align: center;
+}
+
+.hero-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .hero-text {
+    padding: 0;
+    margin-bottom: 2rem;
+  }
+}
