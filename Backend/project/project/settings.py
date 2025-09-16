@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'accounts',
-    'doctor'
+    'doctor',
+    'admin_app'
 ]
 
 MIDDLEWARE = [
@@ -75,7 +76,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'project.wsgi.application'
 
 CORS_ALLOW_ALL_ORIGINS = True
-
+CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
