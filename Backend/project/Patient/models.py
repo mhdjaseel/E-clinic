@@ -63,3 +63,15 @@ class Appointment(models.Model):
         return self.patient.user.username
 
 
+
+
+class Appoinment_request(models.Model):
+    STATUS_CHOICES = [
+        ('booked', 'booked'),
+        ('pending', 'pending'),
+        ('rescheduled', 'rescheduled'),
+    ]
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE,related_name='Request')
+    date=models.DateField()
+    location=models.ForeignKey( 'admin_app.Location',on_delete=models.CASCADE)
+    status=models.CharField( max_length=20,choices=STATUS_CHOICES,default='pending')

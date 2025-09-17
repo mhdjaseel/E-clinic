@@ -35,8 +35,7 @@ function AdminLogin() {
       toast.success("Login successful!");
       navigate('/AdminDashboard')
     } catch (error) {
-      console.error("Login error:", error.response || error.message || error);
-      toast.error(error.response?.data?.error || "Login failed!");
+      toast.error(error.response?.data?.error);
     }
   };
   return (

@@ -8,7 +8,7 @@ import Navbar from "./Navbar";
 function PatientHomePage() {
     const navigate = useNavigate()
      const HandleClick =()=>{
-        navigate('/DoctorsList')
+        navigate('/AppoinmentRequest')
      }
 
  
