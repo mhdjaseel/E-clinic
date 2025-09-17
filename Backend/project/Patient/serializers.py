@@ -6,6 +6,8 @@ from doctor.serializers import TimeSlotSerializer
 from django.contrib.auth.hashers import make_password
 from .models import *
 from doctor.models import *
+from admin_app.models import *
+
 User = get_user_model()
 
 class PatientRegisterSerializer(serializers.ModelSerializer):
@@ -115,3 +117,23 @@ class MedicineDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Medicine
         fields = '__all__'
+
+class AppoinmentRequestSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Appoinment_request
+        fields= '__all__'
+        read_only_fields = ['patient', 'location', 'status'] 
+    def create(self, validated_data):
+        patient=self.context['patient']
+        location=self.context['location']
+
+        return Appoinment_request.objects.create(
+            patient=patient,location=location,**validated_data
+        )
+    
+
+class LocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Location
+        fields= '__all__'

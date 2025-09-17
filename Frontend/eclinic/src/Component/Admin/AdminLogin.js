@@ -33,7 +33,7 @@ function AdminLogin() {
       localStorage.setItem("admin_access", access);
       localStorage.setItem("admin_refresh", refresh);
       toast.success("Login successful!");
-      navigate('/AdminDashboard')
+      navigate('/AdminDashboard',{state:{Form}})
     } catch (error) {
       toast.error(error.response?.data?.error);
     }

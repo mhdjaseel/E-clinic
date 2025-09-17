@@ -1,36 +1,129 @@
-import React ,{useState}from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
+import AdminNavbar from '../../Admin/AdminNavbar'
 
-function AppoinmentRequest() {
-const [Data, setData] = useState({});
-    const HandleChange = (e) => {
-    const { name, value } = e.target;
-    setData(({
-      ...Data,
+function AppointmentRequest() {
+  const [locations, setLocations] = useState([])
+  const [data, setData] = useState({ date: '', location: '' })
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const fetchLocations = async () => {
+      const token = localStorage.getItem('access')
+      if (!token) {
+        toast.error('Token not found')
+        navigate('/PatientLogin')
+        return
+      }
+
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/LocationDetails', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        setLocations(response.data)
+        
+      } catch (error) {
+        console.error('Failed to fetch locations:', error)
+      }
+    }
+
+    fetchLocations()
+  }, [navigate])
+
+  const handleChange = e => {
+    const { name, value } = e.target
+    setData(prev => ({
+      ...prev,
       [name]: value
-    }));
-
-  };
-
-  const HandleSubmit =(e)=>{
-    e.preventDefault()
-    console.log(Data)
+    }))
   }
+
+  console.log(locations)
+  const handleSubmit = async e => {
+    e.preventDefault()
+    const token = localStorage.getItem('access')
+
+    if (!token) {
+      toast.error('Token not found')
+      navigate('/PatientLogin')
+      return
+    }
+
+    if (!data.date || !data.location) {
+      toast.error('Please fill in all fields')
+      return
+    }
+
+    try {
+        console.log(data)
+      await axios.post(
+        'http://127.0.0.1:8000/AppoinmentRequest/',
+        data,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+      toast.success('Successfully sent appointment request')
+      setData({ date: '', location: '' }) // Clear form
+    } catch (error) {
+      toast.error(error.response?.data?.error || 'Failed to send request')
+      console.error('Error sending request:', error)
+    }
+  }
+
   return (
-    <div>
-        <div className="container">
-            <div className="col-md-6">
-                <form action="#" onSubmit={HandleSubmit}>
+    <>
+    <AdminNavbar/>
+    <div className="container mt-3">
+        <h2 className='text-center'>Appoinment Request</h2>
+      <div className="col-md-6">
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <label htmlFor="date" className="form-label">Select Date</label>
+            <input
+              type="date"
+              id="date"
+              name="date"
+              className="form-control"
+              value={data.date}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-                    <input type="text" placeholder='patient name ' name='patient' onChange={HandleChange}/>
-                    <input type="date" name='date'  onChange={HandleChange}/>
-                    <input type="text" placeholder='prefred Location' name='location' onChange={HandleChange}/>
-                    <button type='submit'>Submit</button>
-                </form>
-            </div>
-        </div>
+          <div className="mb-3">
+            <label htmlFor="location" className="form-label">Preferred Location</label>
+<select
+  id="location"
+  name="location"
+  className="form-select"
+  value={data.location}
+  onChange={handleChange}
+  required
+>
+  <option value="">Select Location</option>
+  {locations.map(loc => (
+    <option key={loc.id} value={loc.id} >
+      {loc.location_name}
+    </option>
+  ))}
+</select>
+          </div>
 
+          <button type="submit" className="btn btn-primary">Submit Request</button>
+        </form>
+      </div>
     </div>
+    </>
+
   )
 }
 
-export default AppoinmentRequest
+export default AppointmentRequest

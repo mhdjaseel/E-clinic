@@ -16,5 +16,7 @@ urlpatterns = [
     path("CancelAppoinmentView/<int:pk>", CancelAppoinmentView.as_view(), name="CancelAppoinmentView"),
     path("RescheduleView/", RescheduleView.as_view(), name="RescheduleView"),
     path("MedicalHistoryView/", MedicalHistoryView.as_view(), name="MedicalHistoryView"),
-    path("PrescriptionDetailsView/<int:pk>/", PrescriptionDetailsView.as_view(), name="PrescriptionDetailsView")
+    path("PrescriptionDetailsView/<int:pk>/", PrescriptionDetailsView.as_view(), name="PrescriptionDetailsView"),
+    path("AppoinmentRequest/", AppoinmentRequest.as_view(), name="AppoinmentRequest"),
+    path("LocationDetails/", LocationDetails.as_view(), name="LocationDetails")
 ]

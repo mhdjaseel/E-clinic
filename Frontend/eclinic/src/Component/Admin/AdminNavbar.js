@@ -1,14 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-function AdminNavbar() {
+function AdminNavbar({username}) {
   return (
     <div>
          <nav className="navbar navbar-expand-lg navbar-light bg-light" style={{ fontFamily: "Arial" }}>
   <div className="container-fluid">
- {/* {Info.user && (
-  <a className="navbar-brand" href="#">{Info.user.username}</a>
-)} */}
+ 
+  <h4>{username}</h4>
+
 
     <button
       className="navbar-toggler"

@@ -10,6 +10,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.shortcuts import get_object_or_404
 from doctor.models import *
+from admin_app.models import *
 # Create your views here.
 
 class PatientRegisterView(APIView):
@@ -217,3 +218,32 @@ class PrescriptionDetailsView(APIView):
         data=Medicine.objects.filter(prescription=prescription)
         serializer=MedicineDetailsSerializer(data,many=True)
         return Response(serializer.data,status.HTTP_200_OK)
+
+class LocationDetails(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def get(self,request):
+        locations=Location.objects.all()
+        serializer=LocationSerializer(locations,many=True)
+        print(serializer.data)
+        return Response(serializer.data,status.HTTP_200_OK)
+
+class AppoinmentRequest(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def post(self,request):
+        user=request.user.user_details.id
+        patient=Patient.objects.get(id=user)
+        location_id=request.data.get('location')
+        location=Location.objects.get(id=location_id)
+        print(location)
+        serializer=AppoinmentRequestSerializer(data=request.data,context={'patient':patient,'location':location})
+        print('1')
+
+        if serializer.is_valid():
+            print('2')
+            serializer.save()
+            return Response({'message':'Successfully Send Request '},status=status.HTTP_201_CREATED)
+        print('3')
+
+        return Response({'error':' Try again '},status=status.HTTP_400_BAD_REQUEST)
