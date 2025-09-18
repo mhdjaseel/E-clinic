@@ -28,12 +28,15 @@ function AdminLogin() {
           },
         }
       );
-
+      const username = Form.username
+      console.log(username)
       const { access, refresh } = response.data;
       localStorage.setItem("admin_access", access);
       localStorage.setItem("admin_refresh", refresh);
+      localStorage.setItem("admin_name", username);
+
       toast.success("Login successful!");
-      navigate('/AdminDashboard',{state:{Form}})
+      navigate('/AdminDashboard')
     } catch (error) {
       toast.error(error.response?.data?.error);
     }

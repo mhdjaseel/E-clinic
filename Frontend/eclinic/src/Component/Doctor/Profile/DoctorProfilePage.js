@@ -57,7 +57,7 @@ function DoctorProfilePage() {
         <div className="row mb-3">
           <div className="col-md-6">
             <p><strong>Name:</strong>{Info.user?.username}</p>
-            <p><strong>Hospital :</strong> {Info.Hospital_name}</p>
+            <p><strong>Hospital :</strong> {Info.hospital_name?.name}</p>
             <p><strong>Gender:</strong> {Info.gender}</p>
             
 

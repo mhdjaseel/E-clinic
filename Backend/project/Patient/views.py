@@ -247,3 +247,12 @@ class AppoinmentRequest(APIView):
         print('3')
 
         return Response({'error':' Try again '},status=status.HTTP_400_BAD_REQUEST)
+
+
+class DepartmentDetails(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def get(self,request):
+        departments=Department.objects.all()
+        serializer=DepartmentDetailsSerializer(departments,many=True)
+        return Response(serializer.data,status.HTTP_200_OK)

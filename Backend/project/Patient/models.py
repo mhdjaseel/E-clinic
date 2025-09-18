@@ -58,6 +58,8 @@ class Appointment(models.Model):
     doctor = models.ForeignKey('doctor.Doctor', on_delete=models.CASCADE)
     slot = models.ForeignKey(AvailableSlot, on_delete=models.CASCADE, unique=True, related_name='appoinmentSlot')
     booked_at = models.DateTimeField(auto_now_add=True)
+    location=models.ForeignKey("admin_app.Location", related_name='appoinments', on_delete=models.CASCADE,null=True)
+    departments=models.ForeignKey("admin_app.Department",related_name='appoinments' , on_delete=models.CASCADE,null=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='booked')
     def __str__(self):
         return self.patient.user.username
@@ -73,5 +75,8 @@ class Appoinment_request(models.Model):
     ]
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE,related_name='Request')
     date=models.DateField()
+    departments=models.CharField( max_length=50,null=True)
     location=models.ForeignKey( 'admin_app.Location',on_delete=models.CASCADE)
     status=models.CharField( max_length=20,choices=STATUS_CHOICES,default='pending')
+    def __str__(self):
+        return self.patient.user.username

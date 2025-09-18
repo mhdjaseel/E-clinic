@@ -17,3 +17,5 @@ class Hospitals(models.Model):
     location=models.ForeignKey( Location,on_delete=models.CASCADE)
     departments=models.ManyToManyField( Department)
     staffs=models.IntegerField()
+    def __str__(self):
+        return self.name

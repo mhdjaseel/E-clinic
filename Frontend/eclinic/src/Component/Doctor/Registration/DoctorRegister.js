@@ -1,8 +1,38 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 function DoctorRegister() {
   const [formData, setformData] = useState({});
+  const [Hospital, setHospital] = useState([]);
+  const [Departments, setDepartments] = useState([]);
+  useEffect(() => {
+    const fetchHospitals = async () => {
+      try {
+        const response = await axios.get(
+          "http://127.0.0.1:8000/doctor/RegisteredHospitalDetails"
+        );
+        setHospital(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchHospitals();
+
+    const fetchDeparments = async () => {
+      try {
+        const response = await axios.get(
+          "http://127.0.0.1:8000/doctor/RegisteredDepartmentsDetails"
+        );
+        setDepartments(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchDeparments();
+  }, []);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -14,6 +44,7 @@ function DoctorRegister() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(formData)
     try {
       await axios.post(
         "http://127.0.0.1:8000/doctor/DoctorRegisterView/",
@@ -24,7 +55,6 @@ function DoctorRegister() {
           },
         }
       );
-      console.log("registerd");
     } catch (error) {
       console.log("error   ", error);
     }
@@ -83,29 +113,35 @@ function DoctorRegister() {
               />
             </div>
 
-            <div className="mt-2">
-              <label className="form-label">Specialization</label>
-              <input
-                type="text"
-                className="form-control"
-                name="specialization"
-                value={formData.specialization}
-                onChange={handleChange}
-                required
-              />
-            </div>
+            <select
+              className="form-select"
+              name="specialization"
+              value={formData.specialization}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Select Department</option>
+              {Departments.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
 
-            <div className="mt-2">
-              <label className="form-label">Hospital Name</label>
-              <input
-                type="text"
-                className="form-control"
-                name="Hospital_name"
-                value={formData.hospital_name}
-                onChange={handleChange}
-                required
-              />
-            </div>
+            <select
+              className="form-select"
+              name="hospital_name"
+              value={formData.hospital_name}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Select Hospital</option>
+              {Hospital.map((hospital) => (
+                <option key={hospital.id} value={hospital.id}>
+                  {hospital.name}
+                </option>
+              ))}
+            </select>
 
             <div className="mt-2">
               <label className="form-label">Gender</label>

@@ -6,6 +6,9 @@ from django.contrib.auth import authenticate
 from rest_framework  import status
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
+from Patient.models import *
+from doctor.models import *
+
 # Create your views here.
 
 
@@ -34,3 +37,13 @@ class AdminLogin(APIView):
             return Response({'error':'Invalid Credentials '},status=status.HTTP_404_NOT_FOUND)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
         
+class RequestedAppoinments(APIView):
+    def get(self,request):
+        appoinments=Appoinment_request.objects.filter(status='pending')
+        serializer=RequestedAppoinmentSerializer(appoinments,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+
+class DoctorWithSlot(APIView):
+    def post(self,request):
+        specialization=request.data.get('departments')
+        doctors=Doctor.objects.filter(specialization=specialization)

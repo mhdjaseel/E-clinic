@@ -26,9 +26,10 @@ import PatientDetails from './Component/Doctor/DoctorAppoinments/PatientDetails'
 import PrescriptionDetails from './Component/Patient/History/PrescriptionDetails';
 import PatientsHistory from './Component/Doctor/History/PatientsHistory';
 import HomePage from './Component/Homepage/HomePage';
-import AdminLogin from './Component/Admin/AdminLogin';
-import AdminDashboard from './Component/Admin/AdminDashboard';
+import AdminLogin from './Component/Admin/Profile/AdminLogin';
+import AdminDashboard from './Component/Admin/Profile/AdminDashboard';
 import AppoinmentRequest from './Component/Patient/Appoinment/AppoinmentRequest';
+import CreateAppoinments from './Component/Admin/Appoinments/CreateAppoinments';
 function App() {
   return (
     <div className="App">
@@ -62,6 +63,7 @@ function App() {
               <Route path='PatientsHistory/' element={<PatientsHistory/>}/>
               <Route path='AdminLogin/' element={<AdminLogin/>}/>
               <Route path='AdminDashboard/' element={<AdminDashboard/>}/>
+              <Route path='CreateAppoinments/' element={<CreateAppoinments/>}/>
               
               
 

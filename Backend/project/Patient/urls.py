@@ -18,5 +18,6 @@ urlpatterns = [
     path("MedicalHistoryView/", MedicalHistoryView.as_view(), name="MedicalHistoryView"),
     path("PrescriptionDetailsView/<int:pk>/", PrescriptionDetailsView.as_view(), name="PrescriptionDetailsView"),
     path("AppoinmentRequest/", AppoinmentRequest.as_view(), name="AppoinmentRequest"),
-    path("LocationDetails/", LocationDetails.as_view(), name="LocationDetails")
+    path("LocationDetails/", LocationDetails.as_view(), name="LocationDetails"),
+    path("DepartmentDetails/", DepartmentDetails.as_view(), name="DepartmentDetails")
 ]

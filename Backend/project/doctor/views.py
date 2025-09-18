@@ -10,9 +10,29 @@ from Patient.models import *
 from Patient.serializers import*
 # Create your views here.
 
+
+class RegisteredHospitalDetails(APIView):
+    def get(self,request):
+        hospitals=Hospitals.objects.all()
+        serializer=HospitalSerializer(hospitals,many=True)
+
+        return Response(serializer.data)
+
+class RegisteredDepartmentsDetails(APIView):
+    def get(self,request):
+        departments=Department.objects.all()
+        serializer=DepartmentDetailsSerializer(departments,many=True)
+
+        return Response(serializer.data)
+
 class DoctorRegisterView(APIView):
     def post(self,request):
-        serializer=DoctorRegisterSerializer(data=request.data)
+        hospital_id=request.data.get('hospital_name')
+        department_id=request.data.get('specialization')
+        hospital=Hospitals.objects.get(id=hospital_id)
+        department=Department.objects.get(id=department_id)
+
+        serializer=DoctorRegisterSerializer(data=request.data,context={'hospital':hospital,'department':department})
         if serializer.is_valid():
             serializer.save()
             return Response({'message':'Successfullt Registered '},status=status.HTTP_200_OK)
@@ -48,6 +68,7 @@ class DoctorProfileView(APIView):
     def get(self,request):
         try:
             doctors=request.user.doctor
+            hospital=Hospitals.objects.get(doctor=doctors)
         except AttributeError:
             return Response({'error': 'Doctor profile not found.'}, status=status.HTTP_404_NOT_FOUND)
         serializer=DoctorProfileSerializer(doctors)

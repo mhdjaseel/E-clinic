@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from Patient.models import *
 from Patient.serializers import *
-
+from admin_app.models import *
 from django.contrib.auth.hashers import make_password
 from .models import *
 
@@ -18,7 +18,7 @@ class DoctorRegisterSerializer(serializers.ModelSerializer):
         model = Doctor
         fields = [
             'username', 'email', 'password',  
-            'phone_number', 'gender' ,'specialization','Hospital_name' 
+            'phone_number', 'gender' ,'specialization','hospital_name' 
         ]
 
     def validate_email(self, value):
@@ -31,6 +31,12 @@ class DoctorRegisterSerializer(serializers.ModelSerializer):
         email = validated_data.pop('email')
         password = validated_data.pop('password')
 
+        validated_data.pop('specialization', None)
+        validated_data.pop('hospital_name', None)
+
+        hospital_name=self.context['hospital']
+        specialization=self.context['department']
+
         # Create the user
         user = User.objects.create(
             username=username,
@@ -39,7 +45,7 @@ class DoctorRegisterSerializer(serializers.ModelSerializer):
             user_type='doctor'
         )
 
-        doctor = Doctor.objects.create(user=user, **validated_data)
+        doctor = Doctor.objects.create(user=user, hospital_name=hospital_name,specialization=specialization,**validated_data)
         return doctor
 
 class DoctorLoginSerializer(serializers.Serializer):
@@ -51,12 +57,19 @@ class DoctorSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'username', 'email']
 
+class HospitalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Hospitals
+        fields = '__all__'
+
+
 class DoctorProfileSerializer(serializers.ModelSerializer):
     user = DoctorSerializer()
-
+    hospital_name=HospitalSerializer()
     class Meta:
+
         model = Doctor
-        fields = ['user', 'phone_number', 'specialization', 'Hospital_name', 'gender']
+        fields = ['user', 'phone_number', 'specialization', 'hospital_name', 'gender']
 
 class TimeSlotSerializer(serializers.ModelSerializer):
         class Meta:
