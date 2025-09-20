@@ -28,6 +28,7 @@ function AppoinmentDetails() {
           }
         );
         setData(response.data);
+        console.log(response.data)
       } catch (error) {
         console.log(error);
       }
@@ -82,9 +83,9 @@ function AppoinmentDetails() {
         <div className="row mb-3">
 
           <div className="col-md-6">
-            <p><strong>Doctor: </strong>{Data.doctor.user.username}</p>
-            <p><strong>Hospital: </strong>{Data.doctor.Hospital_name} </p>
-            <p><strong>Specialization: </strong> {Data.doctor.specialization}</p>
+            <p><strong>Doctor: </strong>{Data.doctor.user?.username}</p>
+            <p><strong>Hospital: </strong>{Data.doctor.hospital_name.name} </p>
+            <p><strong>Specialization: </strong> {Data.doctor.specialization.name},{Data.location.location_name}</p>
           </div>
 
           <div className="col-md-6">

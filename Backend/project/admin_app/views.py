@@ -43,7 +43,11 @@ class RequestedAppoinments(APIView):
         serializer=RequestedAppoinmentSerializer(appoinments,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
 
-class DoctorWithSlot(APIView):
+class DoctorsAvailable(APIView):
     def post(self,request):
         specialization=request.data.get('departments')
-        doctors=Doctor.objects.filter(specialization=specialization)
+        location=request.data.get('location')
+
+        doctors=Doctor.objects.filter(specialization__name=specialization,hospital_name__location=location)
+        serializer=DoctorsAvailableSerializer(doctors,many=True)
+        return Response(serializer.data)

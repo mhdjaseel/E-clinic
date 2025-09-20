@@ -48,7 +48,8 @@ function ManageAppoinments() {
                 <h2 className='text-center'>Appointment Requests </h2>
                     {
                         Appoinments.map((item)=>(
-                                            <div className="card" key={item}>
+                            item.status ==='pending'&& (
+                                <div className="card" key={item.id}>
                     <div className="card-header">
                         patient :{item.patient.user.username}
                     </div>
@@ -62,6 +63,7 @@ function ManageAppoinments() {
                         <button className='btn btn-primary btn-sm ' onClick={()=>HandleCreate(item)}>create Appoinment</button>
                     </div>
                 </div>
+                            )     
                         ))
                     }
             </div>

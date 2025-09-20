@@ -61,6 +61,10 @@ function AppointmentRequest() {
     };
 
     fetchDepartments();
+
+
+    
+
   }, []);
 
   const handleChange = (e) => {

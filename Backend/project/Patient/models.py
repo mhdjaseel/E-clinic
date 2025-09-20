@@ -37,7 +37,7 @@ class TimeSlot(models.Model):
 
 
 class AvailableSlot(models.Model):
-    doctor = models.ForeignKey('doctor.Doctor', on_delete=models.CASCADE)
+    doctor = models.ForeignKey('doctor.Doctor', on_delete=models.CASCADE,related_name='availableslots')
     date = models.DateField()
     slot = models.ForeignKey(TimeSlot, on_delete=models.CASCADE)
     is_booked=models.BooleanField(default=False)

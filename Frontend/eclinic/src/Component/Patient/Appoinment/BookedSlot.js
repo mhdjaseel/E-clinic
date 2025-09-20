@@ -64,10 +64,10 @@ function BookedSlot() {
                     Dr. {item.doctor.user.username}  {item.status === 'rescheduled' && <span className="badge bg-success ms-5">Resheduled</span>}
                   </h5>
                   <p className="card-text mb-1">
-                    <strong>Specialization:</strong> {item.doctor.specialization}
+                    <strong>Specialization:</strong> {item.doctor.specialization.name}
                   </p>
                   <p className="card-text mb-3">
-                    <strong>Hospital:</strong> {item.doctor.Hospital_name}
+                    <strong>Hospital:</strong> {item.doctor.hospital_name.name}, {item.location.location_name}
                   </p>
                   <button className="btn btn-outline-primary w-100" onClick={()=>{HandleDetails(item.id)}}>
                     View Details

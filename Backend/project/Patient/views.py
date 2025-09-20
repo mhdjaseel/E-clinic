@@ -125,21 +125,52 @@ class DoctorsListView(APIView):
     
 
 class AppointmentView(APIView):
-    permission_classes=[IsAuthenticated]
-    def post(self,request):
-        patient=request.user.user_details
-        AvailableSlot_id=request.data.get('slot')
-        serializer=AppointmentSerializer(data=request.data,context={'patient':patient})
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        print("REQUEST DATA:", request.data)
+
+        patient_id = request.data.get('patient')
+        slot_id = request.data.get('slot')
+        doctor_id = request.data.get('doctor')
+        location_id = request.data.get('Location')
+        departments_name = request.data.get('departments')
+        request_id = request.data.get('request_id')
+
+        try:
+            patient = Patient.objects.get(id=patient_id)
+            available_slot = AvailableSlot.objects.get(id=slot_id)
+            doctor = Doctor.objects.get(id=doctor_id)
+            location = Location.objects.get(id=location_id)
+            department = Department.objects.get(name=departments_name)
+        except (Patient.DoesNotExist, AvailableSlot.DoesNotExist, Doctor.DoesNotExist, Location.DoesNotExist, Department.DoesNotExist):
+            return Response({'error': 'Invalid ID or data provided.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        data = request.data.copy()
+        data['departments'] = department.id
+
+        serializer = AppointmentSerializer(
+            data=data,
+            context={'patient': patient, 'doctor': doctor, 'location': location, 'departments': department}
+        )
+
         if serializer.is_valid():
-            booked=AvailableSlot.objects.get(id=AvailableSlot_id)
-            booked.is_booked=True
-            booked.save()
+            try:
+                request_form = Appoinment_request.objects.get(id=request_id)
+                request_form.status = 'booked'
+                request_form.save()
+            except Appoinment_request.DoesNotExist:
+                return Response({'error': 'Appointment request not found.'}, status=status.HTTP_400_BAD_REQUEST)
+
+            # Mark slot as booked
+            available_slot.is_booked = True
+            available_slot.save()
+
             serializer.save()
-            return Response({
-                'message':'Booked successfully'
-            },status.HTTP_201_CREATED)
-        return Response(serializer.errors,status.HTTP_400_BAD_REQUEST)
-    
+            return Response({'message': 'Booked successfully'}, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class BookedPatientAppoinments(APIView):
     permission_classes=[IsAuthenticated]
     def get(self,request):

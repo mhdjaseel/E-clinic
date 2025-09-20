@@ -71,7 +71,7 @@ function PrescriptionDetails() {
   <div className="col-md-10 mx-auto ">
     <div className="card shadow">
       <div className="card-header  text-center">
-        <h2 className="mb-0">{Prescription?.doctor?.Hospital_name}</h2>
+        <h2 className="mb-0">{Prescription?.doctor?.hospital_name.name}</h2>
       </div>
 
       <div className="card-body">

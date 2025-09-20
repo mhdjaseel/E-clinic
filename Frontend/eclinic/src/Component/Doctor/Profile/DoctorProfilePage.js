@@ -64,7 +64,7 @@ function DoctorProfilePage() {
           </div>
           <div className="col-md-6">
             <p><strong>Phone:</strong> {Info.phone_number} </p>
-            <p><strong>specialization:</strong> {Info.specialization}</p>
+            <p><strong>specialization:</strong> {Info.specialization?.name}</p>
 
           </div>
         </div>

@@ -14,7 +14,7 @@ function PrescrptionForm() {
   const location = useLocation()
   const {data} = location.state || {}
   const doctor = useContext(DoctorContext);
-console.log('fdsse',data)
+  console.log('fdsse',data)
   const HandleChange = (e) => {
     const { name, value } = e.target;
     setData({
@@ -176,7 +176,7 @@ catch(error){
               <div className="col-md-12">
                 <div className="card">
                   <div className="card-header">
-                    <h2 className="text-center mt-3"> {doctor?.Hospital_name}</h2>
+                    <h2 className="text-center mt-3"> {doctor?.hospital_name.name},{data.location.location_name}</h2>
                     <div className="row">
                       <div className="col-md-6">
                         <h5>Patient : {data.patient.user?.username}</h5>
@@ -187,7 +187,7 @@ catch(error){
                         <div className="doctor_info">
                           <h5>Doctor : {doctor?.user?.username}</h5>
 
-                          <h6>{doctor?.specialization}</h6>
+                          <h6>{doctor?.specialization.name}</h6>
                         </div>
                       </div>
                     </div>

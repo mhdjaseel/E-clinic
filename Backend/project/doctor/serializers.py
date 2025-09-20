@@ -1,10 +1,18 @@
+# doctor serializers.py
+
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from Patient.models import *
-from Patient.serializers import *
+from Patient.models import TimeSlot,AvailableSlot
 from admin_app.models import *
 from django.contrib.auth.hashers import make_password
 from .models import *
+from accounts.Serializers import (
+    UserSerializer,
+    HospitalSerializer,
+    DepartmentDetailsSerializer,
+    TimeSlotSerializer,
+    LocationSerializer
+)
 
 User = get_user_model()
 
@@ -52,6 +60,8 @@ class DoctorLoginSerializer(serializers.Serializer):
         username=serializers.CharField()
         password=serializers.CharField()
 
+
+
 class DoctorSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -66,6 +76,7 @@ class HospitalSerializer(serializers.ModelSerializer):
 class DoctorProfileSerializer(serializers.ModelSerializer):
     user = DoctorSerializer()
     hospital_name=HospitalSerializer()
+    specialization=DepartmentDetailsSerializer()
     class Meta:
 
         model = Doctor
@@ -119,6 +130,8 @@ class AvailableSlotsSerializer(serializers.ModelSerializer):
 class DoctorAppoinmentsSerializer(serializers.ModelSerializer):
      patient=PatientSerializer()
      slot=AvailableSlotsSerializer()
+     doctor=DoctorProfileSerializer()
+     location=LocationSerializer()
      class Meta:
             model = Appointment
             fields = '__all__'

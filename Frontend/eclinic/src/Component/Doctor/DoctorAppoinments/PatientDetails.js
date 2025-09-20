@@ -82,10 +82,10 @@ function PatientDetails() {
             </div>
             <div className="card-body">
               <h5 className="card-title text-secondary">
-                 Dr. {item.doctor?.user?.username || 'Unknown'} ({item.doctor?.specialization || 'N/A'})
+                 Dr. {item.doctor?.user?.username || 'Unknown'} ({item.doctor?.specialization.name || 'N/A'})
               </h5>
               <p className="mb-2">
-                 <strong>Hospital:</strong> {item.doctor?.Hospital_name || 'N/A'}
+                 <strong>Hospital:</strong> {item.doctor?.hospital_name.name || 'N/A'}, {item.doctor?.hospital_name.location.location_name}
               </p>
               <p className="mb-2">
                  <strong>Disease Summary:</strong> {item.summary || 'N/A'}

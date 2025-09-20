@@ -1,13 +1,17 @@
-# serializers.py
+# patient serializers.py
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from doctor.serializers import *
-from doctor.serializers import TimeSlotSerializer
+from accounts.Serializers import (
+    UserSerializer,
+    HospitalSerializer,
+    DepartmentDetailsSerializer,
+    TimeSlotSerializer,
+    
+)
 from django.contrib.auth.hashers import make_password
 from .models import *
 from doctor.models import *
 from admin_app.models import *
-
 User = get_user_model()
 
 class PatientRegisterSerializer(serializers.ModelSerializer):
@@ -83,7 +87,10 @@ class AppointmentSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         
         patient=self.context['patient']
-        return Appointment.objects.create(patient=patient,**validated_data)
+        location=self.context['location']
+        department=self.context['departments']
+
+        return Appointment.objects.create(patient=patient,location=location,departments=department,**validated_data)
 
 class AvailableSlotsSerializer(serializers.ModelSerializer):
     slot=TimeSlotSerializer()
@@ -91,16 +98,28 @@ class AvailableSlotsSerializer(serializers.ModelSerializer):
         model = AvailableSlot
         fields = ['id','doctor','date','slot']
 
+class LocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Location
+        fields= '__all__'
+
+class DepartmentDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Department
+        fields= '__all__'
 
 class DoctorsListSeriualizer(serializers.ModelSerializer):
     user=UserSerializer()
+    hospital_name=HospitalSerializer()
+    specialization=DepartmentDetailsSerializer()
     class Meta:
         model = Doctor
-        fields = ['id','user', 'phone_number', 'specialization', 'Hospital_name', 'gender']
+        fields = ['id','user', 'phone_number', 'specialization', 'hospital_name', 'gender']
 
 class PatientAppoinmentsSerializer(serializers.ModelSerializer):
     slot=AvailableSlotsSerializer()
     doctor=DoctorsListSeriualizer()
+    location=LocationSerializer()
     class Meta:
         model = Appointment
         fields = '__all__'
@@ -133,12 +152,3 @@ class AppoinmentRequestSerializer(serializers.ModelSerializer):
         )
     
 
-class LocationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Location
-        fields= '__all__'
-
-class DepartmentDetailsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Department
-        fields= '__all__'
