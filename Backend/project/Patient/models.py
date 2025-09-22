@@ -77,6 +77,7 @@ class Appoinment_request(models.Model):
     date=models.DateField()
     departments=models.CharField( max_length=50,null=True)
     location=models.ForeignKey( 'admin_app.Location',on_delete=models.CASCADE)
+    appointment = models.ForeignKey('Appointment', on_delete=models.SET_NULL, null=True, blank=True, related_name='request')
     status=models.CharField( max_length=20,choices=STATUS_CHOICES,default='pending')
     def __str__(self):
         return self.patient.user.username

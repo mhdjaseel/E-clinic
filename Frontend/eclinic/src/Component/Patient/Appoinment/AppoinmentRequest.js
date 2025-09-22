@@ -86,10 +86,7 @@ function AppointmentRequest() {
       return;
     }
 
-    if (!data.date || !data.location) {
-      toast.error("Please fill in all fields");
-      return;
-    }
+
 
     try {
       console.log(data);
@@ -100,10 +97,13 @@ function AppointmentRequest() {
         },
       });
       toast.success("Successfully sent appointment request");
-      setData({ date: "", location: "" }); // Clear form
+      setData({ date: "", location: "", departments: "" });
+      navigate('/PatientDashboard')
+
     } catch (error) {
       toast.error(error.response?.data?.error || "Failed to send request");
       console.error("Error sending request:", error);
+      
     }
   };
 

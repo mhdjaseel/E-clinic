@@ -69,6 +69,26 @@ function ManageAppoinments() {
             </div>
             <div className="col-md-6">
                 <h2 className='text-center'>Reschedule Requests </h2>
+                 {
+                        Appoinments.map((item)=>(
+                            item.status ==='rescheduled'&& (
+                                <div className="card" key={item.id}>
+                    <div className="card-header">
+                        patient :{item.patient.user.username}
+                    </div>
+                    <div className="card-body">
+                       <p> Date: {item.date} </p>
+                        <p>Department:{item.departments}</p>
+                        <p>Prefer Location :{item.location.location_name}</p>
+
+                    </div>
+                    <div className="btn d-flex justify-content-start">
+                        <button className='btn btn-primary btn-sm ' onClick={()=>HandleCreate(item)}>create Appoinment</button>
+                    </div>
+                </div>
+                            )     
+                        ))
+                    }
             </div>
             </div>
         </div>

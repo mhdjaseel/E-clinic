@@ -39,7 +39,7 @@ class AdminLogin(APIView):
         
 class RequestedAppoinments(APIView):
     def get(self,request):
-        appoinments=Appoinment_request.objects.filter(status='pending')
+        appoinments=Appoinment_request.objects.all()
         serializer=RequestedAppoinmentSerializer(appoinments,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
 

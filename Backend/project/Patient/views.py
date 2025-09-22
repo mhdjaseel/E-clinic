@@ -155,18 +155,22 @@ class AppointmentView(APIView):
         )
 
         if serializer.is_valid():
+            request_form = Appoinment_request.objects.get(id=request_id)
+
             try:
-                request_form = Appoinment_request.objects.get(id=request_id)
                 request_form.status = 'booked'
                 request_form.save()
+
             except Appoinment_request.DoesNotExist:
                 return Response({'error': 'Appointment request not found.'}, status=status.HTTP_400_BAD_REQUEST)
 
-            # Mark slot as booked
             available_slot.is_booked = True
             available_slot.save()
 
-            serializer.save()
+            appoinment=serializer.save()
+            request_form.appointment=appoinment
+            request_form.save()
+
             return Response({'message': 'Booked successfully'}, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -180,15 +184,28 @@ class BookedPatientAppoinments(APIView):
         return Response(serializer.data,status.HTTP_200_OK)
     
 class PatientAppoinmentsDetails(APIView):
-    permission_classes=[IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
-    def get(self,request,pk):
-        appoinment=Appointment.objects.get(id=pk)
+    def get(self, request, pk):
         try:
-            serializer=PatientAppoinmentsSerializer(appoinment)
-            return Response(serializer.data,status=status.HTTP_200_OK)
-        except appoinment.DoesNotExist:
-            return Response({'message':'Not Found '},status=status.HTTP_404_NOT_FOUND)
+            appoinment = Appointment.objects.get(id=pk)
+        except Appointment.DoesNotExist:
+            return Response({'message': 'Appointment Not Found'}, status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            request_obj = Appoinment_request.objects.get(appointment=appoinment)
+            request_id=request_obj.id
+        except Appoinment_request.DoesNotExist:
+            request_obj = None
+            request_id = None  
+            print("No request linked to this appointment")
+        print(request_id)
+        serializer = PatientAppoinmentsSerializer(appoinment)
+        return Response({
+            'data':serializer.data,
+            'request_id':request_id
+            }, status=status.HTTP_200_OK)
+
 
 class CancelAppoinmentView(APIView):
     permission_classes=[IsAuthenticated]
@@ -204,13 +221,23 @@ class CancelAppoinmentView(APIView):
     
 class RescheduleView(APIView):
     def put(self, request):
-        slot_id = request.data.get('selected_slot')
-        appointment_id = request.data.get('id')
-        patient = request.user.user_details  # assuming user is authenticated
+        slot_id = request.data.get('slot')
+        doctor_id = request.data.get('doctor')
+        location_id = request.data.get('Location')
+        departments_name = request.data.get('departments')
+        request_id = request.data.get('request_id')
+        appointment_id=request.data.get('appointment_id')
 
+        doctor = Doctor.objects.get(id=doctor_id)
+        location = Location.objects.get(id=location_id)
+        department = Department.objects.get(name=departments_name)
         try:
          
             appointment = Appointment.objects.get(id=appointment_id)
+            request_form=Appoinment_request.objects.get(id=request_id)
+            request_form.status='booked'
+            request_form.save()
+
 
             old_slot = appointment.slot
             old_slot.is_booked = False
@@ -222,6 +249,9 @@ class RescheduleView(APIView):
 
             appointment.slot = new_slot
             appointment.status='rescheduled'
+            appointment.departments=department
+            appointment.doctor=doctor
+            appointment.location=location
             appointment.save()
             return Response({'message': 'Successfully changed slot'}, status=status.HTTP_200_OK)
 
@@ -261,21 +291,18 @@ class LocationDetails(APIView):
 
 class AppoinmentRequest(APIView):
     permission_classes=[IsAuthenticated]
-
     def post(self,request):
+
         user=request.user.user_details.id
         patient=Patient.objects.get(id=user)
         location_id=request.data.get('location')
         location=Location.objects.get(id=location_id)
         print(location)
         serializer=AppoinmentRequestSerializer(data=request.data,context={'patient':patient,'location':location})
-        print('1')
 
         if serializer.is_valid():
-            print('2')
             serializer.save()
             return Response({'message':'Successfully Send Request '},status=status.HTTP_201_CREATED)
-        print('3')
 
         return Response({'error':' Try again '},status=status.HTTP_400_BAD_REQUEST)
 
@@ -287,3 +314,49 @@ class DepartmentDetails(APIView):
         departments=Department.objects.all()
         serializer=DepartmentDetailsSerializer(departments,many=True)
         return Response(serializer.data,status.HTTP_200_OK)
+    
+class RescheduleRequestView(APIView):
+    permission_classes=[IsAuthenticated]
+    def post(self,request):
+        user_id = request.user.user_details.id
+
+        try:
+            patient = Patient.objects.get(id=user_id)
+        except Patient.DoesNotExist:
+            return Response({'error': 'Patient not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        location_id = request.data.get('location')
+        departments = request.data.get('departments')
+        request_id = request.data.get('request_id')
+
+        date = request.data.get('date')
+        try:
+            request_form = Appoinment_request.objects.get(id=request_id)
+        except Appoinment_request.DoesNotExist:
+            return Response({'error': 'Appointment request not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        try:
+                request_form.date = date
+        except ValueError:
+                return Response({'error': ' date not found'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            location = Location.objects.get(id=location_id)
+        except Location.DoesNotExist:
+            return Response({'error': 'Location not found'}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+
+        
+        request_form.patient = patient
+        request_form.location = location
+        request_form.departments = departments
+        request_form.status = 'rescheduled'
+        request_form.save()
+
+        serializer = AppoinmentRequestDetails(request_form)
+        return Response({
+            'message': 'Successfully Rescheduled Request',
+            'data': serializer.data
+        }, status=status.HTTP_200_OK)

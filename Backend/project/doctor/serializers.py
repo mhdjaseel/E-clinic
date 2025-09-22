@@ -132,6 +132,7 @@ class DoctorAppoinmentsSerializer(serializers.ModelSerializer):
      slot=AvailableSlotsSerializer()
      doctor=DoctorProfileSerializer()
      location=LocationSerializer()
+     
      class Meta:
             model = Appointment
             fields = '__all__'

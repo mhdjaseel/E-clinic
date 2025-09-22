@@ -152,3 +152,9 @@ class AppoinmentRequestSerializer(serializers.ModelSerializer):
         )
     
 
+class AppoinmentRequestDetails(serializers.ModelSerializer):
+    appointment= PatientAppoinmentsSerializer()
+    location=LocationSerializer()
+    class Meta:
+        model = Appoinment_request
+        fields =  '__all__'

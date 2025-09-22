@@ -66,7 +66,7 @@ function AppoinmentDetails() {
   // Handle Re Schedule
 
   const HandleReschedule = (datas) =>{
-    navigate('/ResheduleAppoinment',{state :{id:datas.id, doctor:datas.doctor}})
+    navigate('/ResheduleAppoinment',{state :{datas}})
   }
 
   return (
@@ -83,15 +83,15 @@ function AppoinmentDetails() {
         <div className="row mb-3">
 
           <div className="col-md-6">
-            <p><strong>Doctor: </strong>{Data.doctor.user?.username}</p>
-            <p><strong>Hospital: </strong>{Data.doctor.hospital_name.name} </p>
-            <p><strong>Specialization: </strong> {Data.doctor.specialization.name},{Data.location.location_name}</p>
+            <p><strong>Doctor: </strong>{Data.data.doctor.user?.username}</p>
+            <p><strong>Hospital: </strong>{Data.data.doctor.hospital_name.name} </p>
+            <p><strong>Specialization: </strong> {Data.data.doctor.specialization.name},{Data.data.location.location_name}</p>
           </div>
 
           <div className="col-md-6">
-            <p><strong>Slot: </strong>{Data.slot.slot.start_time} - {Data.slot.slot.end_time} </p>
-            <p><strong>Date: </strong> {Data.slot.date} </p>
-            <p><strong>Status: </strong> {Data.status}</p>
+            <p><strong>Slot: </strong>{Data.data.slot.slot.start_time} - {Data.data.slot.slot.end_time} </p>
+            <p><strong>Date: </strong> {Data.data.slot.date} </p>
+            <p><strong>Status: </strong> {Data.data.status}</p>
           </div>
 
         </div>

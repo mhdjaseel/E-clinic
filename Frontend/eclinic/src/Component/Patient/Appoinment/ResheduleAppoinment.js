@@ -1,161 +1,185 @@
 import axios from 'axios';
-import React ,{useState}from 'react'
+import React ,{useState,useEffect}from 'react'
 import { useNavigate,useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Navbar from "./Navbar";
 
 function ResheduleAppoinment() {
-    const [SelectedSlots, setSelectedSlots] = useState([]);
-    const [Slots, setSlots] = useState();
-    const [Visible, setVisible] = useState(false);
-    const location = useLocation()
-    const {id,doctor} = location.state || {}
-    const navigate = useNavigate()
-    const [Data, setData] = useState({
-      doctor:doctor?.id,
-      date:''
-    });
-  
+const [locations, setLocations] = useState([]);
+  const [Department, setDepartment] = useState([]);
+  const [data, setData] = useState({ date: "", location: "", departments: "" ,request_id:'' });
+  const navigate = useNavigate();
+const location = useLocation()
+const{datas} = location.state || {}
+console.log('datas', datas)
+  useEffect(() => {
+    const fetchLocations = async () => {
+      const token = localStorage.getItem("access");
+      if (!token) {
+        toast.error("Token not found");
+        navigate("/PatientLogin");
+        return;
+      }
 
-    // Handle Click
+      try {
+        const response = await axios.get(
+          "http://127.0.0.1:8000/LocationDetails",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setLocations(response.data);
+      } catch (error) {
+        console.error("Failed to fetch locations:", error);
+      }
+    };
 
-    const HandleClick = async (e)=>{
-      e.preventDefault();
-  const token = localStorage.getItem('access');
+    fetchLocations();
+
+    const fetchDepartments = async () => {
+      const token = localStorage.getItem("access");
+      if (!token) {
+        toast.error("Token not found");
+        navigate("/PatientLogin");
+        return;
+      }
+
+      try {
+        const response = await axios.get(
+          "http://127.0.0.1:8000/DepartmentDetails",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setDepartment(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error("Failed to fetch Department:", error);
+      }
+    };
+
+    fetchDepartments();
+
+
+    
+
+  }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  console.log(locations);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem("access");
 
     if (!token) {
-      console.log('No token found');
+      toast.error("Token not found");
+      navigate("/PatientLogin");
       return;
     }
 
-    
-    try {
-      const response = await axios.post('http://127.0.0.1:8000/AvailableSlotView/', Data, {
-        headers: {
-          "Content-Type": 'application/json',
-          Authorization: `Bearer ${token}`
-        }
-        
-      });
-      setSlots(response.data)
-      console.log(response.data)
-      const res = response?.data.message 
-      toast.success(res)
-      setVisible(true)
 
+
+    try {
+      data.request_id=datas.request_id
+      await axios.post("http://127.0.0.1:8000/RescheduleRequestView/", data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      toast.success("Successfully sent Reschedule request");
+      setData({ date: "", location: "", departments: "" });
+      navigate('/PatientDashboard')
     } catch (error) {
-      const res_error = error.response?.data.message 
-      toast.error(res_error);
-      setVisible(false)
+      toast.error(error.response?.data?.error || "Failed to send request");
+      console.error("Error sending request:", error);
+      
     }
   };
 
-
-    
-  const HandleBooking =   async()=>{
-
-
-    const FormData ={
-      'doctor':doctor.id,
-      'selected_slot':SelectedSlots[0].id,
-      'id':id
-    }
-
-
-
-    if ( SelectedSlots.length > 1) {
-    toast.error('only one slot can book')
-    return
-    }
-    const token = localStorage.getItem('access');
-
-    if (!token) {
-      console.log('No token found');
-      return;
-    }
-    try{
-       const response = await axios.put('http://127.0.0.1:8000/RescheduleView/',FormData , {
-        headers: {
-          "Content-Type": 'application/json',
-          Authorization: `Bearer ${token}`
-        }
-        
-      });
-      setVisible(false)
-      setSelectedSlots('')
-      const res=response.data.message
-      toast.success(res)
-      navigate('/PatientDashboard')
-
-    }
-    catch(error){
-      toast.error('failed try again')
-      console.log(error.response?.data)
-    }
-
-  }
-
-
   return (
-    <div>
-    <Navbar/>
-        <h2 className='text-center mt-5'>Re-Schedule Appoinment</h2>
-        <div className="container">
-          <div className="col-md-6">
-                    <div className="mt-2">
-                <label className='form-label fs-5'>Date</label>
-                <input
-                  type="date"
-                  name="date"
-                  onChange={(e)=>{
-                    const {name,value} = e.target
-                    setData({
-                      ...Data,
-                      [name]:value
-                    })
-                  }}
-                  className='form-control'
-                  required
-                />
-              </div>
+    <>
+      <Navbar/>
+      <div className="container mt-3">
+        <h2 className="text-center">Reschedule Request</h2>
+        <div className="col-md-6">
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <label htmlFor="date" className="form-label">
+                Select Date
+              </label>
+              <input
+                type="date"
+                id="date"
+                name="date"
+                className="form-control"
+                value={data.date}
+                onChange={handleChange}
+                required
+              />
+            </div>
 
+            <div className="mb-3">
+              <label htmlFor="location" className="form-label">
+                Preferred Department
+              </label>
+              <select
+                id="departments"
+                name="departments"
+                className="form-select"
+                value={data.departments}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Select department</option>
+                {Department.map((loc) => (
+                  <option key={loc.id} value={loc.name}>
+                    {loc.name}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-              
-              <button className='btn btn-primary mt-3' onClick={HandleClick}>View Slots</button>
+            <div className="mb-3">
+              <label htmlFor="location" className="form-label">
+                Preferred Location
+              </label>
+              <select
+                id="location"
+                name="location"
+                className="form-select"
+                value={data.location}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Select Location</option>
+                {locations.map((loc) => (
+                  <option key={loc.id} value={loc.id}>
+                    {loc.location_name}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-              {
-                Visible &&
-                Slots.map((item, index) => (
-                  <div className="mt-3" key={index}>
-                    <p>{item.slot.start_time} - {item.slot.end_time} <input type="checkbox"
-                    disabled={item.is_booked}
-                 onChange={(e) => {
-                  const value = e.target.value;
-                  if (e.target.checked) {
-                    setSelectedSlots([...SelectedSlots, item]);
-                  } else {
-                    setSelectedSlots(
-                     SelectedSlots.filter((slot) => slot.id !== item.id)
-
-                    );
-                  }
-                }}
-                    /></p>
-
-
-                  </div>
-                ))
-              }
-              
-              {
-                Visible && 
-              <button className='btn btn-primary mt-3' onClick={HandleBooking} >Book</button>
-
-              }
-          </div>
+            <button type="submit" className="btn btn-primary">
+              Submit Request
+            </button>
+          </form>
         </div>
-    </div>
-  )
+      </div>
+    </>
+  );
 }
 
 export default ResheduleAppoinment

@@ -1,18 +1,17 @@
-import axios from 'axios';
-import React, { useEffect,useState ,useRef} from 'react'
-import { useLocation } from 'react-router-dom'
-import { toast } from 'react-toastify';
+import axios from "axios";
+import React, { useEffect, useState, useRef } from "react";
+import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 import Navbar from "../Appoinment/Navbar";
-import {useReactToPrint} from 'react-to-print'
-import './Prescription.css'
+import { useReactToPrint } from "react-to-print";
+import "./Prescription.css";
 function PrescriptionDetails() {
-    const location= useLocation()
-    const {Prescription} = location.state || {}
-    const [Data, setData] = useState([]);
+  const location = useLocation();
+  const { Prescription } = location.state || {};
+  const [Data, setData] = useState([]);
 
-
-    useEffect(() => {
-        console.log(Prescription)
+  useEffect(() => {
+    console.log(Prescription);
     const fetchData = async () => {
       const token = localStorage.getItem("access");
 
@@ -21,7 +20,6 @@ function PrescriptionDetails() {
         return;
       }
       try {
-
         const response = await axios.get(
           `http://127.0.0.1:8000/PrescriptionDetailsView/${Prescription.id}/`,
           {
@@ -38,110 +36,131 @@ function PrescriptionDetails() {
       }
     };
     fetchData();
-    }, []);
+  }, []);
 
-
-
-    // Handle Print
-    const componentPrint = useRef(null)
-    const HandlePrint = useReactToPrint({
-      contentRef: componentPrint,
-      documentTitle: 'Prescription',
-      onAfterPrint:()=> toast.success('Download complete')
-    })
+  // Handle Print
+  const componentPrint = useRef(null);
+  const HandlePrint = useReactToPrint({
+    contentRef: componentPrint,
+    documentTitle: "Prescription",
+    onAfterPrint: () => toast.success("Download complete"),
+  });
 
   return (
     <div>
       <div className="d-print-none">
-      <Navbar/>
+        <Navbar />
       </div>
-  <div className="d-print-none d-flex justify-content-end me-5 mt-4">
-  <button 
-    className="btn btn-success d-flex align-items-center gap-2 shadow-sm px-4 py-2" 
-    onClick={HandlePrint}
-    style={{ fontSize: '1rem', borderRadius: '6px' }}
-  >
-    <i className="fas fa-download"></i>
-    Download Prescription
-  </button>
-</div>
+      <div className="d-print-none d-flex justify-content-end me-5 mt-4">
+        <button
+          className="btn btn-success d-flex align-items-center gap-2 shadow-sm px-4 py-2"
+          onClick={HandlePrint}
+          style={{ fontSize: "1rem", borderRadius: "6px" }}
+        >
+          <i className="fas fa-download"></i>
+          Download Prescription
+        </button>
+      </div>
 
       <div ref={componentPrint}>
-       <div className="container my-4">
-  <div className="col-md-10 mx-auto ">
-    <div className="card shadow">
-      <div className="card-header  text-center">
-        <h2 className="mb-0">{Prescription?.doctor?.hospital_name.name}</h2>
-      </div>
+        <div className="container my-4">
+          <div className="col-md-10 mx-auto ">
+            <div className="card shadow">
+              <div className="card-header  text-center">
+                <h2 className="mb-0">
+                  {Prescription?.doctor?.hospital_name.name},{" "}
+                  {Prescription?.appointment?.location?.location_name}
+                </h2>
+              </div>
 
-      <div className="card-body">
-        <div className="row mb-4">
-          <div className="col-md-6">
-            <h5 className="fw-bold">Doctor Details</h5>
-            <p className="mb-1"><strong>Name:</strong> Dr. {Prescription?.doctor?.user?.username}</p>
-            <p className="mb-1"><strong>Specialization:</strong> {Prescription?.doctor?.specialization}</p>
-            <p className="mb-1"><strong>Phone:</strong> {Prescription?.doctor?.phone_number}</p>
-          </div>
+              <div className="card-body">
+                <div className="row mb-4">
+                  <div className="col-md-6">
+                    <h5 className="fw-bold">Doctor Details</h5>
+                    <p className="mb-1">
+                      <strong>Name:</strong> Dr.{" "}
+                      {Prescription?.doctor?.user?.username}
+                    </p>
+                    <p className="mb-1">
+                      <strong>Specialization:</strong>{" "}
+                      {Prescription?.doctor?.specialization.name}
+                    </p>
+                    <p className="mb-1">
+                      <strong>Phone:</strong>{" "}
+                      {Prescription?.doctor?.phone_number}
+                    </p>
+                  </div>
 
-          <div className="col-md-6">
-            <h5 className="fw-bold">Patient Details</h5>
-            <p className="mb-1"><strong>Name:</strong> {Prescription?.patient?.user?.username}</p>
-            <p className="mb-1"><strong>Gender:</strong> {Prescription?.patient?.gender}</p>
-            <p className="mb-1"><strong>Phone:</strong> {Prescription?.patient?.phone_number}</p>
-          </div>
-        </div>
-<hr />
-        <div className="mb-3">
-          <div className="details">
-            <p><span className="fw-bold">Summary: </span> {Prescription.summary}</p>
-            <p><span className="fw-bold">Allergy: </span> {Prescription.allergy}</p>
-          </div>
-          <h5 className="fw-bold">Prescription</h5>
+                  <div className="col-md-6">
+                    <h5 className="fw-bold">Patient Details</h5>
+                    <p className="mb-1">
+                      <strong>Name:</strong>{" "}
+                      {Prescription?.patient?.user?.username}
+                    </p>
+                    <p className="mb-1">
+                      <strong>Gender:</strong> {Prescription?.patient?.gender}
+                    </p>
+                    <p className="mb-1">
+                      <strong>Phone:</strong>{" "}
+                      {Prescription?.patient?.phone_number}
+                    </p>
+                  </div>
+                </div>
+                <hr />
+                <div className="mb-3">
+                  <div className="details">
+                    <p>
+                      <span className="fw-bold">Summary: </span>{" "}
+                      {Prescription.summary}
+                    </p>
+                    <p>
+                      <span className="fw-bold">Allergy: </span>{" "}
+                      {Prescription.allergy}
+                    </p>
+                  </div>
+                  <h5 className="fw-bold">Prescription</h5>
 
-          <div className="table-responsive">
-            <table className="table table-bordered">
-              <thead className="table-light">
-                <tr>
-                  <th>Medicine</th>
-                  <th>Dosage</th>
-                  <th>Quantity</th>
-                </tr>
-              </thead>
-              <tbody>
-                {Array.isArray(Data) && Data.length > 0 ? (
-                  Data.map((med, index) => (
-                    <tr key={index}>
-                      <td>{med.name}</td>
-                      <td>{med.dosage}</td>
-                      <td>{med.quantity}</td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="3" className="text-center text-muted">
-                      No medicines prescribed.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
+                  <div className="table-responsive">
+                    <table className="table table-bordered">
+                      <thead className="table-light">
+                        <tr>
+                          <th>Medicine</th>
+                          <th>Dosage</th>
+                          <th>Quantity</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {Array.isArray(Data) && Data.length > 0 ? (
+                          Data.map((med, index) => (
+                            <tr key={index}>
+                              <td>{med.name}</td>
+                              <td>{med.dosage}</td>
+                              <td>{med.quantity}</td>
+                            </tr>
+                          ))
+                        ) : (
+                          <tr>
+                            <td colSpan="3" className="text-center text-muted">
+                              No medicines prescribed.
+                            </td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
 
-        {/* Optional: Date Footer */}
-        <div className="text-end text-muted small d-print-none">
-          <p>Generated on: {new Date().toLocaleDateString()}</p>
+                {/* Optional: Date Footer */}
+                <div className="text-end text-muted small d-print-none">
+                  <p>Generated on: {new Date().toLocaleDateString()}</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
-</div>
-
-
-
-    </div>
-  )
+  );
 }
 
-export default PrescriptionDetails
+export default PrescriptionDetails;

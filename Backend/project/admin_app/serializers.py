@@ -9,7 +9,6 @@ from accounts.Serializers import (
     HospitalSerializer,
     DepartmentDetailsSerializer,
     TimeSlotSerializer,
-    
 )
 User = get_user_model()
 
@@ -17,12 +16,6 @@ class AdminLoginSerializers(serializers.Serializer):
     username=serializers.CharField()
     password=serializers.CharField()
 
-class RequestedAppoinmentSerializer(serializers.ModelSerializer):
-    patient=PatientSerializer()
-    location=LocationSerializer()
-    class Meta:
-        model = Appoinment_request
-        fields ='__all__'
 
 
 class DoctorsSerializers(serializers.ModelSerializer):
@@ -37,3 +30,25 @@ class DoctorsAvailableSerializer(serializers.ModelSerializer):
 
         model = Doctor
         fields= '__all__'
+
+class AvailableSlotsSerializer(serializers.ModelSerializer):
+    slot=TimeSlotSerializer()
+    class Meta:
+        model = AvailableSlot
+        fields = ['id','doctor','date','slot']
+
+class AppoinmentsDetailSerializer(serializers.ModelSerializer):
+    patient=PatientSerializer()
+    doctor=DoctorsAvailableSerializer()
+    slot=AvailableSlotsSerializer()
+    class Meta:
+        model = Appointment
+        fields = '__all__'
+
+class RequestedAppoinmentSerializer(serializers.ModelSerializer):
+    patient=PatientSerializer()
+    location=LocationSerializer()
+    appointment=AppoinmentsDetailSerializer()
+    class Meta:
+        model = Appoinment_request
+        fields ='__all__'
