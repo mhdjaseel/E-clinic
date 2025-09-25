@@ -19,3 +19,12 @@ class Hospitals(models.Model):
     staffs=models.IntegerField()
     def __str__(self):
         return self.name
+
+class HealthTips(models.Model):
+    title=models.CharField( max_length=50)
+    description=models.TextField( max_length=350)
+    image=models.ImageField( upload_to='TipsImages')
+    created_at=models.DateTimeField( auto_now_add=False)
+
+    def __str__(self):
+        return self.title

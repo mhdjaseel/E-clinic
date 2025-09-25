@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from Patient.models import *
 from doctor.models import *
+from admin_app.models import *
 
 # Create your views here.
 
@@ -51,3 +52,10 @@ class DoctorsAvailable(APIView):
         doctors=Doctor.objects.filter(specialization__name=specialization,hospital_name__location=location)
         serializer=DoctorsAvailableSerializer(doctors,many=True)
         return Response(serializer.data)
+    
+class HealthTipsDetails(APIView):
+    permission_classes=[IsAuthenticated]
+    def get(self,request):
+        tips=HealthTips.objects.all()
+        serializer=HealthTipsDetailsSerializer(tips, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

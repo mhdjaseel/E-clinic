@@ -3,6 +3,7 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from Patient.models import *
 from doctor.models import *
+from admin_app.models import *
 from Patient.serializers import PatientSerializer,LocationSerializer
 from accounts.Serializers import (
     UserSerializer,
@@ -51,4 +52,9 @@ class RequestedAppoinmentSerializer(serializers.ModelSerializer):
     appointment=AppoinmentsDetailSerializer()
     class Meta:
         model = Appoinment_request
+        fields ='__all__'
+
+class HealthTipsDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HealthTips
         fields ='__all__'

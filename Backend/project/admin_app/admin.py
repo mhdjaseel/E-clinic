@@ -10,3 +10,4 @@ class HospitalAdmin(admin.ModelAdmin):
     filter_horizontal = ('departments',)  # or use filter_vertical
 
 admin.site.register(Department)
+admin.site.register(HealthTips)

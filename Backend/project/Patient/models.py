@@ -21,6 +21,7 @@ class PatientInsurance(models.Model):
     Policy_date=models.DateField( auto_now=False, auto_now_add=False)
     Insurance_img=models.ImageField( upload_to='insuranceImg/')
     Verified=models.BooleanField(default=False)
+    copay_amount = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
 
     def __str__(self):
         return self.owner.user.username
@@ -61,6 +62,7 @@ class Appointment(models.Model):
     location=models.ForeignKey("admin_app.Location", related_name='appoinments', on_delete=models.CASCADE,null=True)
     departments=models.ForeignKey("admin_app.Department",related_name='appoinments' , on_delete=models.CASCADE,null=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='booked')
+    is_paid=models.BooleanField(default=False)
     def __str__(self):
         return self.patient.user.username
 

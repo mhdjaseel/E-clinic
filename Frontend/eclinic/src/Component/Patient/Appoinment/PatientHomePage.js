@@ -34,8 +34,8 @@ function PatientHomePage() {
         </div>
       </div>
 
-      <div className="container border border-dark rounded-3 mt-5 d-flex justify-content-center w-50">
-        <div className="col-md-12 mt-5 w-50">
+      <div className="container  mt-5 d-flex justify-content-center  ">
+        <div className="col-md-12 mt-5 w-75">
           <HealthTip/>
         </div>
       </div>
