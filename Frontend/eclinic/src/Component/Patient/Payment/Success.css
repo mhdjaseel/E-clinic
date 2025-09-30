@@ -1,0 +1,65 @@
+/* Success.css */
+.success-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.success-card {
+  background-color: white;
+  border-radius: 15px;
+  padding: 40px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.success-icon {
+  color: #28a745;
+  font-size: 80px;
+  margin-bottom: 20px;
+}
+
+.success-title {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.success-message {
+  font-size: 1.1rem;
+  color: #666;
+}
+
+/* Simple fade-in animation */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .success-card {
+    padding: 25px;
+  }
+
+  .success-title {
+    font-size: 1.5rem;
+  }
+
+  .success-icon {
+    font-size: 60px;
+  }
+}

@@ -58,12 +58,17 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = [ 'id','username', 'email']
 
+
+class InsuranceDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PatientInsurance
+        fields='__all__'
+
 class PatientSerializer(serializers.ModelSerializer):
     user = UserSerializer()  # Nested serializer to include user details
-
     class Meta:
         model = Patient
-        fields = [ 'id','user', 'phone_number', 'address', 'date_of_birth', 'gender']
+        fields = [ 'id','user', 'phone_number', 'address', 'date_of_birth', 'gender','had_insurance']
 
 class PatientInsuranceSerializer(serializers.ModelSerializer):
     class Meta:
@@ -75,10 +80,6 @@ class PatientInsuranceSerializer(serializers.ModelSerializer):
         return (PatientInsurance.objects.create(owner=self.context['owner'], **validated_data))
     
 
-class InsuranceDetailSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = PatientInsurance
-        fields=['Company_name','Policy_number','Policy_holder','Plan_type','Policy_date','Insurance_img','Verified']
 
 class AppointmentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -148,7 +149,7 @@ class AppoinmentRequestSerializer(serializers.ModelSerializer):
         location=self.context['location']
 
         return Appoinment_request.objects.create(
-            patient=patient,location=location,**validated_data
+            patient=patient,location=location,is_paid=True,**validated_data
         )
     
 

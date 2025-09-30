@@ -1,0 +1,80 @@
+/* Cancel.css */
+.cancel-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+  background: #f8d7da; /* light red / danger background */
+}
+
+.cancel-card {
+  background-color: white;
+  border-radius: 15px;
+  padding: 40px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+.cancel-icon {
+  color: #dc3545; /* bootstrap “danger” red */
+  font-size: 80px;
+  margin-bottom: 20px;
+}
+
+.cancel-title {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.cancel-message {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.cancel-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cancel-button:hover {
+  background-color: #c82333;
+}
+
+/* Reuse fadeIn animation */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 600px) {
+  .cancel-card {
+    padding: 25px;
+  }
+
+  .cancel-title {
+    font-size: 1.5rem;
+  }
+
+  .cancel-icon {
+    font-size: 60px;
+  }
+}

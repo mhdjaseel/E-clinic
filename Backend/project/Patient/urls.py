@@ -20,5 +20,7 @@ urlpatterns = [
     path("AppoinmentRequest/", AppoinmentRequest.as_view(), name="AppoinmentRequest"),
     path("LocationDetails/", LocationDetails.as_view(), name="LocationDetails"),
     path("DepartmentDetails/", DepartmentDetails.as_view(), name="DepartmentDetails"),
-    path("RescheduleRequestView/", RescheduleRequestView.as_view(), name="RescheduleRequestView")
+    path("RescheduleRequestView/", RescheduleRequestView.as_view(), name="RescheduleRequestView"),
+    path("PaymentCheckout/", PaymentCheckout.as_view(), name="PaymentCheckout"),
+    path("PaymentCreation/", PaymentCreation.as_view(), name="PaymentCreation")
 ]

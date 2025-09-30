@@ -7,7 +7,7 @@ class Patient(models.Model):
     gender = models.CharField(max_length=10, choices=[('Male', 'Male'), ('Female', 'Female')])
     date_of_birth = models.DateField()
     address = models.TextField()
-
+    had_insurance=models.BooleanField(default=False)
     def __str__(self):
         return self.user.username
 
@@ -21,7 +21,6 @@ class PatientInsurance(models.Model):
     Policy_date=models.DateField( auto_now=False, auto_now_add=False)
     Insurance_img=models.ImageField( upload_to='insuranceImg/')
     Verified=models.BooleanField(default=False)
-    copay_amount = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
 
     def __str__(self):
         return self.owner.user.username
@@ -62,7 +61,6 @@ class Appointment(models.Model):
     location=models.ForeignKey("admin_app.Location", related_name='appoinments', on_delete=models.CASCADE,null=True)
     departments=models.ForeignKey("admin_app.Department",related_name='appoinments' , on_delete=models.CASCADE,null=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='booked')
-    is_paid=models.BooleanField(default=False)
     def __str__(self):
         return self.patient.user.username
 
@@ -81,5 +79,16 @@ class Appoinment_request(models.Model):
     location=models.ForeignKey( 'admin_app.Location',on_delete=models.CASCADE)
     appointment = models.ForeignKey('Appointment', on_delete=models.SET_NULL, null=True, blank=True, related_name='request')
     status=models.CharField( max_length=20,choices=STATUS_CHOICES,default='pending')
+    is_paid=models.BooleanField(default=False)
+
     def __str__(self):
         return self.patient.user.username
+    
+
+class Payments(models.Model):
+    paid_by=models.ForeignKey(Patient, related_name='payments', on_delete=models.CASCADE,null=True, blank=True)
+    currency=models.CharField( max_length=50,default='usd')
+    amount=models.DecimalField( max_digits=10, decimal_places=2)
+    created_at=models.DateField( auto_now_add=False)
+    stripe_payment_id=models.CharField( max_length=200,null=True,blank=True)
+    request = models.ForeignKey(Appoinment_request, related_name='payments', on_delete=models.CASCADE,null=True,blank=True)

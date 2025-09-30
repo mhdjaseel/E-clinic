@@ -7,6 +7,8 @@ admin.site.register(Appointment)
 admin.site.register(AvailableSlot)
 admin.site.register(TimeSlot)
 admin.site.register(Appoinment_request)
+admin.site.register(Payments)
+
 
 
 

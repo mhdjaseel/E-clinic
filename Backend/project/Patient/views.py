@@ -4,6 +4,8 @@ from rest_framework.response import Response
 from .serializers import *
 from django.contrib.auth import authenticate
 from rest_framework import status
+from django.conf import settings
+import traceback
 from rest_framework_simplejwt.views import TokenObtainPairView,TokenRefreshView
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -11,6 +13,10 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from django.shortcuts import get_object_or_404
 from doctor.models import *
 from admin_app.models import *
+import stripe
+from django.utils import timezone
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
 # Create your views here.
 
 class PatientRegisterView(APIView):
@@ -78,6 +84,7 @@ class PatientInsuranceView(APIView):
         serializer = PatientInsuranceSerializer(data=request.data,context={'owner':patient})
 
         if serializer.is_valid():
+            patient
             serializer.save()
             return Response({'message':'successfully Added Insurance details'},status=201)
         print(serializer.errors)
@@ -301,9 +308,16 @@ class AppoinmentRequest(APIView):
         serializer=AppoinmentRequestSerializer(data=request.data,context={'patient':patient,'location':location})
 
         if serializer.is_valid():
-            serializer.save()
+            appoinment_request=serializer.save()
+
+            payments = Payments.objects.filter(paid_by=patient, request__isnull=True).order_by('-created_at').first()
+
+            if payments:
+                payments.request = appoinment_request
+                payments.save()
             return Response({'message':'Successfully Send Request '},status=status.HTTP_201_CREATED)
 
+        
         return Response({'error':' Try again '},status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -344,11 +358,7 @@ class RescheduleRequestView(APIView):
             location = Location.objects.get(id=location_id)
         except Location.DoesNotExist:
             return Response({'error': 'Location not found'}, status=status.HTTP_404_NOT_FOUND)
-
-
-
-
-        
+    
         request_form.patient = patient
         request_form.location = location
         request_form.departments = departments
@@ -360,3 +370,74 @@ class RescheduleRequestView(APIView):
             'message': 'Successfully Rescheduled Request',
             'data': serializer.data
         }, status=status.HTTP_200_OK)
+
+class PaymentCheckout(APIView):
+    permission_classes=[IsAuthenticated]
+    def post(self,request):
+        amount=request.data.get('amount')
+        paid_by=request.user.user_details
+        currency=request.data.get('currency')
+              
+        try:
+
+            YOUR_DOMAIN = "http://localhost:3000"
+
+            stripe_amount = int(float(amount) * 100)
+            paid_by_label = 'Appoinment Fee'
+            session = stripe.checkout.Session.create(
+                 payment_method_types=['card'],
+                line_items=[{
+                    'price_data': {
+                        'currency': currency,
+                        'product_data': {
+                            'name': paid_by_label,
+                        },
+                        'unit_amount': stripe_amount,
+                    },
+                    'quantity': 1,
+                }],
+                mode='payment',
+                success_url=YOUR_DOMAIN + '/Success?session_id={CHECKOUT_SESSION_ID}',
+                cancel_url=YOUR_DOMAIN + '/cancel',
+                metadata={
+                    "user_id": str(paid_by.id),
+                }
+                
+            )
+
+            return Response({'sessionId':session.id},status=status.HTTP_200_OK)
+        except Exception as e:
+            print("Exception occurred:")
+            traceback.print_exc()
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class PaymentCreation(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        session_id = request.data.get('session_id')
+        user = request.user
+
+        try:
+            session = stripe.checkout.Session.retrieve(session_id)
+
+            if session.payment_status == 'paid':
+                stripe_amount = session.amount_total / 100  
+                currency = session.currency
+
+                if not Payments.objects.filter(stripe_payment_id=session.id).exists():
+                    patient = Patient.objects.get(user=user)
+                    Payments.objects.create(
+                        paid_by=patient,
+                        amount=stripe_amount,
+                        currency=currency,
+                        stripe_payment_id=session.id,
+                        created_at=timezone.now().date()
+                    )
+
+                return Response({"message": "Payment verified and saved."}, status=status.HTTP_200_OK)
+            else:
+                return Response({"error": "Payment not successful."}, status=status.HTTP_400_BAD_REQUEST)
+
+        except stripe.error.StripeError as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

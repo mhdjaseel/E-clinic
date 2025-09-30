@@ -48,7 +48,6 @@ function HealthTip() {
           className="carousel slide"
           data-bs-ride="carousel"
         >
-          {/* Carousel Indicators */}
           <div className="carousel-indicators">
             {Data.map((_, index) => (
               <button
@@ -89,7 +88,6 @@ function HealthTip() {
 </div>
 
 
-          {/* Controls */}
           <button
             className="carousel-control-prev"
             type="button"

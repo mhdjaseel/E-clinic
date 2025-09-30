@@ -30,6 +30,8 @@ import AdminLogin from './Component/Admin/Profile/AdminLogin';
 import AdminDashboard from './Component/Admin/Profile/AdminDashboard';
 import AppoinmentRequest from './Component/Patient/Appoinment/AppoinmentRequest';
 import CreateAppoinments from './Component/Admin/Appoinments/CreateAppoinments';
+import Success from './Component/Patient/Payment/Success';
+import Cancel from './Component/Patient/Payment/Cancel';
 function App() {
   return (
     <div className="App">
@@ -64,7 +66,9 @@ function App() {
               <Route path='AdminLogin/' element={<AdminLogin/>}/>
               <Route path='AdminDashboard/' element={<AdminDashboard/>}/>
               <Route path='CreateAppoinments/' element={<CreateAppoinments/>}/>
-              
+              <Route path='Success/' element={<Success/>}/>
+              <Route path='Cancel/' element={<Cancel/>}/>
+
               
 
               <Route path='PresciptionForm/' element={    

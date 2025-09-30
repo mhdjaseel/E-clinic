@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
-
+from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ajgi8x6mz@x2h5wivu927kt+#-b=5_i$s8p(y-^30to@n_nv#6'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -147,3 +147,7 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),  # default is 5 minutes
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
+
+
+STRIPE_PUBLISHABLE_KEY=config('STRIPE_PUBLISHABLE_KEY')
+STRIPE_SECRET_KEY=config('STRIPE_SECRET_KEY')
