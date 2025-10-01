@@ -173,7 +173,6 @@ function CreateAppointments() {
   
   return (
     <div>
-      <AdminNavbar />
       <div className="container mt-3">
         {data.status === "rescheduled" && (
           <div className="card shadow-sm">

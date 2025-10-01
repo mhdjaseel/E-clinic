@@ -36,7 +36,7 @@ function AdminLogin() {
       localStorage.setItem("admin_name", username);
 
       toast.success("Login successful!");
-      navigate('/AdminDashboard')
+      navigate('/AdminLayout/AdminDashboard')
     } catch (error) {
       toast.error(error.response?.data?.error);
     }

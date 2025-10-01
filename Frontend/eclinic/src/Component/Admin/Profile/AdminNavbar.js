@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import AdminSidebar from './AdminSidebar'
 
 function AdminNavbar() {
   const username = localStorage.getItem('admin_name')
@@ -11,7 +12,7 @@ function AdminNavbar() {
 
   }
   return (
-    <div>
+    <div className='position-sticky'>
          <nav className="navbar navbar-expand-lg navbar-light bg-light" style={{ fontFamily: "Arial" }}>
   <div className="container-fluid">
  
@@ -22,6 +23,7 @@ function AdminNavbar() {
       className="navbar-toggler"
       type="button"
       data-bs-toggle="collapse"
+
       data-bs-target="#navbarNav"
       aria-controls="navbarNav"
       aria-expanded="false"

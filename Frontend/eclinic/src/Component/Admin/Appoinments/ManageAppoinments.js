@@ -2,6 +2,7 @@ import axios from 'axios'
 import React ,{useState,useEffect}from 'react'
 import {toast} from 'react-toastify'
 import {useNavigate} from 'react-router-dom'
+import AdminSidebar from '../Profile/AdminSidebar'
 function ManageAppoinments() {
     const navigate = useNavigate()
     const [Appoinments, setAppoinments] = useState([]);
@@ -38,10 +39,14 @@ function ManageAppoinments() {
 
     const HandleCreate = async (data)=>{
         console.log(data)
-        navigate('/CreateAppoinments',{state:{data}})
+        navigate('/AdminLayout/CreateAppoinments',{state:{data}})
     }
   return (
-    <div>
+<>
+
+
+
+    <div className='col-md-12 d-flex'>
         <div className="container mt-4">
             <div className="row">
             <div className="col-md-6">
@@ -93,6 +98,8 @@ function ManageAppoinments() {
             </div>
         </div>
     </div>
+</>
+
   )
 }
 
