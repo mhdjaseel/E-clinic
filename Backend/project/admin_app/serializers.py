@@ -58,3 +58,9 @@ class HealthTipsDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = HealthTips
         fields ='__all__'
+
+class PaymentSerializer(serializers.ModelSerializer):
+    paid_by = PatientSerializer()
+    class Meta:
+        model = Payments
+        fields ='__all__'

@@ -1,15 +1,17 @@
 import './Success.css';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect ,useRef} from 'react';
 import axios from 'axios'
 
 const Success = () => {
      const [params] = useSearchParams();
+     const hasCalled = useRef(false);
 const navigate = useNavigate()
   useEffect(() => {
     const sessionId = params.get('session_id');
 
-    if (sessionId) {
+    if (sessionId && !hasCalled.current) {
+        hasCalled.current = true;
       axios.post(
         'http://localhost:8000/PaymentCreation/',
         { session_id: sessionId },

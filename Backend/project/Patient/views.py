@@ -135,7 +135,6 @@ class AppointmentView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        print("REQUEST DATA:", request.data)
 
         patient_id = request.data.get('patient')
         slot_id = request.data.get('slot')
@@ -219,6 +218,10 @@ class CancelAppoinmentView(APIView):
 
     def delete(self,request,pk):
         appoinment=Appointment.objects.get(id=pk)
+        request_instance=Appoinment_request.objects.get(appointment=appoinment)
+        request_instance.status ='cancel'
+        request_instance.save()
+
         slot_id=appoinment.slot.id
         not_booked=AvailableSlot.objects.get(id=slot_id)
         not_booked.is_booked=False

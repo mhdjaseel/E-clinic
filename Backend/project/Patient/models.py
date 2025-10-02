@@ -72,6 +72,7 @@ class Appoinment_request(models.Model):
         ('booked', 'booked'),
         ('pending', 'pending'),
         ('rescheduled', 'rescheduled'),
+        ('cancel','cancel')
     ]
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE,related_name='Request')
     date=models.DateField()

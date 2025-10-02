@@ -118,7 +118,7 @@ function CreateAppointments() {
       setSelectedSlots("");
       const res = response.data.message;
       toast.success(res);
-      navigate("/AdminDashboard");
+          navigate('/AdminLayout/AdminDashboard')
     } catch (error) {
       toast.error("failed try again");
       console.log(error.response?.data);
@@ -164,7 +164,7 @@ function CreateAppointments() {
       setSelectedSlots("");
       const res = response.data.message;
       toast.success(res);
-      navigate("/AdminDashboard");
+            navigate('/AdminLayout/AdminDashboard')
     } catch (error) {
       toast.error("failed try again");
       console.log(error.response?.data);
