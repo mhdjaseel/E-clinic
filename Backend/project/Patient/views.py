@@ -218,15 +218,15 @@ class CancelAppoinmentView(APIView):
 
     def delete(self,request,pk):
         appoinment=Appointment.objects.get(id=pk)
-        request_instance=Appoinment_request.objects.get(appointment=appoinment)
-        request_instance.status ='cancel'
-        request_instance.save()
-
+        request_obj= Appoinment_request.objects.get(appointment=appoinment)
+        request_obj.delete() 
         slot_id=appoinment.slot.id
         not_booked=AvailableSlot.objects.get(id=slot_id)
         not_booked.is_booked=False
         not_booked.save()
-        appoinment.delete()
+        appoinment.status ='canceled'
+        appoinment.slot=None
+        appoinment.save()
         return Response({'message':'successfully Deleted '},status.HTTP_200_OK)
     
 class RescheduleView(APIView):

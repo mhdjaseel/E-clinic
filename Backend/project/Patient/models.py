@@ -56,7 +56,7 @@ class Appointment(models.Model):
     ]
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     doctor = models.ForeignKey('doctor.Doctor', on_delete=models.CASCADE)
-    slot = models.ForeignKey(AvailableSlot, on_delete=models.CASCADE, unique=True, related_name='appoinmentSlot')
+    slot = models.ForeignKey(AvailableSlot, on_delete=models.CASCADE, unique=True, related_name='appoinmentSlot', blank=True,null=True)
     booked_at = models.DateTimeField(auto_now_add=True)
     location=models.ForeignKey("admin_app.Location", related_name='appoinments', on_delete=models.CASCADE,null=True)
     departments=models.ForeignKey("admin_app.Department",related_name='appoinments' , on_delete=models.CASCADE,null=True)

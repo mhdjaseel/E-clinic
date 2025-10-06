@@ -35,6 +35,7 @@ function AdminDashboard() {
     };
 
     const FetchPaymentData = async () => {
+    const token = localStorage.getItem("admin_access");
       try {
         const response = await axios.get(
           "http://127.0.0.1:8000/adminapp/RecentPayments",
@@ -70,19 +71,13 @@ function AdminDashboard() {
       description: "Users requested to reschedule their appointments",
       route: "/AdminLayout/ManageAppoinments",
     },
-    {
-      title: "Cancelled Appointments",
-      count: Data?.cancel,
-      icon: "fa-calendar-times",
-      description: "Appointments that were cancelled by users",
-      route: "/AdminLayout/ManageAppoinments",
-    },
+
     {
       title: "Total Users",
       count: Data?.users,
       icon: "fa-users",
       description: "Number of registered users",
-      route: "/AdminLayout/ManageAppoinments",
+      route: "/AdminLayout/TotalUsers",
     },
     {
       title: "Total Appointments",
@@ -108,7 +103,7 @@ function AdminDashboard() {
           <div className="col-md-4 mb-4" key={index}>
             <div
               className="card h-100 shadow-sm border-0 hover-effect"
-              onClick={() => navigate(item.route)}
+              onClick={() => navigate(item.route,{state:item.title})}
               style={{ cursor: "pointer", borderRadius: "12px" }}
             >
               <div className="card-body">
@@ -143,7 +138,7 @@ function AdminDashboard() {
                 <h5 className="mb-0">Recent Payments</h5>
               </div>
               <div className="card-body">
-                <table class="table">
+                <table className="table">
   <thead>
     <tr>
       <th scope="col">Id</th>

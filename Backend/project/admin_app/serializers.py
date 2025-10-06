@@ -64,3 +64,29 @@ class PaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Payments
         fields ='__all__'
+
+class DoctorDetails(serializers.ModelSerializer):
+    specialization = DepartmentDetailsSerializer()
+    hospital_name = HospitalSerializer()
+    class Meta : 
+        model = Doctor
+        fields = '__all__'
+        
+class InsuranceSerializer(serializers.ModelSerializer):
+    class Meta : 
+        model = PatientInsurance
+        fields = '__all__'
+
+class PatientDetails(serializers.ModelSerializer):
+    insurance = InsuranceSerializer(many=True, read_only=True)
+
+    class Meta : 
+        model = Patient
+        fields = '__all__'
+
+class UserDetails(serializers.ModelSerializer):
+    doctor = DoctorDetails()
+    user_details = PatientDetails()
+    class Meta : 
+        model =  User
+        fields = ['id', 'username','email','user_type', 'user_details','doctor']

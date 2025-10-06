@@ -34,6 +34,8 @@ import Success from "./Component/Patient/Payment/Success";
 import Cancel from "./Component/Patient/Payment/Cancel";
 import ManageAppoinments from "./Component/Admin/Appoinments/ManageAppoinments";
 import AdminLayout from "./Component/Admin/Profile/AdminLayout";
+import TotalUsers from "./Component/Admin/DashBoard/TotalUsers";
+import UserDetailsPage from "./Component/Admin/DashBoard/UserDetailsPage";
 function App() {
   return (
     <div className="App">
@@ -71,10 +73,14 @@ function App() {
           <Route path="PatientsHistory/" element={<PatientsHistory />} />
           <Route path="AdminLogin/" element={<AdminLogin />} />
 
+          
           <Route path="AdminLayout" element={<AdminLayout/>}>
             <Route index path="AdminDashboard" element={<AdminDashboard />}/>
             <Route path="ManageAppoinments" element={<ManageAppoinments />} />
             <Route path="CreateAppoinments" element={<CreateAppoinments />} />
+            <Route path="TotalUsers" element={<TotalUsers/>} />
+            <Route path="UserDetailsPage" element={<UserDetailsPage/>}/>
+
           </Route>
 
           <Route path="Success/" element={<Success />} />

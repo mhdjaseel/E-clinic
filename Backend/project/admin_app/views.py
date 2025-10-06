@@ -66,7 +66,7 @@ class AppoinmentsCounts(APIView):
     def get(self,request):
         bookings=Appoinment_request.objects.filter(status='pending').count()
         reschedule=Appoinment_request.objects.filter(status='rescheduled').count()
-        cancel=Appoinment_request.objects.filter(status='cancel').count()
+        cancel=Appointment.objects.filter(status='Canceled').count()
         appoinments=Appointment.objects.all().count()
         users=User.objects.all().count()
         payments=Payments.objects.all().count()
@@ -80,7 +80,17 @@ class AppoinmentsCounts(APIView):
         },status=status.HTTP_200_OK)
     
 class RecentPayments(APIView):
+    permission_classes=[IsAuthenticated]
     def get(self,request):
         payments=Payments.objects.order_by('-created_at')[:5]
         serializer = PaymentSerializer(payments,many = True)
         return Response(serializer.data,status=status.HTTP_200_OK)
+    
+class TotalUserList(APIView):
+
+    def get(self,request):
+        users=User.objects.all().exclude(user_type = 'admin')
+        serializer = UserDetails(users,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+
+    

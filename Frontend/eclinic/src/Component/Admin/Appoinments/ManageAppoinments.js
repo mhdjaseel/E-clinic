@@ -1,9 +1,12 @@
 import axios from 'axios'
 import React ,{useState,useEffect}from 'react'
 import {toast} from 'react-toastify'
-import {useNavigate} from 'react-router-dom'
+import {useNavigate,useLocation} from 'react-router-dom'
 import AdminSidebar from '../Profile/AdminSidebar'
 function ManageAppoinments() {
+    const location = useLocation()
+
+    const title = location.state || {}
     const navigate = useNavigate()
     const [Appoinments, setAppoinments] = useState([]);
     useEffect(()=>{
@@ -43,64 +46,56 @@ function ManageAppoinments() {
     }
   return (
 <>
-
-
-
-    <div className='col-md-12 d-flex'>
-        <div className="container mt-4">
-            <div className="row">
-            <div className="col-md-6">
-                <h2 className='text-center'>Appointment Requests </h2>
-                    {
-                        Appoinments.map((item)=>(
-                            item.status ==='pending'&& (
-                                <div className="card" key={item.id}>
-                    <div className="card-header">
-                        patient :{item.patient.user.username}
-                    </div>
-                    <div className="card-body">
-                       <p> Date: {item.date} </p>
-                        <p>Department:{item.departments}</p>
-                        <p>Prefer Location :{item.location.location_name}</p>
-
-                    </div>
-                    <div className="btn d-flex justify-content-start">
-                        <button className='btn btn-primary btn-sm ' onClick={()=>HandleCreate(item)}>create Appoinment</button>
-                    </div>
-                </div>
-                            )     
-                        ))
-                    }
-            </div>
-            <div className="col-md-6">
-                <h2 className='text-center'>Reschedule Requests </h2>
-                 {
-                        Appoinments.map((item)=>(
-                            item.status ==='rescheduled'&& (
-                                <div className="card" key={item.id}>
-                    <div className="card-header">
-                        patient :{item.patient.user.username}
-                    </div>
-                    <div className="card-body">
-                       <p> Date: {item.date} </p>
-                        <p>Department:{item.departments}</p>
-                        <p>Prefer Location :{item.location.location_name}</p>
-
-                    </div>
-                    <div className="btn d-flex justify-content-start">
-                        <button className='btn btn-primary btn-sm ' onClick={()=>HandleCreate(item)}>create Appoinment</button>
-                    </div>
-                </div>
-                            )     
-                        ))
-                    }
-            </div>
-            </div>
+<div className='container mt-4'>
+    <div className='row justify-content-center'>
+        <div className="col-12">
+            <h2 className='text-center mb-4'>
+                {title === 'Appointment Requests' ? 'Appointment Requests' : 'Reschedule Requests'}
+            </h2>
         </div>
+
+        {
+            Appoinments.map((item) => {
+                const isMatchingStatus = title === 'Appointment Requests'
+                    ? item.status === 'pending'
+                    : item.status === 'rescheduled';
+
+                if (!isMatchingStatus) return null;
+
+                return (
+                    <div className="col-sm-12 col-md-6 col-lg-4 mb-4" key={item.id}>
+                        <div className="card h-100 shadow-sm border-0">
+                            <div className="card-header bg-primary text-white">
+                                <strong>Patient:</strong> {item.patient.user.username}
+                            </div>
+                            <div className="card-body">
+                                <p><strong>Date:</strong> {item.date}</p>
+                                <p><strong>Department:</strong> {item.departments}</p>
+                                <p><strong>Preferred Location:</strong> {item.location.location_name}</p>
+                            </div>
+                            <div className="card-footer bg-white d-flex justify-content-start">
+                                <button
+                                    className='btn btn-outline-primary btn-sm'
+                                    onClick={() => HandleCreate(item)}
+                                >
+                                    Create Appointment
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            })
+        }
     </div>
+</div>
+
 </>
 
   )
 }
 
 export default ManageAppoinments
+
+
+
+           
