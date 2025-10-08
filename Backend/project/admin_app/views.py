@@ -87,10 +87,33 @@ class RecentPayments(APIView):
         return Response(serializer.data,status=status.HTTP_200_OK)
     
 class TotalUserList(APIView):
+    permission_classes=[IsAuthenticated]
 
     def get(self,request):
         users=User.objects.all().exclude(user_type = 'admin')
         serializer = UserDetails(users,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
 
-    
+class BlockUserView(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def post(self,request):
+        id = request.data.get('id')
+        user = User.objects.get(id=id)
+        if user is not None :
+            user.is_active = False
+            user.save()
+            return Response({'message':'block User'},status=status.HTTP_200_OK)
+        
+
+class UnBlockUserView(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def post(self,request):
+        id = request.data.get('id')
+        user = User.objects.get(id=id)
+        if user  :
+            user.is_active = True
+            user.save()
+            return Response({'message':'Unblock User'},status=status.HTTP_200_OK)
+            

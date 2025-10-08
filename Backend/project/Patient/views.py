@@ -38,9 +38,9 @@ class PatientLoginView(APIView):
             password= serializer.data['password']
 
             user=authenticate(username=username,password=password)
+
             if user is not None :
                 if user.user_type =='patient':
-                    print(user.user_type)
 
                     refresh = RefreshToken.for_user(user)
 

@@ -6,8 +6,6 @@ import { toast } from 'react-toastify';
 function TotalUsers() {
   const navigate = useNavigate();
   const [Users, setUsers] = useState([]);
-
-  useEffect(() => {
     const FetchData = async () => {
       const token = localStorage.getItem('admin_access');
       try {
@@ -26,21 +24,57 @@ function TotalUsers() {
         }
       }
     };
-
+  useEffect(() => {
     FetchData();
   }, []);
 
+    const BlockUser = async(id,username)=>{
+      const token = localStorage.getItem('admin_access');
+      try {
+        console.log(id)
+        await axios.post('http://127.0.0.1:8000/adminapp/BlockUserView/',{id:id},{headers:
+          {
+            Authorization:`Bearer ${token}`
+          }
+        })
+        toast.success('blocked '+username)
+    FetchData();
+
+      } catch (error) {
+        console.log(error);
+        if (error?.response && error.response.status === 401) {
+          toast.error('Token Expired. Please Login');
+          navigate('/AdminLogin');
+        }
+      }
+        
+    }
+
+        const UnBlockUser = async(id,username)=>{
+      const token = localStorage.getItem('admin_access');
+      try {
+        console.log(id)
+        await axios.post('http://127.0.0.1:8000/adminapp/UnBlockUserView/',{id:id},{headers:
+          {
+            Authorization:`Bearer ${token}`
+          }
+        })
+        toast.success('Unblocked '+username)
+    FetchData();
+
+      } catch (error) {
+        console.log(error);
+        if (error?.response && error.response.status === 401) {
+          toast.error('Token Expired. Please Login');
+          navigate('/AdminLogin');
+        }
+      }
+        
+    }
   return (
     <div className="container my-5">
-      {/* Header Section */}
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="fw-bold">Total Users</h2>
-        <button className="btn btn-success" onClick={() => navigate('/admin/create-user')}>
-          ➕ Create User
-        </button>
-      </div>
+      
 
-      {/* Table Section */}
       <div className="card shadow-sm">
         <div className="card-body">
           <table className="table table-striped table-hover align-middle">
@@ -69,9 +103,18 @@ function TotalUsers() {
                       <button className="btn btn-sm btn-outline-info me-2" onClick={()=>{navigate('/AdminLayout/UserDetailsPage' , {state:item})}}>
                         👁 View
                       </button>
-                      <button className="btn btn-sm btn-outline-danger">
+                      {
+                        item.is_active === true ?(
+                      <button className="btn btn-sm btn-outline-danger" onClick={()=>{BlockUser(item.id,item.username)}}>
                         🚫 Block
                       </button>
+                        ):
+                      (
+                        <button className="btn btn-sm btn-outline-success" onClick={()=>{UnBlockUser(item.id,item.username)}}>
+                        UnBlock
+                      </button>
+                      )
+                      }
                     </td>
                   </tr>
                 ))

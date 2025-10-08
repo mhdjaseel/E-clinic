@@ -89,4 +89,4 @@ class UserDetails(serializers.ModelSerializer):
     user_details = PatientDetails()
     class Meta : 
         model =  User
-        fields = ['id', 'username','email','user_type', 'user_details','doctor']
+        fields = ['id', 'username','email','is_active','user_type', 'user_details','doctor']
