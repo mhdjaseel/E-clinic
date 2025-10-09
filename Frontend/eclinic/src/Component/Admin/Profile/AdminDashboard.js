@@ -71,6 +71,13 @@ function AdminDashboard() {
       description: "Users requested to reschedule their appointments",
       route: "/AdminLayout/ManageAppoinments",
     },
+      {
+      title: "Insurance Verifications",
+      count: Data?.insurance,
+      icon: "fas fa-id-card",
+      description: "Verify insurance details provided by patients",
+      route: "/AdminLayout/InsuranceVerify",
+    },
 
     {
       title: "Total Users",
@@ -84,14 +91,14 @@ function AdminDashboard() {
       count: Data?.appoinments,
       icon: "fa-notes-medical",
       description: "All appointments including completed and pending",
-      route: "/AdminLayout/ManageAppoinments",
+      route: "/AdminLayout/TotalAppoinments",
     },
     {
       title: "Total Payments",
       count: Data?.payments,
       icon: "fa-credit-card",
       description: `Total payments received to date`,
-      route: "/AdminLayout/ManageAppoinments",
+      route: "/AdminLayout/TotalPayments",
     },
   ];
 

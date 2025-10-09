@@ -36,6 +36,11 @@ import ManageAppoinments from "./Component/Admin/Appoinments/ManageAppoinments";
 import AdminLayout from "./Component/Admin/Profile/AdminLayout";
 import TotalUsers from "./Component/Admin/DashBoard/TotalUsers";
 import UserDetailsPage from "./Component/Admin/DashBoard/UserDetailsPage";
+import TotalAppoinments from "./Component/Admin/DashBoard/TotalAppoinments";
+import AppoinmentData from "./Component/Admin/DashBoard/AppoinmentData";
+import TotalPayments from "./Component/Admin/DashBoard/TotalPayments";
+import InsuranceVerify from "./Component/Admin/DashBoard/InsuranceVerify";
+import InsuranceData from "./Component/Admin/DashBoard/InsuranceData";
 function App() {
   return (
     <div className="App">
@@ -80,6 +85,12 @@ function App() {
             <Route path="CreateAppoinments" element={<CreateAppoinments />} />
             <Route path="TotalUsers" element={<TotalUsers/>} />
             <Route path="UserDetailsPage" element={<UserDetailsPage/>}/>
+            <Route path="TotalAppoinments" element={<TotalAppoinments/>}/>
+            <Route path="AppoinmentData" element={<AppoinmentData/>}/>
+            <Route path="TotalPayments" element={<TotalPayments/>}/>
+            <Route path="InsuranceVerify" element={<InsuranceVerify/>}/>
+            <Route path="InsuranceData" element={<InsuranceData/>}/>
+
 
 
           </Route>

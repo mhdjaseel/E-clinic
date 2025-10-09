@@ -41,6 +41,8 @@ class AvailableSlotsSerializer(serializers.ModelSerializer):
 class AppoinmentsDetailSerializer(serializers.ModelSerializer):
     patient=PatientSerializer()
     doctor=DoctorsAvailableSerializer()
+    departments = DepartmentDetailsSerializer()
+    location = LocationSerializer()
     slot=AvailableSlotsSerializer()
     class Meta:
         model = Appointment
@@ -73,6 +75,7 @@ class DoctorDetails(serializers.ModelSerializer):
         fields = '__all__'
         
 class InsuranceSerializer(serializers.ModelSerializer):
+    owner = PatientSerializer()
     class Meta : 
         model = PatientInsurance
         fields = '__all__'

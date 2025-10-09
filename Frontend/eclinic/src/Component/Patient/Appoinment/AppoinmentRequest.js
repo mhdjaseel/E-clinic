@@ -237,7 +237,6 @@ const HandleInsurance = (e) => {
             </div>
 
 {
-  /** If not paid yet (assuming Paid is a boolean) */
   !Paid ? (
     <>
       <div className="mt-3">
@@ -277,15 +276,15 @@ const HandleInsurance = (e) => {
           Found ? (
             <>
               <Checkout amount={50} />
-              <p>Please complete payment to continue</p>
+              <p className="fs-5">Please complete payment to continue</p>
             </>
           ) : (
-            <p>Insurance not found</p>
+            <p className="fs-5 text-danger">Insurance not found</p>
           )
         ) : (
           <>
             <Checkout amount={100} />
-            <p>Please complete payment to continue</p>
+            <p className="fs-5">Please complete payment to continue</p>
           </>
         )
       )}

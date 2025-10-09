@@ -10,6 +10,10 @@ urlpatterns = [
     path("TotalUserList/", TotalUserList.as_view(), name="TotalUserList"),
     path("BlockUserView/", BlockUserView.as_view(), name="BlockUserView"),
     path("UnBlockUserView/", UnBlockUserView.as_view(), name="UnBlockUserView"),
+    path("TotalAppoinmentList/", TotalAppoinmentList.as_view(), name="TotalAppoinmentList"),
+    path("TotalPayments/", TotalPayments.as_view(), name="TotalPayments"),
+    path("InsuranceVerify/", InsuranceVerify.as_view(), name="InsuranceVerify"),
+    path("InsuranceVerified/", InsuranceVerified.as_view(), name="InsuranceVerified")
 
     
 ]

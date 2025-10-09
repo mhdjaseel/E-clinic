@@ -9,6 +9,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from Patient.models import *
 from doctor.models import *
 from admin_app.models import *
+from django.db.models import Q
 
 # Create your views here.
 
@@ -67,16 +68,18 @@ class AppoinmentsCounts(APIView):
         bookings=Appoinment_request.objects.filter(status='pending').count()
         reschedule=Appoinment_request.objects.filter(status='rescheduled').count()
         cancel=Appointment.objects.filter(status='Canceled').count()
-        appoinments=Appointment.objects.all().count()
+        appoinments=Appointment.objects.filter(status='booked').count()
         users=User.objects.all().count()
         payments=Payments.objects.all().count()
+        insurance = PatientInsurance.objects.filter(Verified=False).count()
         return Response ({
             'booking':bookings,
             'reshedule':reschedule,
             'cancel':cancel,
             'appoinments':appoinments,
             'users':users,
-            'payments':payments
+            'payments':payments,
+            'insurance':insurance
         },status=status.HTTP_200_OK)
     
 class RecentPayments(APIView):
@@ -116,4 +119,39 @@ class UnBlockUserView(APIView):
             user.is_active = True
             user.save()
             return Response({'message':'Unblock User'},status=status.HTTP_200_OK)
-            
+
+class TotalAppoinmentList(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def get(self,request):
+        appoinments = Appointment.objects.filter(Q (status='booked') | Q (status='rescheduled'))
+        serializer = AppoinmentsDetailSerializer(appoinments, many=True)
+        return Response(serializer.data , status=status.HTTP_200_OK)
+
+class TotalPayments(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def get(self,request):
+        payments = Payments.objects.all()
+        serializer = PaymentSerializer(payments,many = True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+
+class InsuranceVerify(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def get(self,request):
+        insurance = PatientInsurance.objects.filter(Verified=False)
+        serializer = InsuranceSerializer(insurance, many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    
+class InsuranceVerified(APIView):
+    permission_classes=[IsAuthenticated]
+    def post(self,request):
+        id = request.data.get('id')
+        insurance = PatientInsurance.objects.get(id=id)
+        print(insurance.Verified)
+        insurance.Verified = True
+        insurance.save()
+        print( insurance.Verified)
+        return Response({'message':'Insurance Verified'},status=status.HTTP_200_OK)
+        
