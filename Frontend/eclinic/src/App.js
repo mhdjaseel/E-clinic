@@ -41,6 +41,11 @@ import AppoinmentData from "./Component/Admin/DashBoard/AppoinmentData";
 import TotalPayments from "./Component/Admin/DashBoard/TotalPayments";
 import InsuranceVerify from "./Component/Admin/DashBoard/InsuranceVerify";
 import InsuranceData from "./Component/Admin/DashBoard/InsuranceData";
+import Resourses from "./Component/Admin/DashBoard/Resourses";
+import HospitalData from "./Component/Admin/DashBoard/Resources/HospitalData";
+import DepartmentData from "./Component/Admin/DashBoard/Resources/DepartmentData";
+import LocationData from "./Component/Admin/DashBoard/Resources/LocationData";
+import Timeslots from "./Component/Admin/DashBoard/Resources/Timeslots";
 function App() {
   return (
     <div className="App">
@@ -90,6 +95,11 @@ function App() {
             <Route path="TotalPayments" element={<TotalPayments/>}/>
             <Route path="InsuranceVerify" element={<InsuranceVerify/>}/>
             <Route path="InsuranceData" element={<InsuranceData/>}/>
+            <Route path="Resourses" element={<Resourses/>}/>
+            <Route path="HospitalData" element={<HospitalData/>}/>
+            <Route path="DepartmentData" element={<DepartmentData/>}/>
+            <Route path="LocationData" element={<LocationData/>}/>
+            <Route path="Timeslots" element={<Timeslots/>}/>
 
 
 

@@ -80,7 +80,8 @@ class PatientInsuranceView(APIView):
             patient = Patient.objects.get(user=request.user)
         except patient.DoesNotExist():
             return Response({'message':'Profile not Existed'},status=404)
-
+        patient.had_insurance = True
+        patient.save()
         serializer = PatientInsuranceSerializer(data=request.data,context={'owner':patient})
 
         if serializer.is_valid():

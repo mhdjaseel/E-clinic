@@ -28,11 +28,11 @@ function AdminSidebar() {
           </li>
 
           <li className="nav-item">
-                        <Link className="nav-link active text-white" to='#'>Users</Link>
+                        <Link className="nav-link active text-white" to='/AdminLayout/TotalUsers'>Users</Link>
 
           </li>
           <li className="nav-item ">
-                        <Link className="nav-link active text-white" to='/AdminLogin'>Resources</Link>
+                        <Link className="nav-link active text-white" to='/AdminLayout/Resourses'>Resources</Link>
 
           </li>
 

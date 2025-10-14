@@ -13,7 +13,12 @@ urlpatterns = [
     path("TotalAppoinmentList/", TotalAppoinmentList.as_view(), name="TotalAppoinmentList"),
     path("TotalPayments/", TotalPayments.as_view(), name="TotalPayments"),
     path("InsuranceVerify/", InsuranceVerify.as_view(), name="InsuranceVerify"),
-    path("InsuranceVerified/", InsuranceVerified.as_view(), name="InsuranceVerified")
+    path("InsuranceVerified/", InsuranceVerified.as_view(), name="InsuranceVerified"),
+    path("ResourseCounts/", ResourseCounts.as_view(), name="ResourseCounts"),
+    path("HospitalDetailsView/", HospitalDetailsView.as_view(), name="HospitalDetailsView"),
+    path("departmentsAndLocations/", departmentsAndLocations.as_view(), name="departmentsAndLocations"),
+    path("CreateHospitalView/", CreateHospitalView.as_view(), name="CreateHospitalView"),
+    path("DeleteHospitalView/", DeleteHospitalView.as_view(), name="DeleteHospitalView")
 
     
 ]

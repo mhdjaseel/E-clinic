@@ -149,9 +149,67 @@ class InsuranceVerified(APIView):
     def post(self,request):
         id = request.data.get('id')
         insurance = PatientInsurance.objects.get(id=id)
-        print(insurance.Verified)
         insurance.Verified = True
         insurance.save()
-        print( insurance.Verified)
         return Response({'message':'Insurance Verified'},status=status.HTTP_200_OK)
+        
+class ResourseCounts(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def get(self,request):
+        hospitals = Hospitals.objects.all().count()
+        locations = Location.objects.all().count()
+        departments = Department.objects.all().count()
+        timeslots = TimeSlot.objects.all().count()
+
+        return Response({
+            'hospitals':hospitals,
+            'locations':locations,
+            'departments':departments,
+            'timeslots':timeslots
+        },status=status.HTTP_200_OK)
+    
+class HospitalDetailsView(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def get(self,request):
+        hospitals = Hospitals.objects.all()
+        serializer = HospitalSerializer(hospitals, many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    
+class departmentsAndLocations(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def get(self,request):
+        dep_obj = Department.objects.all()
+        dep_serializer = DepartmentDetailsSerializer(dep_obj,many=True)
+
+        loc_obj = Location.objects.all()
+        Loc_serializer = LocationSerializer(loc_obj,many=True)
+
+        return Response({
+            'departments':dep_serializer.data,
+            'locations':Loc_serializer.data
+        },status=status.HTTP_200_OK)
+
+class CreateHospitalView(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def post(self,request):
+        serializer = CreateHospitalSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_200_OK)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+    
+class DeleteHospitalView(APIView):
+    def delete(self,request):
+        id=request.data.get('id')
+        try:
+            hospital = Hospitals.objects.get(id=id)
+            if hospital :
+                hospital.delete()
+                return Response(status=status.HTTP_200_OK)
+        except Hospitals.DoesNotExist:
+            return Response({"error": "Hospital not found"}, status=status.HTTP_404_NOT_FOUND)
         

@@ -93,3 +93,10 @@ class UserDetails(serializers.ModelSerializer):
     class Meta : 
         model =  User
         fields = ['id', 'username','email','is_active','user_type', 'user_details','doctor']
+
+class CreateHospitalSerializer(serializers.ModelSerializer):
+    class Meta : 
+        model = Hospitals
+        fields = '__all__'
+
+    
