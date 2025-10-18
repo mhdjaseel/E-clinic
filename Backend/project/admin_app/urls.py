@@ -18,7 +18,18 @@ urlpatterns = [
     path("HospitalDetailsView/", HospitalDetailsView.as_view(), name="HospitalDetailsView"),
     path("departmentsAndLocations/", departmentsAndLocations.as_view(), name="departmentsAndLocations"),
     path("CreateHospitalView/", CreateHospitalView.as_view(), name="CreateHospitalView"),
-    path("DeleteHospitalView/", DeleteHospitalView.as_view(), name="DeleteHospitalView")
+    path("DeleteHospitalView/", DeleteHospitalView.as_view(), name="DeleteHospitalView"),
+    path("LocationDetailsView/", LocationDetailsView.as_view(), name="LocationDetailsView"),
+    path("CreateLocationView/", CreateLocationView.as_view(), name="CreateLocationView"),
+    path("DeleteLocationView/", DeleteLocationView.as_view(), name="DeleteLocationView"),
+    path("CreateDepartmentView/", CreateDepartmentView.as_view(), name="CreateDepartmentView"),
+    path("DeleteDepartmentView/", DeleteDepartmentView.as_view(), name="DeleteDepartmentView"),
+    path("TimeslotDetailsView/", TimeslotDetailsView.as_view(), name="TimeslotDetailsView"),
+    path("CreateTimeslotsView/", CreateTimeslotsView.as_view(), name="CreateTimeslotsView"),
+    path("DeleteTimeslotsView/", DeleteTimeslotsView.as_view(), name="DeleteTimeslotsView"),
+    path("HealthtipsDetailsView/", HealthtipsDetailsView.as_view(), name="HealthtipsDetailsView"),
+    path("DeleteHealthtipsView/", DeleteHealthtipsView.as_view(), name="DeleteHealthtipsView"),
+    path("CreateHealthTipView/", CreateHealthTipView.as_view(), name="CreateHealthTipView")
 
     
 ]

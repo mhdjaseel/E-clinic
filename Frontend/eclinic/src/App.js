@@ -46,6 +46,8 @@ import HospitalData from "./Component/Admin/DashBoard/Resources/HospitalData";
 import DepartmentData from "./Component/Admin/DashBoard/Resources/DepartmentData";
 import LocationData from "./Component/Admin/DashBoard/Resources/LocationData";
 import Timeslots from "./Component/Admin/DashBoard/Resources/Timeslots";
+import HealthTip from "./Component/Patient/Appoinment/HealthTip";
+import HealthTips from "./Component/Admin/DashBoard/Resources/HealthTips";
 function App() {
   return (
     <div className="App">
@@ -100,6 +102,8 @@ function App() {
             <Route path="DepartmentData" element={<DepartmentData/>}/>
             <Route path="LocationData" element={<LocationData/>}/>
             <Route path="Timeslots" element={<Timeslots/>}/>
+            <Route path="Healthtips" element={<HealthTips/>}/>
+
 
 
 

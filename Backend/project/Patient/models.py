@@ -53,6 +53,7 @@ class Appointment(models.Model):
         ('booked', 'Booked'),
         ('canceled', 'Canceled'),
         ('rescheduled', 'Rescheduled'),
+
     ]
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     doctor = models.ForeignKey('doctor.Doctor', on_delete=models.CASCADE)

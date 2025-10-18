@@ -10,6 +10,7 @@ from Patient.models import *
 from doctor.models import *
 from admin_app.models import *
 from django.db.models import Q
+from rest_framework.parsers import MultiPartParser, FormParser
 
 # Create your views here.
 
@@ -161,12 +162,13 @@ class ResourseCounts(APIView):
         locations = Location.objects.all().count()
         departments = Department.objects.all().count()
         timeslots = TimeSlot.objects.all().count()
-
+        healthtips=HealthTips.objects.all().count()
         return Response({
             'hospitals':hospitals,
             'locations':locations,
             'departments':departments,
-            'timeslots':timeslots
+            'timeslots':timeslots,
+            'healthtips':healthtips
         },status=status.HTTP_200_OK)
     
 class HospitalDetailsView(APIView):
@@ -203,6 +205,8 @@ class CreateHospitalView(APIView):
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     
 class DeleteHospitalView(APIView):
+    permission_classes=[IsAuthenticated]
+
     def delete(self,request):
         id=request.data.get('id')
         try:
@@ -213,3 +217,121 @@ class DeleteHospitalView(APIView):
         except Hospitals.DoesNotExist:
             return Response({"error": "Hospital not found"}, status=status.HTTP_404_NOT_FOUND)
         
+class LocationDetailsView(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def get(self,request):
+        hospitals = Location.objects.all()
+        serializer = LocationSerializer(hospitals, many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+
+class CreateLocationView(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def post(self,request):
+        serializer = LocationSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_200_OK)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+class DeleteLocationView(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def delete(self,request):
+        id=request.data.get('id')
+        try:
+            location = Location.objects.get(id=id)
+            if location :
+                location.delete()
+                return Response(status=status.HTTP_200_OK)
+        except Location.DoesNotExist:
+            return Response({"error": "Location not found"}, status=status.HTTP_404_NOT_FOUND)
+
+class CreateDepartmentView(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def post(self,request):
+        serializer = DepartmentDetailsSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_200_OK)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+    
+
+class DeleteDepartmentView(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def delete(self,request):
+        id=request.data.get('id')
+        try:
+            department = Department.objects.get(id=id)
+            if department:
+                department.delete()
+                return Response(status=status.HTTP_200_OK)
+        except Department.DoesNotExist:
+            return Response({"error": "department not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+class TimeslotDetailsView(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def get(self,request):
+        slots = TimeSlot.objects.all()
+        serializer = TimeSlotSerializer(slots, many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+
+class DeleteTimeslotsView(APIView):
+    permission_classes=[IsAuthenticated]
+    def delete(self,request):
+        id=request.data.get('id')
+        try:
+            slots = TimeSlot.objects.get(id=id)
+            if slots:
+                slots.delete()
+                return Response(status=status.HTTP_200_OK)
+        except TimeSlot.DoesNotExist:
+            return Response({"error": "Timeslots not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+class CreateTimeslotsView(APIView):
+    permission_classes=[IsAuthenticated]
+    def post(self,request):
+        serializer = TimeSlotSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_200_OK)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+class HealthtipsDetailsView(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def get(self,request):
+        slots = HealthTips.objects.all()
+        serializer = HealthTipsDetailsSerializer(slots, many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    
+class DeleteHealthtipsView(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def delete(self,request):
+        id=request.data.get('id')
+        try:
+            tip = HealthTips.objects.get(id=id)
+            if tip:
+                tip.delete()
+                return Response(status=status.HTTP_200_OK)
+        except HealthTips.DoesNotExist:
+            return Response({"error": "health Tips not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+class CreateHealthTipView(APIView):
+    permission_classes=[IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def post(self,request):
+        print(request.data)
+        print(request.FILES)
+        serializer = HealthTipsDetailsSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_200_OK)
+        print(serializer.errors)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)

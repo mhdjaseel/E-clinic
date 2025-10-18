@@ -60,6 +60,13 @@ useEffect(() => {
     description: "Fixed Timeslots for doctor",
     route: "/AdminLayout/Timeslots",
   },
+  {
+    title: "HealthTips",
+    count: Data?.healthtips,
+    icon: "fa-heart-pulse", 
+    description: "Heakth tips for patients",
+    route: "/AdminLayout/HealthTips",
+  },
 ];
 
   return (

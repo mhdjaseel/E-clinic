@@ -3,18 +3,18 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-function Timeslots() {
-  const navigate = useNavigate()
-  const [Datas, setDatas] = useState({
-    'label':'',
-    'start_time':'',
-    'end_time':''
-  });
-  const [Data, setData] = useState([]);
+function HealthTips() {
+    const navigate = useNavigate()
+    const [Data, setData] = useState([]);
+    const [Datas, setDatas] = useState({
+      'title':'',
+      'description':'',
+      'image':''
+    });
   const token = localStorage.getItem("admin_access");
   const FetchData = async ()=>{
     try {
-      const response = await axios.get('http://127.0.0.1:8000/adminapp/TimeslotDetailsView',
+      const response = await axios.get('http://127.0.0.1:8000/adminapp/HealthtipsDetailsView',
         {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -35,27 +35,25 @@ function Timeslots() {
   },[]);
   const HandleSubmit = async(e)=>{
     e.preventDefault()
+    console.log(Datas)
   try {
-    const Formdata ={
-      'label':Datas.label,
-      'start_time':Datas.start_time,
-      'end_time':Datas.end_time
-    }
-    console.log(Formdata)
-      const response = await axios.post('http://127.0.0.1:8000/adminapp/CreateTimeslotsView/',Formdata,
+    const formData = new FormData();
+  formData.append('title', Datas.title);
+  formData.append('description', Datas.description);
+  formData.append('image', Datas.image);
+
+      const response = await axios.post('http://127.0.0.1:8000/adminapp/CreateHealthTipView/',formData,
         {
             headers: {
-              'Content-Type': 'application/json',
-
               Authorization: `Bearer ${token}`,
             },
           }
       )
       toast.success('created TimeSlot')
     setDatas({
-  label: '',
-  start_time: '',
-  end_time: ''
+  title: '',
+  description: '',
+  image: null
 });
       await FetchData()
 
@@ -68,16 +66,18 @@ function Timeslots() {
   
 }
 const HandleChange = (e)=>{
-  const {name,value} = e.target
-  setDatas({
-    ...Datas,
-    [name]:value
-  })
+  const {name,value,files} = e.target
+  if (name === 'image') {
+    setDatas({ ...Datas, image: files[0] });
+  } else {
+    setDatas({ ...Datas, [name]: value });
+  }
+
 }
   
 const HandleDelete = async (id)=>{
    try {
-      const response = await axios.delete('http://127.0.0.1:8000/adminapp/DeleteTimeslotsView/',
+      const response = await axios.delete('http://127.0.0.1:8000/adminapp/DeleteHealthtipsView/',
         {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -87,7 +87,7 @@ const HandleDelete = async (id)=>{
            }
           }
       )
-      toast.success('Deleted timeslot')
+      toast.success('Deleted Health Tip')
       await FetchData()
     } catch (error) {
       if (error.response && error.response.status === 401) {
@@ -99,11 +99,11 @@ const HandleDelete = async (id)=>{
   }
   return (
     <div>
-      <h2 className='text-center'>Fixed TimeSlots</h2>
+      <h2 className='text-center'>Health Tips</h2>
       <div className="container">
         <div className="row ">
           <div className="col-md-12 d-flex justify-content-end">
-            <button className='btn btn-primary btn-sm' data-bs-toggle="modal" data-bs-target="#exampleModal">Add Timeslots</button>
+            <button className='btn btn-primary btn-sm' data-bs-toggle="modal" data-bs-target="#exampleModal">Add Health tips</button>
           </div>
         </div>
       </div>
@@ -123,9 +123,11 @@ const HandleDelete = async (id)=>{
           {Data.map((item, index) => (
             <tr key={index}>
               <td className="px-4 py-2 whitespace-nowrap">{item.id}</td>
-              <td className="px-4 py-2 whitespace-nowrap">{item.label}</td>
-              <td className="px-4 py-2 whitespace-nowrap">{item.start_time}</td>
-              <td className="px-4 py-2 whitespace-nowrap">{item.end_time}</td>
+              <td className="px-4 py-2 whitespace-nowrap">{item.title}</td>
+              <td className="px-4 py-2 whitespace-nowrap" style={{maxWidth:400}}>{item.description}</td>
+              <td className="px-4 py-2 whitespace-nowrap">
+                <img src={`http://127.0.0.1:8000${item.image}`} style={{width:150,height:150}} alt="img"  />
+              </td>
               
           
               <td className="px-4 py-2 whitespace-nowrap"><button className='btn btn-danger btn-sm' onClick={()=>{HandleDelete(item.id)}}>Delete</button></td>
@@ -140,25 +142,25 @@ const HandleDelete = async (id)=>{
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">create Location</h5>
+        <h5 class="modal-title" id="exampleModalLabel">create Health Tips</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form action="#" onSubmit={HandleSubmit}>
+       <form action="#" onSubmit={HandleSubmit} encType="multipart/form-data">
       <div class="modal-body">
-        <label htmlFor="label" className='form-label'> Label</label>
-        <input type="text" name="label" id="label" className='form-control' value={Datas.label} placeholder='label' onChange={HandleChange} required/>
+        <label htmlFor="label" className='form-label'> Title</label>
+        <input type="text" name="title" id="title" className='form-control' value={Datas.title} placeholder='title' onChange={HandleChange} required/>
 
-        <label htmlFor="start_time" className='form-label'> Start time</label>
-        <input type="time" name="start_time" id="start_time" className='form-control' value={Datas.start_time} placeholder='start time' onChange={HandleChange} required/>
+        <label htmlFor="Description" className='form-label'>Description</label>
+        <textarea name="description" id="Description" className='form-control' value={Datas.description} placeholder='Description ' onChange={HandleChange} required cols="20" rows="5"></textarea>
 
-        <label htmlFor="end_time" className='form-label'> End time</label>
-        <input type="time" name="end_time" id="end_time" className='form-control' value={Datas.end_time}  onChange={HandleChange} required/>
-      </div>
-      <div class="modal-footer">
+        <label htmlFor="image" className='form-label'> Image</label>
+        <input type="file" name="image" className='form-control'   onChange={HandleChange} required/>
+      </div> 
+       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="submit" class="btn btn-primary">Create</button>
       </div>
-      </form>
+      </form> 
     </div>
   </div>
 </div>
@@ -166,4 +168,4 @@ const HandleDelete = async (id)=>{
   )
 }
 
-export default Timeslots
+export default HealthTips
