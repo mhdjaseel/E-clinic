@@ -53,7 +53,7 @@ function Login() {
 
 
 
-                <p>Didn't Have Account ? <Link to='/'>Register</Link></p>
+                <p>Didn't Have Account ? <Link to='/PatientRegister'>Register</Link></p>
 
                 <button className='btn btn-primary' type='submit'>Login</button>
               </form>

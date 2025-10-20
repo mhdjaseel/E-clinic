@@ -46,7 +46,7 @@ function SetSlots() {
           Authorization:`Bearer ${token}`
         }
       })
-      navigate('/DoctorProfilePage')
+      navigate('/DoctorProfile')
     console.log(response.data.message);
 
     }

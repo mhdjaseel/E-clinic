@@ -5,11 +5,34 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 function PatientHistory() {
   const [Data, setData] = useState([]);
+  const [Payment, setPayment] = useState([]);
   const navigate = useNavigate ()
-
-  useEffect(() => {
-    const fetchData = async () => {
       const token = localStorage.getItem("access");
+
+    const fetchPaymentData = async () => {
+
+
+      try {
+        const response = await axios.get(
+          "http://127.0.0.1:8000/PaymentHistoryView",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        setPayment(response.data);
+        console.log(response.data);
+      } catch (error) {
+        if (error.response && error?.response.status === 401) {
+          
+        toast.error('Token Expired');
+        }
+      }
+    };
+
+    const fetchData = async () => {
 
       if (!token) {
         console.log("No token found");
@@ -28,10 +51,16 @@ function PatientHistory() {
         setData(response.data);
         console.log(response.data);
       } catch (error) {
-        toast.error(error.response?.data);
+        if (error.response && error?.response.status === 401) {
+          
+        toast.error('Token Expired');
       }
     };
+  }
+  useEffect(() => {
+    
     fetchData();
+fetchPaymentData()
   }, []);
 
   const HandlePrescription = (Prescription)=>{
@@ -67,12 +96,21 @@ function PatientHistory() {
           </div>
           <div className="col-md-6">
             <h2 className="text-center">Payment History</h2>
-            <div className="card">
-              <div className="card-header">Date</div>
-              <div className="card-body">
-                <h4>Amount</h4>
-              </div>
-            </div>
+            {Payment &&
+              Payment.map((item, index) => (
+                <>
+                  <div className="card mt-3">
+                    <div className="card-header">
+                      {item.created_at}
+                    </div>
+                    <div className="card-body">
+                      <h4>Amount: {item.amount} {item.currency}</h4>
+            
+                    </div>
+                    
+                  </div>
+                </>
+              ))}
           </div>
         </div>
       </div>

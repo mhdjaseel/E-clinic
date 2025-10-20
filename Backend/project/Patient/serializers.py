@@ -159,3 +159,9 @@ class AppoinmentRequestDetails(serializers.ModelSerializer):
     class Meta:
         model = Appoinment_request
         fields =  '__all__'
+
+class PaymentSerializer(serializers.ModelSerializer):
+    paid_by = PatientSerializer()
+    class Meta:
+        model = Payments
+        fields ='__all__'

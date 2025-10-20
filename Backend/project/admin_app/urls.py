@@ -29,7 +29,8 @@ urlpatterns = [
     path("DeleteTimeslotsView/", DeleteTimeslotsView.as_view(), name="DeleteTimeslotsView"),
     path("HealthtipsDetailsView/", HealthtipsDetailsView.as_view(), name="HealthtipsDetailsView"),
     path("DeleteHealthtipsView/", DeleteHealthtipsView.as_view(), name="DeleteHealthtipsView"),
-    path("CreateHealthTipView/", CreateHealthTipView.as_view(), name="CreateHealthTipView")
+    path("CreateHealthTipView/", CreateHealthTipView.as_view(), name="CreateHealthTipView"),
+    
 
     
 ]

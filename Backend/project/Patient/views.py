@@ -2,6 +2,8 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import *
+
+
 from django.contrib.auth import authenticate
 from rest_framework import status
 from django.conf import settings
@@ -445,3 +447,18 @@ class PaymentCreation(APIView):
 
         except stripe.error.StripeError as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+class PaymentHistoryView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self,request):
+        user = request.user
+        print(user)
+        patient= Patient.objects.get(user=user)
+        print(patient)
+
+        payments = Payments.objects.filter(paid_by = patient)
+        print(payments)
+        
+        serializer = PaymentSerializer(payments,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
