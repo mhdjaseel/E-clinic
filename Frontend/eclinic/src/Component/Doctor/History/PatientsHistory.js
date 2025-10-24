@@ -60,9 +60,7 @@ function PatientsHistory() {
                                                  <strong>Allergy:</strong> {item.allergy}
                                             </p>
                                         )}
-                                        <p className="card-text">
-                                            <button className='btn btn-primary'>View Details</button>
-                                        </p>
+                             
                                     </div>
                                 </div>
                             </div>

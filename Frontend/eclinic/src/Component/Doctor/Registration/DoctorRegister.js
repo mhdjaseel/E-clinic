@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 function DoctorRegister() {
+  const navigate = useNavigate()
   const [formData, setformData] = useState({});
   const [Hospital, setHospital] = useState([]);
   const [Departments, setDepartments] = useState([]);
@@ -55,6 +56,7 @@ function DoctorRegister() {
           },
         }
       );
+      navigate('/DoctorLogin')
     } catch (error) {
       console.log("error   ", error);
     }

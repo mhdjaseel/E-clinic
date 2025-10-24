@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import DoctorNavbar from '../Profile/DoctorNavbar';
 
 function SetSlots() {
   const navigate = useNavigate()
@@ -56,6 +57,9 @@ function SetSlots() {
   };
 
   return (
+    <>
+    <DoctorNavbar />
+
     <div className="container mt-5">
       <h2 className="mb-4">Set Doctor Availability</h2>
       <form onSubmit={HandleSubmit}>
@@ -98,6 +102,8 @@ function SetSlots() {
         </button>
       </form>
     </div>
+    </>
+
   );
 }
 
